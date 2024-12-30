@@ -3,14 +3,17 @@ package com.jeyofdev.shopping_krist.auth;
 import com.jeyofdev.shopping_krist.auth.model.*;
 import com.jeyofdev.shopping_krist.auth_user.AuthUser;
 import com.jeyofdev.shopping_krist.auth_user.AuthUserRepository;
+import com.jeyofdev.shopping_krist.exception.BadValidationArgumentException;
 import com.jeyofdev.shopping_krist.exception.ExpireTokenException;
 import com.jeyofdev.shopping_krist.exception.InvalidTokenException;
 import com.jeyofdev.shopping_krist.exception.UsernameAlreadyTakenException;
 import com.jeyofdev.shopping_krist.security.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -91,7 +94,7 @@ public class AuthService {
         }
     }
 
-    public MessageResponse validateAccount(String verificationToken) {
+    public MessageResponse validateAccount(String verificationToken) throws InvalidTokenException, ExpireTokenException {
         if (verificationToken.isEmpty()) {
             throw new InvalidTokenException("The token must be provided");
         }
@@ -114,5 +117,32 @@ public class AuthService {
         return MessageResponse.builder()
                 .message("Your email is verified! You now have full access to your account.")
                 .build();
+    }
+
+    public MessageResponse updatePassword(String oldPassword, String newPassword) {
+        String roles  = SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
+
+        if((roles.equals("[ROLE_ADMIN]")) || (roles.equals("[ROLE_USER]"))) {
+            AuthUser user = authUserRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+            if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+                throw new IllegalStateException("Old password is incorrect.");
+            }
+
+            if (newPassword == null || newPassword.length() < 8) {
+                throw new BadValidationArgumentException("The new password must contain at least 8 characters.");
+            }
+
+            // update password
+            user.setPassword(passwordEncoder.encode(newPassword));
+            authUserRepository.save(user);
+
+            return MessageResponse.builder()
+                    .message("Your password has been updated successfully.")
+                    .build();
+        } else {
+            throw new AccessDeniedException("You are not authorized to access this resource");
+        }
     }
 }
