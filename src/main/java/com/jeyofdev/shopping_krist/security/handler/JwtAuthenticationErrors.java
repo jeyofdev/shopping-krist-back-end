@@ -1,6 +1,7 @@
 package com.jeyofdev.shopping_krist.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jeyofdev.shopping_krist.util.Helper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
@@ -25,20 +26,28 @@ public class JwtAuthenticationErrors implements AuthenticationEntryPoint {
         response.setHeader("error", exception.getMessage());
 
         if (request.getAttribute("expired_exception") != null) {
-            error.put("is_token_expired", "true");
             error.put("message", "JWT has expired. Please log in again.");
+            error.put("status", "401");
+            error.put("exceptionName", "expired_exception");
+            error.put("date", Helper.simpleDateFormat());
         }
         else if (request.getAttribute("malformed_exception") != null) {
-            error.put("is_jwt_malformed", "true");
             error.put("message", "JWT is malformed. Please verify its integrity.");
+            error.put("status", "401");
+            error.put("exceptionName", "malformed_exception");
+            error.put("date", Helper.simpleDateFormat());
         }
         else if (request.getAttribute("jwt_exception") != null) {
-            error.put("is_jwt_exception", "true");
-            error.put("message", "");
+            error.put("message", "is_jwt_exception.");
+            error.put("status", "401");
+            error.put("exceptionName", "jwt_exception");
+            error.put("date", Helper.simpleDateFormat());
         }
         else if (request.getAttribute("no_jwt_provided") != null) {
-            error.put("no_jwt_provided", "true");
-            error.put("message", "No JWT provided.");
+            error.put("message", "A jwt token must be provided.");
+            error.put("status", "401");
+            error.put("exceptionName", "no_jwt_provided");
+            error.put("date", Helper.simpleDateFormat());
         }
 
         new ObjectMapper().writeValue(response.getOutputStream(), error);

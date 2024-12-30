@@ -6,6 +6,7 @@ import com.jeyofdev.shopping_krist.auth.model.RegisterRequest;
 import com.jeyofdev.shopping_krist.auth.model.RegisterResponse;
 import com.jeyofdev.shopping_krist.auth_user.AuthUser;
 import com.jeyofdev.shopping_krist.auth_user.AuthUserRepository;
+import com.jeyofdev.shopping_krist.exception.UsernameAlreadyTakenException;
 import com.jeyofdev.shopping_krist.security.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,13 +29,13 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public RegisterResponse register(RegisterRequest request) {
+    public RegisterResponse register(RegisterRequest request) throws UsernameAlreadyTakenException {
 
         if (authUserRepository.findByEmail(request.getEmail()).isEmpty()) {
             AuthUser user = AuthUser.builder()
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
-                    .role("ROLE_" + request.getRole().toUpperCase())
+                    .role(MessageFormat.format("ROLE_{0}", request.getRole().toUpperCase()))
                     .build();
 
             authUserRepository.save(user);
@@ -46,11 +47,11 @@ public class AuthService {
                     .build();
 
         } else {
-            throw new UsernameNotFoundException("Username already taken");
+            throw new UsernameAlreadyTakenException("Username already taken");
         }
     }
 
-    public AuthResponse login(LoginRequest request) {
+    public AuthResponse login(LoginRequest request)  throws BadCredentialsException, UsernameNotFoundException {
 
         // check credentials
         // if the user was found

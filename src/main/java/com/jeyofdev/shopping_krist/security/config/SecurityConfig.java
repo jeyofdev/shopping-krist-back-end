@@ -1,6 +1,6 @@
 package com.jeyofdev.shopping_krist.security.config;
 
-import com.jeyofdev.shopping_krist.core.RoleEnum;
+import com.jeyofdev.shopping_krist.core.enums.RoleEnum;
 import com.jeyofdev.shopping_krist.security.filter.JwtAuthenticationFilter;
 import com.jeyofdev.shopping_krist.security.handler.AccessDeniedHandler;
 import com.jeyofdev.shopping_krist.security.handler.JwtAuthenticationErrors;
