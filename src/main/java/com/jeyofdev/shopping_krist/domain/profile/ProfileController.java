@@ -24,10 +24,13 @@ public class ProfileController {
         return new ResponseEntity<>(profileDTO, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<ProfileDTO> saveProfile(@RequestBody SaveProfileDTO saveProfileDTO) {
+    @PostMapping("/user/{userId}")
+    public ResponseEntity<ProfileDTO> saveProfile(
+            @RequestBody SaveProfileDTO saveProfileDTO,
+            @PathVariable UUID userId
+    ) {
         Profile profile = profileMapper.mapToEntity(saveProfileDTO);
-        Profile newProfile = profileService.save(profile);
+        Profile newProfile = profileService.save(profile, userId);
         ProfileDTO newProfileDTO = profileMapper.mapFromEntity(newProfile);
 
         return new ResponseEntity<>(newProfileDTO, HttpStatus.CREATED);

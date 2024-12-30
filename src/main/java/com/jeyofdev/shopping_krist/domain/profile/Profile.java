@@ -1,5 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.profile;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jeyofdev.shopping_krist.auth_user.AuthUser;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +30,11 @@ public class Profile {
 
     @Column(name = "address", columnDefinition = "VARCHAR(150)")
     private String address;
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("profile")
+    private AuthUser user;
 
 
     // relation email

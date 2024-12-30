@@ -7,6 +7,7 @@ public record ProfileDTO(
         String firstname,
         String lastname,
         String phone,
-        String address
+        String address,
+        String email
 ) {
 }
