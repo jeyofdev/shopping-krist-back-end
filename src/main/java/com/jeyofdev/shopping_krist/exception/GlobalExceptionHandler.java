@@ -11,8 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.io.IOException;
-
 @ControllerAdvice
 public class GlobalExceptionHandler {
     /**
@@ -54,6 +52,30 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException exception, HttpServletRequest request) {
         return handleException(exception, HttpStatus.UNAUTHORIZED, request, null);
+    }
+
+    /**
+     * to handle the case where a method was invoked while the object was not in a suitable state to execute it
+     */
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException exception, HttpServletRequest request) {
+        return handleException(exception, HttpStatus.BAD_REQUEST, request, null);
+    }
+
+    /**
+     * to handle the case where a method was invoked while the provided token has expired
+     */
+    @ExceptionHandler(ExpireTokenException.class)
+    public ResponseEntity<ErrorResponse> handleExpireTokenException(ExpireTokenException exception, HttpServletRequest request) {
+        return handleException(exception, HttpStatus.BAD_REQUEST, request, null);
+    }
+
+    /**
+     * to handle the case where a method was invoked while the token is missing or invalid
+     */
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidTokenException(InvalidTokenException exception, HttpServletRequest request) {
+        return handleException(exception, HttpStatus.BAD_REQUEST, request, null);
     }
 
     /**

@@ -1,16 +1,10 @@
 package com.jeyofdev.shopping_krist.auth;
 
-import com.jeyofdev.shopping_krist.auth.model.AuthResponse;
-import com.jeyofdev.shopping_krist.auth.model.LoginRequest;
-import com.jeyofdev.shopping_krist.auth.model.RegisterRequest;
-import com.jeyofdev.shopping_krist.auth.model.RegisterResponse;
+import com.jeyofdev.shopping_krist.auth.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -31,4 +25,10 @@ public class AuthController {
         return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/validate-account")
+    public ResponseEntity<MessageResponse> validateAccount(@RequestParam("verificationToken") String verificationToken) {
+        MessageResponse messageResponse = authService.validateAccount(verificationToken);
+
+        return new ResponseEntity<>(messageResponse, HttpStatus.OK);
+    }
 }

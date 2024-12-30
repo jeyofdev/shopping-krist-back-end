@@ -1,11 +1,10 @@
 package com.jeyofdev.shopping_krist.auth;
 
-import com.jeyofdev.shopping_krist.auth.model.AuthResponse;
-import com.jeyofdev.shopping_krist.auth.model.LoginRequest;
-import com.jeyofdev.shopping_krist.auth.model.RegisterRequest;
-import com.jeyofdev.shopping_krist.auth.model.RegisterResponse;
+import com.jeyofdev.shopping_krist.auth.model.*;
 import com.jeyofdev.shopping_krist.auth_user.AuthUser;
 import com.jeyofdev.shopping_krist.auth_user.AuthUserRepository;
+import com.jeyofdev.shopping_krist.exception.ExpireTokenException;
+import com.jeyofdev.shopping_krist.exception.InvalidTokenException;
 import com.jeyofdev.shopping_krist.exception.UsernameAlreadyTakenException;
 import com.jeyofdev.shopping_krist.security.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +36,13 @@ public class AuthService {
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .role(MessageFormat.format("ROLE_{0}", request.getRole().toUpperCase()))
+                    .isVerified(false)
                     .build();
+
+            // generate validation token
+            String verificationToken = jwtService.generateToken(Map.of("type", "verification"), user, 24 * 60 * 60 * 1000);
+            user.setVerificationToken(verificationToken);
+            user.setVerificationTokenExpiration(LocalDateTime.now().plusDays(1));
 
             authUserRepository.save(user);
 
@@ -83,5 +89,30 @@ public class AuthService {
         } catch (BadCredentialsException ex) {
             throw new BadCredentialsException("Login failed. Please verify your credentials and try again.");
         }
+    }
+
+    public MessageResponse validateAccount(String verificationToken) {
+        if (verificationToken.isEmpty()) {
+            throw new InvalidTokenException("The token must be provided");
+        }
+
+        AuthUser user = authUserRepository.findByVerificationToken(verificationToken)
+                .orElseThrow(() -> new InvalidTokenException("Invalid verification token"));
+
+        // check if the token is expired
+        if (user.getVerificationTokenExpiration().isBefore(LocalDateTime.now())) {
+            throw new ExpireTokenException("Verification token has expired");
+        }
+
+        // mark user as verified and save user
+        user.setVerified(true);
+        user.setVerificationToken(null);
+        user.setVerificationTokenExpiration(null);
+
+        authUserRepository.save(user);
+
+        return MessageResponse.builder()
+                .message("Your email is verified! You now have full access to your account.")
+                .build();
     }
 }
