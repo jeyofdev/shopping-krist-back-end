@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
 public class Application {
 
     public static void main(String[] args) {
-		ApplicationContext context = SpringApplication.run(Application.class, args);
+		/*ApplicationContext context = SpringApplication.run(Application.class, args);
 		DatabaseConfig config = context.getBean(DatabaseConfig.class);
 
 		// Check if database exist
@@ -21,7 +21,9 @@ public class Application {
 				config.getDbName()
 		);
 
-		System.out.println("hello world");
+		System.out.println("hello world");*/
+
+		SpringApplication.run(Application.class, args);
 	}
 
 }

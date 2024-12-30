@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 public class DatabaseInitializer {
+
     public static void initializeDatabase(String jdbcUrl, String user, String password, String dbName) {
         String createDbQuery = "CREATE DATABASE " + dbName;
         try (Connection connection = DriverManager.getConnection(jdbcUrl, user, password);
