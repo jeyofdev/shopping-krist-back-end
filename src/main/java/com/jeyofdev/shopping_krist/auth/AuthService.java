@@ -3,6 +3,7 @@ package com.jeyofdev.shopping_krist.auth;
 import com.jeyofdev.shopping_krist.auth.model.*;
 import com.jeyofdev.shopping_krist.auth_user.AuthUser;
 import com.jeyofdev.shopping_krist.auth_user.AuthUserRepository;
+import com.jeyofdev.shopping_krist.core.interfaces.IAuthService;
 import com.jeyofdev.shopping_krist.exception.BadValidationArgumentException;
 import com.jeyofdev.shopping_krist.exception.ExpireTokenException;
 import com.jeyofdev.shopping_krist.exception.InvalidTokenException;
@@ -25,7 +26,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthService implements IAuthService {
 
     private final AuthUserRepository authUserRepository;
     private final PasswordEncoder passwordEncoder;
@@ -33,6 +34,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
 
+    @Override
     public RegisterResponse register(RegisterRequest request) throws UsernameAlreadyTakenException {
 
         if (request.getPassword() == null || request.getPassword().length() < 8) {
@@ -68,6 +70,7 @@ public class AuthService {
         }
     }
 
+    @Override
     public AuthResponse login(LoginRequest request)  throws BadCredentialsException, UsernameNotFoundException {
 
         // check credentials
@@ -102,6 +105,7 @@ public class AuthService {
         }
     }
 
+    @Override
     public MessageResponse validateAccount(String verificationToken) throws InvalidTokenException, ExpireTokenException {
         if (verificationToken.isEmpty()) {
             throw new InvalidTokenException("The token must be provided");
@@ -130,6 +134,7 @@ public class AuthService {
                 .build();
     }
 
+    @Override
     public MessageResponse updatePassword(String oldPassword, String newPassword) throws IllegalStateException, BadValidationArgumentException, AccessDeniedException{
         String roles  = SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
 
@@ -160,6 +165,7 @@ public class AuthService {
         }
     }
 
+    @Override
     public MessageResponse requestPasswordReset(String email) throws UsernameNotFoundException {
         // get user by email
         AuthUser user = authUserRepository.findByEmail(email)
@@ -185,6 +191,7 @@ public class AuthService {
                 .build();
     }
 
+    @Override
     public MessageResponse resetPassword(String token, String newPassword) throws IllegalStateException, ExpireTokenException, BadValidationArgumentException {
         // check token
         AuthUser user = authUserRepository.findByResetToken(token)

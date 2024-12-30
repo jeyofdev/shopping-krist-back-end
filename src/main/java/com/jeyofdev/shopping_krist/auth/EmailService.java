@@ -1,8 +1,9 @@
 package com.jeyofdev.shopping_krist.auth;
 
+import com.jeyofdev.shopping_krist.core.interfaces.IEmailService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,18 +12,15 @@ import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
 
 @Service
-public class EmailService {
+@RequiredArgsConstructor
+public class EmailService implements IEmailService {
     private static final Logger log = LoggerFactory.getLogger(EmailService.class);
     private final JavaMailSender emailSender;
 
     @Value("${spring.mail.from}")
     private String fromEmail;
 
-    @Autowired
-    public EmailService(JavaMailSender emailSender) {
-        this.emailSender = emailSender;
-    }
-
+    @Override
     public void sendPasswordResetEmail(String toEmail, String resetToken) {
 
         String resetUrl = MessageFormat.format("http://localhost:8080/api/v1/auth/reset-password?resetToken={0}", resetToken);
@@ -36,6 +34,7 @@ public class EmailService {
         emailSender.send(message);
     }
 
+    @Override
     public void sendSuccessUpdatePasswordEmail(String toEmail) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
@@ -46,6 +45,7 @@ public class EmailService {
         emailSender.send(message);
     }
 
+    @Override
     public void sendValidationEmail(String email, String verificationToken) {
         String verificationUrl = MessageFormat.format("http://localhost:8080/api/v1/auth/validate-account?verificationToken={0}", verificationToken);
 
@@ -58,6 +58,7 @@ public class EmailService {
         emailSender.send(message);
     }
 
+    @Override
     public void sendSuccessValidationEmail(String email) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
