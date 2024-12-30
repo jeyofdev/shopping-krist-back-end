@@ -6,7 +6,8 @@ public class AuthUserMapper {
     public static AuthUserDTO mapFromEntity(AuthUser authUser) {
         return new AuthUserDTO(
                 authUser.getId(),
-                authUser.getUsername()
+                authUser.getEmail(),
+                authUser.getRole()
         );
     }
 }

@@ -1,7 +1,10 @@
 package com.jeyofdev.shopping_krist.auth_user.dto;
 
+import java.util.UUID;
+
 public record AuthUserDTO(
-        Long id,
-        String username
+        UUID id,
+        String email,
+        String role
 ) {
 }
