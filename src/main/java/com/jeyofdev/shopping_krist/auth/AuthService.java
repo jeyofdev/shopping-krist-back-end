@@ -31,8 +31,13 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final EmailService emailService;
 
     public RegisterResponse register(RegisterRequest request) throws UsernameAlreadyTakenException {
+
+        if (request.getPassword() == null || request.getPassword().length() < 8) {
+            throw new BadValidationArgumentException("The new password must contain at least 8 characters.");
+        }
 
         if (authUserRepository.findByEmail(request.getEmail()).isEmpty()) {
             AuthUser user = AuthUser.builder()
@@ -49,9 +54,12 @@ public class AuthService {
 
             authUserRepository.save(user);
 
+            // send email
+            emailService.sendValidationEmail(user.getEmail(), verificationToken);
+
             // response to client
             return RegisterResponse.builder()
-                    .message("Your registration has been successfully recorded.")
+                    .message("Your registration has been successfully recorded. A validation email has been sent to you. Please check your inbox and follow the instructions to complete your registration.")
                     .userId(String.valueOf(user.getId()))
                     .build();
 
@@ -114,6 +122,9 @@ public class AuthService {
 
         authUserRepository.save(user);
 
+        // send email
+        emailService.sendSuccessValidationEmail(user.getEmail());
+
         return MessageResponse.builder()
                 .message("Your email is verified! You now have full access to your account.")
                 .build();
@@ -138,6 +149,9 @@ public class AuthService {
             user.setPassword(passwordEncoder.encode(newPassword));
             authUserRepository.save(user);
 
+            // send email
+            emailService.sendSuccessUpdatePasswordEmail(user.getEmail());
+
             return MessageResponse.builder()
                     .message("Your password has been updated successfully.")
                     .build();
@@ -161,6 +175,9 @@ public class AuthService {
         user.setResetToken(jwtToken);
         user.setResetTokenExpiration(LocalDateTime.now().plusMinutes(15));
         authUserRepository.save(user);
+
+        // send password reset email
+        emailService.sendPasswordResetEmail(user.getEmail(), jwtToken);
 
         // return token
         return MessageResponse.builder()
@@ -187,6 +204,9 @@ public class AuthService {
         user.setResetTokenExpiration(null);
 
         authUserRepository.save(user);
+
+        // send email
+        emailService.sendSuccessUpdatePasswordEmail(user.getEmail());
 
         return MessageResponse.builder()
                 .message("Your password has been updated successfully. You can now use your new password to log in.")
