@@ -33,13 +33,14 @@ public class AddressController {
         return new ResponseEntity<>(addressDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/city/{cityId}")
+    @PostMapping("/city/{cityId}/profile/{profileId}")
     public ResponseEntity<AddressDTO> saveAddress(
             @RequestBody SaveAddressDTO saveAddressDTO,
-            @PathVariable UUID cityId
+            @PathVariable("cityId") UUID cityId,
+            @PathVariable("profileId") UUID profileId
     ) {
         Address address = addressMapper.mapToEntity(saveAddressDTO);
-        Address newAddress = addressService.save(address, cityId);
+        Address newAddress = addressService.save(address, cityId, profileId);
         AddressDTO newAddressDTO = addressMapper.mapFromEntity(newAddress);
 
         return new ResponseEntity<>(newAddressDTO, HttpStatus.CREATED);

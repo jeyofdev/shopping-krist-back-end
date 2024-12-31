@@ -4,6 +4,8 @@ import com.jeyofdev.shopping_krist.domain.profile.dto.ProfileDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.SaveProfileDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
 @Component
 public class ProfileMapper {
     public ProfileDTO mapFromEntity(Profile profile) {
@@ -13,7 +15,8 @@ public class ProfileMapper {
                 profile.getLastname(),
                 profile.getPhone(),
                 profile.getAddress(),
-                profile.getUser().getEmail()
+                profile.getUser().getEmail(),
+                profile.getDeliveryAddressList() != null ? profile.getDeliveryAddressList() : new ArrayList<>()
         );
     }
 
