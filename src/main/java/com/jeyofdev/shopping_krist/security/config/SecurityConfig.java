@@ -51,7 +51,7 @@ public class SecurityConfig {
                             "/api/v1/auth/forgot-password",
                             "/api/v1/auth/reset-password")
                     .permitAll()
-                    .requestMatchers("/api/v1/profile/**", "/api/v1/address/**").permitAll()
+                    .requestMatchers("/api/v1/profile/**", "/api/v1/address/**", "/api/v1/city/**").permitAll()
 
                     .anyRequest().authenticated()
             )
