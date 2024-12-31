@@ -8,7 +8,6 @@ import com.jeyofdev.shopping_krist.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -25,7 +24,7 @@ public class AddressService {
         return addressRepository.findAll();
     }
 
-    public Address findById(@PathVariable("addressId") UUID addressId) throws NotFoundException {
+    public Address findById(UUID addressId) throws NotFoundException {
         return addressRepository.findById(addressId).orElseThrow(
                 () -> new NotFoundException(MessageFormat.format(" Entity Address with id {0} cannot be found", addressId)));
     }
