@@ -1,6 +1,8 @@
 package com.jeyofdev.shopping_krist.domain.profileSettings;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeyofdev.shopping_krist.core.enums.DarkMode;
+import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,4 +29,9 @@ public class ProfileSettings {
 
     @Column(name = "email_notification", columnDefinition = "BOOLEAN" , nullable = false)
     private boolean isEmailNotification;
+
+    @OneToOne(mappedBy = "profileSettings", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Profile profile;
 }

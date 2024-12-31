@@ -33,12 +33,13 @@ public class ProfileSettingsController {
         return new ResponseEntity<>(profileSettingsDTO, HttpStatus.OK);
     }
 
-    @PostMapping()
+    @PostMapping("/profile/{profileId}")
     public ResponseEntity<ProfileSettingsDTO> saveProfileSettings(
-            @RequestBody SaveProfileSettingsDTO saveProfileSettingsDTO
+            @RequestBody SaveProfileSettingsDTO saveProfileSettingsDTO,
+            @PathVariable UUID profileId
     ) {
         ProfileSettings profileSettings = profileSettingsMapper.mapToEntity(saveProfileSettingsDTO);
-        ProfileSettings newProfileSettings = profileSettingsService.save(profileSettings);
+        ProfileSettings newProfileSettings = profileSettingsService.save(profileSettings, profileId);
         ProfileSettingsDTO newProfileSettingsDTO = profileSettingsMapper.mapFromEntity(newProfileSettings);
 
         return new ResponseEntity<>(newProfileSettingsDTO, HttpStatus.CREATED);

@@ -1,6 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.profile.dto;
 
 import com.jeyofdev.shopping_krist.domain.address.Address;
+import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,6 +13,7 @@ public record ProfileDTO(
         String phone,
         String email,
         String address,
-        List<Address> deliveryAddressList
+        List<Address> deliveryAddressList,
+        ProfileSettings profileSettings
 ) {
 }
