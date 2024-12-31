@@ -35,7 +35,4 @@ public class Profile {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonIgnoreProperties("profile")
     private AuthUser user;
-
-
-    // relation email
 }
