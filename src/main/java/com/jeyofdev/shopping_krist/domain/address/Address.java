@@ -1,5 +1,8 @@
 package com.jeyofdev.shopping_krist.domain.address;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jeyofdev.shopping_krist.auth_user.AuthUser;
+import com.jeyofdev.shopping_krist.domain.city.City;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,5 +35,7 @@ public class Address {
     @Column(name = "zip_code", columnDefinition = "VARCHAR(5)")
     private String zipCode;
 
-    // todo : relation address-city
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "city_id", referencedColumnName = "id")
+    private City city;
 }

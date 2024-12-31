@@ -8,6 +8,7 @@ public record AddressDTO(
         String phone,
         String streetNumber,
         String street,
-        String zipCode
+        String zipCode,
+        String city
 ) {
 }

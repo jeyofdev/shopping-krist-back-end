@@ -1,5 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.city;
 
+import com.jeyofdev.shopping_krist.domain.address.Address;
+import com.jeyofdev.shopping_krist.domain.address.AddressRepository;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CityService {
     private final CityRepository cityRepository;
+    private final AddressRepository addressRepository;
 
     public List<City> findAll() {
         return cityRepository.findAll();
@@ -41,9 +44,15 @@ public class CityService {
 
     @Transactional
     public String deleteById(UUID cityId) {
-        findById(cityId);
+        City city = findById(cityId);
+        List<Address> addresses = addressRepository.findByCity(city);
+
+        for (Address address : addresses) {
+            address.setCity(null);
+            addressRepository.save(address);
+        }
         cityRepository.deleteById(cityId);
 
-        return "Your account has been successfully deleted.";
+        return "City has been successfully deleted.";
     }
 }

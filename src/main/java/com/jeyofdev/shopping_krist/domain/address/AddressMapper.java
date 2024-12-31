@@ -13,7 +13,8 @@ public class AddressMapper {
                 address.getPhone(),
                 address.getStreetNumber(),
                 address.getStreet(),
-                address.getZipCode()
+                address.getZipCode(),
+                address.getCity() != null ? address.getCity().getName() : null
         );
     }
 

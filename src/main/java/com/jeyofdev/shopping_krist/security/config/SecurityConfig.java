@@ -41,7 +41,7 @@ public class SecurityConfig {
 
             // Liste des routes protégées / non protégées
             .authorizeHttpRequests((requests) -> requests
-                    .requestMatchers(HttpMethod.GET, "/api/v1/users/**").hasAnyRole(RoleEnum.USER.name())
+                    /*.requestMatchers(HttpMethod.GET, "/api/v1/users/**").hasAnyRole(RoleEnum.USER.name())
                     .requestMatchers(HttpMethod.POST, "/api/v1/auth/update-password").hasRole(RoleEnum.USER.name())
                     .requestMatchers(HttpMethod.GET,"/api/v1/auth/**").permitAll()
                     .requestMatchers(
@@ -53,7 +53,8 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers("/api/v1/profile/**", "/api/v1/address/**", "/api/v1/city/**").permitAll()
 
-                    .anyRequest().authenticated()
+                    .anyRequest().authenticated()*/
+                    .anyRequest().permitAll()
             )
 
             // authentication errors
