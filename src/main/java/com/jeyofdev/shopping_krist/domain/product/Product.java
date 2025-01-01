@@ -1,5 +1,8 @@
 package com.jeyofdev.shopping_krist.domain.product;
 
+import com.jeyofdev.shopping_krist.core.enums.Color;
+import com.jeyofdev.shopping_krist.core.enums.DarkMode;
+import com.jeyofdev.shopping_krist.core.enums.Size;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,4 +38,12 @@ public class Product {
 
     @Column(name = "stock", columnDefinition = "INT")
     private Integer stock;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "color", columnDefinition = "VARCHAR(10)")
+    private Color color;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "size", columnDefinition = "VARCHAR(3)")
+    private Size size;
 }

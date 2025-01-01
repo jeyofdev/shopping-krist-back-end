@@ -38,6 +38,8 @@ public class ProductService {
                 .price(updatedProduct.getPrice() != null ? updatedProduct.getPrice() : existingProduct.getPrice())
                 .oldPrice(updatedProduct.getOldPrice() != null ? updatedProduct.getOldPrice() : existingProduct.getOldPrice())
                 .stock(updatedProduct.getStock() != null ? updatedProduct.getStock() : existingProduct.getStock())
+                .color(updatedProduct.getColor() != null ? updatedProduct.getColor() : existingProduct.getColor())
+                .size(updatedProduct.getSize() != null ? updatedProduct.getSize() : existingProduct.getSize())
                 .build();
 
         return productRepository.save(existingProductUpdated);

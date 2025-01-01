@@ -14,7 +14,9 @@ public class ProductMapper {
                 product.getDescription(),
                 product.getPrice(),
                 product.getOldPrice(),
-                product.getStock()
+                product.getStock(),
+                product.getColor(),
+                product.getSize()
         );
     }
 
@@ -26,6 +28,8 @@ public class ProductMapper {
                 .price(saveProductDTO.price())
                 .oldPrice(saveProductDTO.oldPrice())
                 .stock(saveProductDTO.stock())
+                .color(saveProductDTO.color())
+                .size(saveProductDTO.size())
                 .build();
     }
 }
