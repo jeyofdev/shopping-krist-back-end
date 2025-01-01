@@ -1,5 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.cartItem;
 
+import com.jeyofdev.shopping_krist.domain.cart.Cart;
+import com.jeyofdev.shopping_krist.domain.cart.CartRepository;
 import com.jeyofdev.shopping_krist.domain.product.Product;
 import com.jeyofdev.shopping_krist.domain.product.ProductRepository;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
@@ -16,6 +18,7 @@ import java.util.UUID;
 public class CartItemService {
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
+    private final CartRepository cartRepository;
 
     public List<CartItem> findAll() {
         return cartItemRepository.findAll();
@@ -26,11 +29,15 @@ public class CartItemService {
                 () -> new NotFoundException(MessageFormat.format(" Entity CartItem with id {0} cannot be found", cartItemId)));
     }
 
-    public CartItem save(CartItem cartItem, UUID productId) {
+    public CartItem save(CartItem cartItem, UUID productId, UUID cartId) {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new NotFoundException(MessageFormat.format(" Entity Product with id {0} cannot be found", productId)));
 
+        Cart cart =  cartRepository.findById(cartId).orElseThrow(
+                () -> new NotFoundException(MessageFormat.format(" Entity Cart with id {0} cannot be found", cartId)));
+
         cartItem.setProduct(product);
+        cartItem.setCart(cart);
         return cartItemRepository.save(cartItem);
     }
 

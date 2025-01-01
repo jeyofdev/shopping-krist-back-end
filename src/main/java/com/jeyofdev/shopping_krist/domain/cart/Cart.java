@@ -1,9 +1,12 @@
 package com.jeyofdev.shopping_krist.domain.cart;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,4 +26,8 @@ public class Cart {
 
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP", nullable = false)
     private Date updatedAt;
+
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<CartItem> cartItemList;
 }

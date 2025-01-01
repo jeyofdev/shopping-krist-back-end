@@ -10,7 +10,8 @@ public class CartMapper {
         return new CartDTO(
                 cart.getId(),
                 cart.getCreatedAt(),
-                cart.getUpdatedAt()
+                cart.getUpdatedAt(),
+                cart.getCartItemList()
         );
     }
 
