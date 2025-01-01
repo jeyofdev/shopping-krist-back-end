@@ -63,8 +63,8 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     private void createDatas() throws IOException {
         this.createProducts();
-       this.createCarts();
-       this.createCartItems();
+       /*this.createCarts();
+       this.createCartItems();*/
     }
 
     private void createProducts() {
@@ -93,15 +93,15 @@ public class DatabaseInitializer implements CommandLineRunner {
         productService.save(productB);
     }
 
-    private void createCarts() {
+    /*private void createCarts() {
         Cart cartA = cartMapper.mapToEntity(new SaveCartDTO());
         Cart cartB = cartMapper.mapToEntity(new SaveCartDTO());
 
         cartService.save(cartA);
         cartService.save(cartB);
-    }
+    }*/
 
-    private void createCartItems() {
+    /*private void createCartItems() {
         CartItem cartItemA = cartItemMapper.mapToEntity(new SaveCartItemDTO(5));
         CartItem cartItemB = cartItemMapper.mapToEntity(new SaveCartItemDTO(2));
 
@@ -111,5 +111,5 @@ public class DatabaseInitializer implements CommandLineRunner {
 
         cartItemService.save(cartItemA, firstProductId, firstCartId);
         cartItemService.save(cartItemB, secondProductId, firstCartId);
-    }
+    }*/
 }

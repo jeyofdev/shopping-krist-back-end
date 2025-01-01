@@ -1,5 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.cart;
 
+import com.jeyofdev.shopping_krist.domain.profile.Profile;
+import com.jeyofdev.shopping_krist.domain.profile.ProfileRepository;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CartService {
     private final CartRepository cartRepository;
+    private final ProfileRepository profileRepository;
 
     public List<Cart> findAll() {
         return cartRepository.findAll();
@@ -25,7 +28,11 @@ public class CartService {
                 () -> new NotFoundException(MessageFormat.format(" Entity Cart with id {0} cannot be found", cartId)));
     }
 
-    public Cart save(Cart cart) {
+    public Cart save(Cart cart, UUID profileId) {
+        Profile profile = profileRepository.findById(profileId).orElseThrow(
+                () -> new NotFoundException(MessageFormat.format("Entity Profile with id {0} cannot be found", profileId)));
+
+        cart.setProfile(profile);
         cart.setCreatedAt(new Date());
         cart.setUpdatedAt(new Date());
 
@@ -34,18 +41,11 @@ public class CartService {
 
     public Cart updateById(UUID cartId, Cart updatedCart) {
         Cart existingCart = findById(cartId);
-        Cart existingCartUpdated = Cart.builder()
-                .id(cartId)
-                .createdAt(existingCart.getCreatedAt())
-                .updatedAt(new Date())
-                .build();
+        Profile profile = existingCart.getProfile();
 
-        return cartRepository.save(existingCartUpdated);
-    }
+        existingCart.setUpdatedAt(new Date());
+        existingCart.setCartItemList(updatedCart.getCartItemList());
 
-    @Transactional
-    public void deleteById(UUID cartId) {
-        findById(cartId);
-        cartRepository.deleteById(cartId);
+        return cartRepository.save(existingCart);
     }
 }

@@ -2,6 +2,7 @@ package com.jeyofdev.shopping_krist.domain.cart;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
+import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,4 +32,9 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<CartItem> cartItemList = new ArrayList<>();
+
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "profile_id")
+    @JsonIgnore
+    private Profile profile;
 }

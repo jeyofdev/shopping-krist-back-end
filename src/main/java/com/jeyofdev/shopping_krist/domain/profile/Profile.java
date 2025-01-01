@@ -3,6 +3,7 @@ package com.jeyofdev.shopping_krist.domain.profile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeyofdev.shopping_krist.auth_user.AuthUser;
 import com.jeyofdev.shopping_krist.domain.address.Address;
+import com.jeyofdev.shopping_krist.domain.cart.Cart;
 import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,4 +48,8 @@ public class Profile {
     @JoinColumn(name = "profile_settings_id", referencedColumnName = "id")
     @JsonIgnore
     private ProfileSettings profileSettings;
+
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Cart cart;
 }

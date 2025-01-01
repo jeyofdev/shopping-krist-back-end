@@ -33,10 +33,13 @@ public class CartController {
         return new ResponseEntity<>(cartDTO, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<CartDTO> saveCart(@RequestBody SaveCartDTO saveCartDTO) {
+    @PostMapping("profile/{profileId}")
+    public ResponseEntity<CartDTO> saveCart(
+            @RequestBody SaveCartDTO saveCartDTO,
+            @PathVariable("profileId") UUID profileId
+    ) {
         Cart cart = cartMapper.mapToEntity(saveCartDTO);
-        Cart newCart = cartService.save(cart);
+        Cart newCart = cartService.save(cart, profileId);
         CartDTO newCartDTO = cartMapper.mapFromEntity(newCart);
 
         return new ResponseEntity<>(newCartDTO, HttpStatus.CREATED);
@@ -52,11 +55,5 @@ public class CartController {
         CartDTO updateCartDTO = cartMapper.mapFromEntity(updateCart);
 
         return new ResponseEntity<>(updateCartDTO, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{cartId}")
-    public ResponseEntity<Void> deleteCartById(@PathVariable("cartId") UUID cartId) {
-        cartService.deleteById(cartId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

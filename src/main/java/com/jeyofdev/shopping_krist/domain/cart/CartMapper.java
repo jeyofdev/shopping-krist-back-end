@@ -11,7 +11,8 @@ public class CartMapper {
                 cart.getId(),
                 cart.getCreatedAt(),
                 cart.getUpdatedAt(),
-                cart.getCartItemList()
+                cart.getCartItemList(),
+                cart.getProfile()
         );
     }
 
