@@ -1,6 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeyofdev.shopping_krist.domain.address.Address;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,4 +31,9 @@ public class Order {
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     @JsonIgnore
     private Profile profile;
+
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Address shippingAddress;
 }

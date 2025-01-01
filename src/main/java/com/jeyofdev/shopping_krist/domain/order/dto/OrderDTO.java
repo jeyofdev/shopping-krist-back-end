@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.order.dto;
 
+import com.jeyofdev.shopping_krist.domain.address.Address;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 
 import java.util.Date;
@@ -9,6 +10,7 @@ public record OrderDTO(
         UUID id,
         Date createdAt,
         String status,
-        Profile profile
+        Profile profile,
+        Address shippingAddress
 ) {
 }

@@ -11,7 +11,8 @@ public class OrderMapper {
                 order.getId(),
                 order.getCreatedAt(),
                 order.getStatus(),
-                order.getProfile()
+                order.getProfile(),
+                order.getShippingAddress()
         );
     }
 

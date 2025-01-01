@@ -3,6 +3,7 @@ package com.jeyofdev.shopping_krist.domain.address;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jeyofdev.shopping_krist.auth_user.AuthUser;
+import com.jeyofdev.shopping_krist.domain.cart.Cart;
 import com.jeyofdev.shopping_krist.domain.city.City;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import jakarta.persistence.*;

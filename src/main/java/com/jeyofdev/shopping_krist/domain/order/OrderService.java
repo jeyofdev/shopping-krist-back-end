@@ -1,6 +1,8 @@
 package com.jeyofdev.shopping_krist.domain.order;
 
 import com.jeyofdev.shopping_krist.auth_user.AuthUser;
+import com.jeyofdev.shopping_krist.domain.address.Address;
+import com.jeyofdev.shopping_krist.domain.address.AddressRepository;
 import com.jeyofdev.shopping_krist.domain.cart.Cart;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import com.jeyofdev.shopping_krist.domain.profile.ProfileRepository;
@@ -19,6 +21,7 @@ import java.util.UUID;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final ProfileRepository profileRepository;
+    private final AddressRepository addressRepository;
 
     public List<Order> findAll() {
         return orderRepository.findAll();
@@ -29,14 +32,20 @@ public class OrderService {
                 () -> new NotFoundException(MessageFormat.format(" Entity Order with id {0} cannot be found", orderId)));
     }
 
-    public Order save(Order order, UUID profileId) {
+    public Order save(Order order, UUID profileId, UUID addressId) {
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(
                         () -> new NotFoundException(MessageFormat.format("Profile with id {0} not found", profileId))
                 );
 
+        Address shippingAddress = addressRepository.findById(addressId)
+                .orElseThrow(
+                        () -> new NotFoundException(MessageFormat.format("Address with id {0} not found", addressId))
+                );
+
         order.setCreatedAt(new Date());
         order.setProfile(profile);
+        order.setShippingAddress(shippingAddress);
 
         return orderRepository.save(order);
 
