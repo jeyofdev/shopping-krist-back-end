@@ -9,7 +9,8 @@ public class CartItemMapper {
     public CartItemDTO mapFromEntity(CartItem cartItem) {
         return new CartItemDTO(
                 cartItem.getId(),
-                cartItem.getQuantity()
+                cartItem.getQuantity(),
+                cartItem.getProduct()
         );
     }
 

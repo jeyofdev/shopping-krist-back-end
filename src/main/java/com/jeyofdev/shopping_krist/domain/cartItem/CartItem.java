@@ -1,5 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.cartItem;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeyofdev.shopping_krist.domain.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,4 +21,9 @@ public class CartItem {
 
     @Column(name = "quantity", columnDefinition = "INT")
     private Integer quantity;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id", nullable = false)
+    @JsonIgnore
+    private Product product;
 }

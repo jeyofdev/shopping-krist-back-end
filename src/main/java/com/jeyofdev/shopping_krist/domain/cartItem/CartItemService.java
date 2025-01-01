@@ -1,5 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.cartItem;
 
+import com.jeyofdev.shopping_krist.domain.product.Product;
+import com.jeyofdev.shopping_krist.domain.product.ProductRepository;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CartItemService {
     private final CartItemRepository cartItemRepository;
+    private final ProductRepository productRepository;
 
     public List<CartItem> findAll() {
         return cartItemRepository.findAll();
@@ -23,7 +26,11 @@ public class CartItemService {
                 () -> new NotFoundException(MessageFormat.format(" Entity CartItem with id {0} cannot be found", cartItemId)));
     }
 
-    public CartItem save(CartItem cartItem) {
+    public CartItem save(CartItem cartItem, UUID productId) {
+        Product product = productRepository.findById(productId).orElseThrow(
+                () -> new NotFoundException(MessageFormat.format(" Entity Product with id {0} cannot be found", productId)));
+
+        cartItem.setProduct(product);
         return cartItemRepository.save(cartItem);
     }
 

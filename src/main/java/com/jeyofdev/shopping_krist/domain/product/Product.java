@@ -1,12 +1,15 @@
 package com.jeyofdev.shopping_krist.domain.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeyofdev.shopping_krist.core.enums.Color;
 import com.jeyofdev.shopping_krist.core.enums.DarkMode;
 import com.jeyofdev.shopping_krist.core.enums.Size;
+import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -46,4 +49,8 @@ public class Product {
     @Enumerated(EnumType.STRING)
     @Column(name = "size", columnDefinition = "VARCHAR(3)")
     private Size size;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<CartItem> cartItems;
 }

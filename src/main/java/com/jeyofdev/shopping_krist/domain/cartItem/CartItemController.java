@@ -33,10 +33,13 @@ public class CartItemController {
         return new ResponseEntity<>(cartItemDTO, HttpStatus.OK);
     }
 
-    @PostMapping()
-    public ResponseEntity<CartItemDTO> saveCartItem(@RequestBody SaveCartItemDTO saveCartItemDTO) {
+    @PostMapping("/product/{productId}")
+    public ResponseEntity<CartItemDTO> saveCartItem(
+            @RequestBody SaveCartItemDTO saveCartItemDTO,
+            @PathVariable("productId") UUID productId
+    ) {
         CartItem cartItem = cartItemMapper.mapToEntity(saveCartItemDTO);
-        CartItem newCartItem = cartItemService.save(cartItem);
+        CartItem newCartItem = cartItemService.save(cartItem, productId);
         CartItemDTO newCartItemDTO = cartItemMapper.mapFromEntity(newCartItem);
 
         return new ResponseEntity<>(newCartItemDTO, HttpStatus.CREATED);
