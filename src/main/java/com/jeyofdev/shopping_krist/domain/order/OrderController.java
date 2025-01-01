@@ -33,10 +33,13 @@ public class OrderController {
         return new ResponseEntity<>(orderDTO, HttpStatus.OK);
     }
 
-    @PostMapping()
-    public ResponseEntity<OrderDTO> saveOrder(@RequestBody SaveOrderDTO saveOrderDTO) {
+    @PostMapping("profile/{profileId}")
+    public ResponseEntity<OrderDTO> saveOrder(
+            @RequestBody SaveOrderDTO saveOrderDTO,
+            @PathVariable("profileId") UUID profileId
+    ) {
         Order order = orderMapper.mapToEntity(saveOrderDTO);
-        Order newOrder = orderService.save(order);
+        Order newOrder = orderService.save(order, profileId);
         OrderDTO newOrderDTO = orderMapper.mapFromEntity(newOrder);
 
         return new ResponseEntity<>(newOrderDTO, HttpStatus.CREATED);

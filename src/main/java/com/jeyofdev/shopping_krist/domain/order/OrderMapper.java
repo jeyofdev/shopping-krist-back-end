@@ -10,7 +10,8 @@ public class OrderMapper {
         return new OrderDTO(
                 order.getId(),
                 order.getCreatedAt(),
-                order.getStatus()
+                order.getStatus(),
+                order.getProfile()
         );
     }
 

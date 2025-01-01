@@ -17,7 +17,8 @@ public class ProfileMapper {
                 profile.getAddress(),
                 profile.getUser().getEmail(),
                 profile.getDeliveryAddressList() != null ? profile.getDeliveryAddressList() : new ArrayList<>(),
-                profile.getProfileSettings()
+                profile.getProfileSettings(),
+                profile.getOrderList()
         );
     }
 

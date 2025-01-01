@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeyofdev.shopping_krist.auth_user.AuthUser;
 import com.jeyofdev.shopping_krist.domain.address.Address;
 import com.jeyofdev.shopping_krist.domain.cart.Cart;
+import com.jeyofdev.shopping_krist.domain.order.Order;
 import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
 import jakarta.persistence.*;
 import lombok.*;
@@ -52,4 +53,8 @@ public class Profile {
     @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
     @JsonIgnore
     private Cart cart;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Order> orderList = new ArrayList<>();
 }

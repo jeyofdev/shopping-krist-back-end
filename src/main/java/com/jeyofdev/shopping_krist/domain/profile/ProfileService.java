@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
@@ -30,6 +31,7 @@ public class ProfileService {
                 );
 
         profile.setUser(user);
+        profile.setOrderList(new ArrayList<>());
 
         return profileRepository.save(profile);
     }

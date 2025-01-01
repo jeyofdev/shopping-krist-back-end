@@ -41,7 +41,6 @@ public class CartService {
 
     public Cart updateById(UUID cartId, Cart updatedCart) {
         Cart existingCart = findById(cartId);
-        Profile profile = existingCart.getProfile();
 
         existingCart.setUpdatedAt(new Date());
         existingCart.setCartItemList(updatedCart.getCartItemList());
