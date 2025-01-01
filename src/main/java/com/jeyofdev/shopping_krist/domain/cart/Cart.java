@@ -5,6 +5,7 @@ import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -29,5 +30,5 @@ public class Cart {
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<CartItem> cartItemList;
+    private List<CartItem> cartItemList = new ArrayList<>();
 }

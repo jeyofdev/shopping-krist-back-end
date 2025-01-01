@@ -29,6 +29,7 @@ public class CartItemService {
                 () -> new NotFoundException(MessageFormat.format(" Entity CartItem with id {0} cannot be found", cartItemId)));
     }
 
+    @Transactional
     public CartItem save(CartItem cartItem, UUID productId, UUID cartId) {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new NotFoundException(MessageFormat.format(" Entity Product with id {0} cannot be found", productId)));
@@ -46,6 +47,8 @@ public class CartItemService {
         CartItem existingCartItemUpdated = CartItem.builder()
                 .id(cartItemId)
                 .quantity(updatedCartItem.getQuantity() != null ? updatedCartItem.getQuantity() : existingCartItem.getQuantity())
+                .product(existingCartItem.getProduct())
+                .cart(existingCartItem.getCart())
                 .build();
 
         return cartItemRepository.save(existingCartItemUpdated);

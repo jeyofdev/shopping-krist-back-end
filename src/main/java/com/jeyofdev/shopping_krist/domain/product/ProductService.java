@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.product;
 
+import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

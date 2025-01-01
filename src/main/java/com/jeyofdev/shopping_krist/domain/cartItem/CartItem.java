@@ -23,13 +23,13 @@ public class CartItem {
     @Column(name = "quantity", columnDefinition = "INT")
     private Integer quantity;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id", nullable = false)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "product_id")
     @JsonIgnore
     private Product product;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id", nullable = false)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "cart_id")
     @JsonIgnore
     private Cart cart;
 }

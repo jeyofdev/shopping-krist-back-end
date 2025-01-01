@@ -7,6 +7,7 @@ import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,7 +41,7 @@ public class Profile {
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Address> deliveryAddressList;
+    private List<Address> deliveryAddressList = new ArrayList<>();
 
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "profile_settings_id", referencedColumnName = "id")

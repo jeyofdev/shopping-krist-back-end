@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,10 +35,10 @@ public class Product {
     private String description;
 
     @Column(name = "price", columnDefinition = "DECIMAL(10, 2)")
-    private BigDecimal price;
+    private Double price;
 
     @Column(name = "old_price", columnDefinition = "DECIMAL(10, 2)")
-    private BigDecimal oldPrice;
+    private Double oldPrice;
 
     @Column(name = "stock", columnDefinition = "INT")
     private Integer stock;
@@ -52,5 +53,5 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<CartItem> cartItems;
+    private List<CartItem> cartItems = new ArrayList<>();
 }
