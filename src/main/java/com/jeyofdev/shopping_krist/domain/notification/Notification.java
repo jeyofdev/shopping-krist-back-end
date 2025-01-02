@@ -1,5 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.notification;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,4 +27,9 @@ public class Notification {
 
     @Column(name = "is_read", columnDefinition = "BOOLEAN" , nullable = false)
     private boolean isRead;
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Profile profile;
 }

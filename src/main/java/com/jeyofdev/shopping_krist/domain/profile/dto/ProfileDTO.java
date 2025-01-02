@@ -1,6 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.profile.dto;
 
 import com.jeyofdev.shopping_krist.domain.address.Address;
+import com.jeyofdev.shopping_krist.domain.notification.Notification;
 import com.jeyofdev.shopping_krist.domain.order.Order;
 import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
 
@@ -16,6 +17,7 @@ public record ProfileDTO(
         String address,
         List<Address> deliveryAddressList,
         ProfileSettings profileSettings,
+        List<Notification> notificationList,
         List<Order> orderList
 ) {
 }

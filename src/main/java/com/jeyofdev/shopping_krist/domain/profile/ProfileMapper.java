@@ -14,10 +14,11 @@ public class ProfileMapper {
                 profile.getFirstname(),
                 profile.getLastname(),
                 profile.getPhone(),
-                profile.getAddress(),
                 profile.getUser().getEmail(),
+                profile.getAddress(),
                 profile.getDeliveryAddressList() != null ? profile.getDeliveryAddressList() : new ArrayList<>(),
                 profile.getProfileSettings(),
+                profile.getNotificationList() != null ? profile.getNotificationList() : new ArrayList<>(),
                 profile.getOrderList()
         );
     }

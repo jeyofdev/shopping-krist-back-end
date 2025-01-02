@@ -33,10 +33,13 @@ public class NotificationController {
         return new ResponseEntity<>(notificationDTO, HttpStatus.OK);
     }
 
-    @PostMapping()
-    public ResponseEntity<NotificationDTO> saveNotification(@RequestBody SaveNotificationDTO saveNotificationDTO) {
+    @PostMapping("profile/{profileId}")
+    public ResponseEntity<NotificationDTO> saveNotification(
+            @RequestBody SaveNotificationDTO saveNotificationDTO,
+            @PathVariable("profileId") UUID profileId
+    ) {
         Notification notification = notificationMapper.mapToEntity(saveNotificationDTO);
-        Notification newNotification = notificationService.save(notification);
+        Notification newNotification = notificationService.save(notification, profileId);
         NotificationDTO newNotificationDTO = notificationMapper.mapFromEntity(newNotification);
 
         return new ResponseEntity<>(newNotificationDTO, HttpStatus.CREATED);
