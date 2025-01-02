@@ -1,29 +1,26 @@
 package com.jeyofdev.shopping_krist.domain.profileSettings;
 
+import com.jeyofdev.shopping_krist.core.abstracts.AbstractDomainServiceBase;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import com.jeyofdev.shopping_krist.domain.profile.ProfileRepository;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
-public class ProfileSettingsService {
+public class ProfileSettingsServiceBase extends AbstractDomainServiceBase<ProfileSettings, ProfileSettingsRepository> {
     private final ProfileSettingsRepository profileSettingsRepository;
     private final ProfileRepository profileRepository;
 
-    public List<ProfileSettings> findAll() {
-        return profileSettingsRepository.findAll();
-    }
-
-    public ProfileSettings findById(UUID profileSettingsId) throws NotFoundException {
-        return profileSettingsRepository.findById(profileSettingsId).orElseThrow(
-                () -> new NotFoundException(MessageFormat.format(" Entity ProfileSettings with id {0} cannot be found", profileSettingsId)));
+    @Autowired
+    public ProfileSettingsServiceBase(ProfileSettingsRepository profileSettingsRepository, ProfileRepository profileRepository) {
+        super(profileSettingsRepository, "profileSettings");
+        this.profileSettingsRepository = profileSettingsRepository;
+        this.profileRepository = profileRepository;
     }
 
     public ProfileSettings save(ProfileSettings profileSettings, UUID profileId) {

@@ -1,6 +1,6 @@
 package com.jeyofdev.shopping_krist.auth;
 
-import com.jeyofdev.shopping_krist.core.interfaces.IEmailService;
+import com.jeyofdev.shopping_krist.core.interfaces.service.IEmailService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,28 +1,20 @@
 package com.jeyofdev.shopping_krist.domain.product;
 
-import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
-import com.jeyofdev.shopping_krist.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
+import com.jeyofdev.shopping_krist.core.abstracts.AbstractDomainServiceBase;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import java.text.MessageFormat;
-import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
-public class ProductService {
+public class ProductServiceBase extends AbstractDomainServiceBase<Product, ProductRepository> {
     private final ProductRepository productRepository;
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
-    }
-
-    public Product findById(@PathVariable("productId") UUID productId) throws NotFoundException {
-        return productRepository.findById(productId).orElseThrow(
-                () -> new NotFoundException(MessageFormat.format(" Entity Product with id {0} cannot be found", productId)));
+    @Autowired
+    public ProductServiceBase(ProductRepository productRepository) {
+        super(productRepository, "product");
+        this.productRepository = productRepository;
     }
 
     public Product save(Product product) {

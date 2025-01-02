@@ -1,30 +1,25 @@
 package com.jeyofdev.shopping_krist.domain.city;
 
+import com.jeyofdev.shopping_krist.core.abstracts.AbstractDomainServiceBase;
 import com.jeyofdev.shopping_krist.domain.address.Address;
 import com.jeyofdev.shopping_krist.domain.address.AddressRepository;
-import com.jeyofdev.shopping_krist.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
-public class CityService {
+public class CityServiceBase extends AbstractDomainServiceBase<City, CityRepository> {
     private final CityRepository cityRepository;
     private final AddressRepository addressRepository;
 
-    public List<City> findAll() {
-        return cityRepository.findAll();
-    }
-
-    public City findById(@PathVariable("cityId") UUID cityId) throws NotFoundException {
-        return cityRepository.findById(cityId).orElseThrow(
-                () -> new NotFoundException(MessageFormat.format(" Entity City with id {0} cannot be found", cityId)));
+    @Autowired
+    public CityServiceBase(CityRepository cityRepository, AddressRepository addressRepository) {
+        super(cityRepository, "city");
+        this.cityRepository = cityRepository;
+        this.addressRepository = addressRepository;
     }
 
     public City save(City city) {

@@ -1,31 +1,26 @@
 package com.jeyofdev.shopping_krist.domain.cart;
 
+import com.jeyofdev.shopping_krist.core.abstracts.AbstractDomainServiceBase;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import com.jeyofdev.shopping_krist.domain.profile.ProfileRepository;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
-public class CartService {
+public class CartServiceBase extends AbstractDomainServiceBase<Cart, CartRepository> {
     private final CartRepository cartRepository;
     private final ProfileRepository profileRepository;
 
-    public List<Cart> findAll() {
-        return cartRepository.findAll();
-    }
-
-    public Cart findById(@PathVariable("cartId") UUID cartId) throws NotFoundException {
-        return cartRepository.findById(cartId).orElseThrow(
-                () -> new NotFoundException(MessageFormat.format(" Entity Cart with id {0} cannot be found", cartId)));
+    @Autowired
+    public CartServiceBase(CartRepository cartRepository, ProfileRepository profileRepository) {
+        super(cartRepository, "cart");
+        this.cartRepository = cartRepository;
+        this.profileRepository = profileRepository;
     }
 
     public Cart save(Cart cart, UUID profileId) {

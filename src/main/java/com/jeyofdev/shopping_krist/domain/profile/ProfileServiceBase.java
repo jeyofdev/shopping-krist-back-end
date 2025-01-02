@@ -2,25 +2,26 @@ package com.jeyofdev.shopping_krist.domain.profile;
 
 import com.jeyofdev.shopping_krist.auth_user.AuthUser;
 import com.jeyofdev.shopping_krist.auth_user.AuthUserRepository;
+import com.jeyofdev.shopping_krist.core.abstracts.AbstractDomainServiceBase;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
-public class ProfileService {
+public class ProfileServiceBase extends AbstractDomainServiceBase<Profile, ProfileRepository> {
     private final ProfileRepository profileRepository;
     private final AuthUserRepository authUserRepository;
 
-    public Profile findById(@PathVariable("profileId") UUID profileId) throws NotFoundException {
-        return profileRepository.findById(profileId).orElseThrow(
-                () -> new NotFoundException(MessageFormat.format(" Entity Profile with id {0} cannot be found", profileId)));
+    @Autowired
+    public ProfileServiceBase(ProfileRepository profileRepository, AuthUserRepository authUserRepository) {
+        super(profileRepository, "profile");
+        this.profileRepository = profileRepository;
+        this.authUserRepository = authUserRepository;
     }
 
     public Profile save(Profile profile, UUID userId) {

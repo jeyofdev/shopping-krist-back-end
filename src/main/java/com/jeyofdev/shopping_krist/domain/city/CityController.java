@@ -14,7 +14,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/city")
 @RequiredArgsConstructor
 public class CityController {
-    private final CityService cityService;
+    private final CityServiceBase cityService;
     private final CityDomainMapper cityMapper;
 
     @GetMapping

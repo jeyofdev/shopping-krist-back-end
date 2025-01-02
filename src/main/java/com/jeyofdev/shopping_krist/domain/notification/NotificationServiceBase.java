@@ -1,31 +1,26 @@
 package com.jeyofdev.shopping_krist.domain.notification;
 
+import com.jeyofdev.shopping_krist.core.abstracts.AbstractDomainServiceBase;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import com.jeyofdev.shopping_krist.domain.profile.ProfileRepository;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
-public class NotificationService {
+public class NotificationServiceBase extends AbstractDomainServiceBase<Notification, NotificationRepository> {
     private final NotificationRepository notificationRepository;
     private final ProfileRepository profileRepository;
 
-    public List<Notification> findAll() {
-        return notificationRepository.findAll();
-    }
-
-    public Notification findById(@PathVariable("notificationId") UUID notificationId) throws NotFoundException {
-        return notificationRepository.findById(notificationId).orElseThrow(
-                () -> new NotFoundException(MessageFormat.format(" Entity Notification with id {0} cannot be found", notificationId)));
+    @Autowired
+    public NotificationServiceBase(NotificationRepository notificationRepository, ProfileRepository profileRepository) {
+        super(notificationRepository, "notification");
+        this.notificationRepository = notificationRepository;
+        this.profileRepository = profileRepository;
     }
 
     public Notification save(Notification notification, UUID profileId) {

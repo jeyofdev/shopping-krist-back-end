@@ -13,7 +13,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/profile")
 @RequiredArgsConstructor
 public class ProfileController {
-    private final ProfileService profileService;
+    private final ProfileServiceBase profileService;
     private final ProfileDomainMapper profileMapper;
 
     @GetMapping("/{profileId}")

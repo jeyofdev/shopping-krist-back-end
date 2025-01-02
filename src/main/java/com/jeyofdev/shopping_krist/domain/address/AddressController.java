@@ -14,7 +14,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/address")
 @RequiredArgsConstructor
 public class AddressController {
-    private final AddressService addressService;
+    private final AddressServiceBase addressService;
     private final AddressDomainMapper addressMapper;
 
     @GetMapping

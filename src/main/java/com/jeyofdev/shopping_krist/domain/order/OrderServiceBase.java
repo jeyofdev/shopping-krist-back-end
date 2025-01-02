@@ -1,15 +1,14 @@
 package com.jeyofdev.shopping_krist.domain.order;
 
-import com.jeyofdev.shopping_krist.auth_user.AuthUser;
+import com.jeyofdev.shopping_krist.core.abstracts.AbstractDomainServiceBase;
 import com.jeyofdev.shopping_krist.domain.address.Address;
 import com.jeyofdev.shopping_krist.domain.address.AddressRepository;
-import com.jeyofdev.shopping_krist.domain.cart.Cart;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemRepository;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import com.jeyofdev.shopping_krist.domain.profile.ProfileRepository;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,20 +19,19 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
-public class OrderService {
+public class OrderServiceBase extends AbstractDomainServiceBase<Order, OrderRepository> {
     private final OrderRepository orderRepository;
     private final ProfileRepository profileRepository;
     private final AddressRepository addressRepository;
     private final CartItemRepository cartItemRepository;
 
-    public List<Order> findAll() {
-        return orderRepository.findAll();
-    }
-
-    public Order findById(UUID orderId) throws NotFoundException {
-        return orderRepository.findById(orderId).orElseThrow(
-                () -> new NotFoundException(MessageFormat.format(" Entity Order with id {0} cannot be found", orderId)));
+    @Autowired
+    public OrderServiceBase(OrderRepository orderRepository, ProfileRepository profileRepository, AddressRepository addressRepository, CartItemRepository cartItemRepository) {
+        super(orderRepository, "order");
+        this.orderRepository = orderRepository;
+        this.profileRepository = profileRepository;
+        this.addressRepository = addressRepository;
+        this.cartItemRepository = cartItemRepository;
     }
 
     public Order save(Order order, UUID profileId, UUID addressId) {

@@ -1,4 +1,4 @@
-package com.jeyofdev.shopping_krist.core.interfaces;
+package com.jeyofdev.shopping_krist.core.interfaces.service;
 
 import com.jeyofdev.shopping_krist.auth_user.AuthUser;
 import org.springframework.security.access.AccessDeniedException;

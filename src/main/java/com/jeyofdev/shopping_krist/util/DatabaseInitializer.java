@@ -3,12 +3,12 @@ package com.jeyofdev.shopping_krist.util;
 import com.jeyofdev.shopping_krist.core.enums.Color;
 import com.jeyofdev.shopping_krist.core.enums.Size;
 import com.jeyofdev.shopping_krist.domain.cart.CartDomainMapper;
-import com.jeyofdev.shopping_krist.domain.cart.CartService;
+import com.jeyofdev.shopping_krist.domain.cart.CartServiceBase;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemDomainMapper;
-import com.jeyofdev.shopping_krist.domain.cartItem.CartItemService;
+import com.jeyofdev.shopping_krist.domain.cartItem.CartItemServiceBase;
 import com.jeyofdev.shopping_krist.domain.product.Product;
 import com.jeyofdev.shopping_krist.domain.product.ProductDomainMapper;
-import com.jeyofdev.shopping_krist.domain.product.ProductService;
+import com.jeyofdev.shopping_krist.domain.product.ProductServiceBase;
 import com.jeyofdev.shopping_krist.domain.product.dto.SaveProductDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -25,11 +25,11 @@ import java.text.MessageFormat;
 public class DatabaseInitializer implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(DatabaseInitializer.class);
 
-    private final ProductService productService;
+    private final ProductServiceBase productService;
     private final ProductDomainMapper productMapper;
-    private final CartService cartService;
+    private final CartServiceBase cartService;
     private final CartDomainMapper cartMapper;
-    private final CartItemService cartItemService;
+    private final CartItemServiceBase cartItemService;
     private final CartItemDomainMapper cartItemMapper;
 
     @Override

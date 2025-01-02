@@ -1,32 +1,30 @@
 package com.jeyofdev.shopping_krist.domain.address;
 
+import com.jeyofdev.shopping_krist.core.abstracts.AbstractDomainServiceBase;
 import com.jeyofdev.shopping_krist.domain.city.City;
 import com.jeyofdev.shopping_krist.domain.city.CityRepository;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import com.jeyofdev.shopping_krist.domain.profile.ProfileRepository;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
-public class AddressService {
+public class AddressServiceBase extends AbstractDomainServiceBase<Address, AddressRepository> {
     private final AddressRepository addressRepository;
     private final CityRepository cityRepository;
     private final ProfileRepository profileRepository;
 
-    public List<Address> findAll() {
-        return addressRepository.findAll();
-    }
-
-    public Address findById(UUID addressId) throws NotFoundException {
-        return addressRepository.findById(addressId).orElseThrow(
-                () -> new NotFoundException(MessageFormat.format(" Entity Address with id {0} cannot be found", addressId)));
+    @Autowired
+    public AddressServiceBase(AddressRepository addressRepository, CityRepository cityRepository, ProfileRepository profileRepository) {
+        super(addressRepository, "address");
+        this.addressRepository = addressRepository;
+        this.cityRepository = cityRepository;
+        this.profileRepository = profileRepository;
     }
 
     public Address save(Address address, UUID cityId, UUID profileId) {

@@ -1,4 +1,4 @@
-package com.jeyofdev.shopping_krist.core.interfaces;
+package com.jeyofdev.shopping_krist.core.interfaces.service;
 
 import com.jeyofdev.shopping_krist.auth.model.*;
 import com.jeyofdev.shopping_krist.exception.BadValidationArgumentException;

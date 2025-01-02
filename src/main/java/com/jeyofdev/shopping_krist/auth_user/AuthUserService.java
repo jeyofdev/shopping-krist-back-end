@@ -1,6 +1,6 @@
 package com.jeyofdev.shopping_krist.auth_user;
 
-import com.jeyofdev.shopping_krist.core.interfaces.IAuthUserService;
+import com.jeyofdev.shopping_krist.core.interfaces.service.IAuthUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;

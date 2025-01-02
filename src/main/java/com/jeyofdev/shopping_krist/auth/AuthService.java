@@ -3,7 +3,7 @@ package com.jeyofdev.shopping_krist.auth;
 import com.jeyofdev.shopping_krist.auth.model.*;
 import com.jeyofdev.shopping_krist.auth_user.AuthUser;
 import com.jeyofdev.shopping_krist.auth_user.AuthUserRepository;
-import com.jeyofdev.shopping_krist.core.interfaces.IAuthService;
+import com.jeyofdev.shopping_krist.core.interfaces.service.IAuthService;
 import com.jeyofdev.shopping_krist.exception.BadValidationArgumentException;
 import com.jeyofdev.shopping_krist.exception.ExpireTokenException;
 import com.jeyofdev.shopping_krist.exception.InvalidTokenException;

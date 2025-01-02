@@ -1,4 +1,4 @@
-package com.jeyofdev.shopping_krist.core.interfaces;
+package com.jeyofdev.shopping_krist.core.interfaces.service;
 
 public interface IEmailService {
     void sendPasswordResetEmail(String toEmail, String resetToken);

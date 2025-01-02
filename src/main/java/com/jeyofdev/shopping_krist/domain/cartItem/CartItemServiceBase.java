@@ -1,32 +1,30 @@
 package com.jeyofdev.shopping_krist.domain.cartItem;
 
+import com.jeyofdev.shopping_krist.core.abstracts.AbstractDomainServiceBase;
 import com.jeyofdev.shopping_krist.domain.cart.Cart;
 import com.jeyofdev.shopping_krist.domain.cart.CartRepository;
 import com.jeyofdev.shopping_krist.domain.product.Product;
 import com.jeyofdev.shopping_krist.domain.product.ProductRepository;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
-public class CartItemService {
+public class CartItemServiceBase extends AbstractDomainServiceBase<CartItem, CartItemRepository> {
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
 
-    public List<CartItem> findAll() {
-        return cartItemRepository.findAll();
-    }
-
-    public CartItem findById(UUID cartItemId) throws NotFoundException {
-        return cartItemRepository.findById(cartItemId).orElseThrow(
-                () -> new NotFoundException(MessageFormat.format(" Entity CartItem with id {0} cannot be found", cartItemId)));
+    @Autowired
+    public CartItemServiceBase(CartItemRepository cartItemRepository, ProductRepository productRepository, CartRepository cartRepository) {
+        super(cartItemRepository, "cartItem");
+        this.cartItemRepository = cartItemRepository;
+        this.productRepository = productRepository;
+        this.cartRepository = cartRepository;
     }
 
     @Transactional

@@ -14,7 +14,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/order")
 @RequiredArgsConstructor
 public class OrderController {
-    private final OrderService orderService;
+    private final OrderServiceBase orderService;
     private final OrderDomainMapper orderMapper;
 
     @GetMapping
