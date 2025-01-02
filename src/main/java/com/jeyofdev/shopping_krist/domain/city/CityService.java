@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class CityServiceBase extends AbstractDomainServiceBase<City, CityRepository> {
+public class CityService extends AbstractDomainServiceBase<City, CityRepository> {
     private final CityRepository cityRepository;
     private final AddressRepository addressRepository;
 
     @Autowired
-    public CityServiceBase(CityRepository cityRepository, AddressRepository addressRepository) {
+    public CityService(CityRepository cityRepository, AddressRepository addressRepository) {
         super(cityRepository, "city");
         this.cityRepository = cityRepository;
         this.addressRepository = addressRepository;

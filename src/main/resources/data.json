@@ -9,5 +9,15 @@
       "password": "jane12345",
       "role": "admin"
     }
+  ],
+  "cities": [
+    {
+      "name": "Bordeaux",
+      "zipCode": "33000"
+    },
+    {
+      "name": "Paris",
+      "zipCode": "75000"
+    }
   ]
 }

@@ -2,18 +2,18 @@ package com.jeyofdev.shopping_krist.util;
 
 import com.jeyofdev.shopping_krist.auth.AuthService;
 import com.jeyofdev.shopping_krist.auth.model.RegisterRequest;
-import com.jeyofdev.shopping_krist.auth_user.AuthUser;
-import com.jeyofdev.shopping_krist.auth_user.AuthUserRepository;
-import com.jeyofdev.shopping_krist.auth_user.AuthUserService;
 import com.jeyofdev.shopping_krist.core.enums.Color;
 import com.jeyofdev.shopping_krist.core.enums.Size;
 import com.jeyofdev.shopping_krist.data.AllDataResponse;
 import com.jeyofdev.shopping_krist.data.AllDataService;
+import com.jeyofdev.shopping_krist.data.CityDataResponse;
 import com.jeyofdev.shopping_krist.data.UserDataResponse;
 import com.jeyofdev.shopping_krist.domain.cart.CartDomainMapper;
 import com.jeyofdev.shopping_krist.domain.cart.CartServiceBase;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemDomainMapper;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemServiceBase;
+import com.jeyofdev.shopping_krist.domain.city.City;
+import com.jeyofdev.shopping_krist.domain.city.CityService;
 import com.jeyofdev.shopping_krist.domain.product.Product;
 import com.jeyofdev.shopping_krist.domain.product.ProductDomainMapper;
 import com.jeyofdev.shopping_krist.domain.product.ProductServiceBase;
@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -37,6 +36,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     private final AllDataService allDataService;
     private final AuthService authService;
+    private final CityService cityService;
 
     private final ProductServiceBase productService;
     private final ProductDomainMapper productMapper;
@@ -70,23 +70,35 @@ public class DatabaseInitializer implements CommandLineRunner {
     }
 
     private void createDatas() throws IOException {
-        this.createUsers();
+        AllDataResponse allDataList = allDataService.getAllDatas();
+
+        this.createUsers(allDataList.getUserDataResponseList());
+        this.createCities(allDataList.getCityDataResponseList());
 
         /*this.createProducts();*/
        /*this.createCarts();
        this.createCartItems();*/
     }
 
-    private void createUsers() throws IOException {
-        AllDataResponse allDataList = allDataService.getAllDatas();
-
-        for (UserDataResponse user : allDataList.getUserDataResponseList()) {
+    private void createUsers(List<UserDataResponse> userDataResponseList) throws IOException {
+        for (UserDataResponse user : userDataResponseList) {
             authService.register(RegisterRequest.builder()
                     .email(user.getEmail())
                     .password(user.getPassword())
                     .role(user.getRole().equalsIgnoreCase("ADMIN") ? "ADMIN" : "USER")
                     .build());
         }
+    }
+
+    private void createCities(List<CityDataResponse> cityDataResponseList) {
+        for (CityDataResponse city : cityDataResponseList) {
+            cityService.save(City.builder()
+                    .name(city.getName())
+                    .zipCode(city.getZipCode())
+                    .build()
+            );
+        }
+
     }
 
     private void createProducts() {

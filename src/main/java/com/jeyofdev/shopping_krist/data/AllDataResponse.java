@@ -11,4 +11,7 @@ import java.util.List;
 public class AllDataResponse {
     @JsonProperty("users")
     private List<UserDataResponse> userDataResponseList;
+
+    @JsonProperty("cities")
+    private List<CityDataResponse> cityDataResponseList;
 }
