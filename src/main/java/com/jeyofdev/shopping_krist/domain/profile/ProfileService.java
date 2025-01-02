@@ -3,7 +3,6 @@ package com.jeyofdev.shopping_krist.domain.profile;
 import com.jeyofdev.shopping_krist.auth_user.AuthUser;
 import com.jeyofdev.shopping_krist.auth_user.AuthUserRepository;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

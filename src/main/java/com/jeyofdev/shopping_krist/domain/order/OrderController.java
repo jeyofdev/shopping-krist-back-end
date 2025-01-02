@@ -39,7 +39,7 @@ public class OrderController {
             @PathVariable("profileId") UUID profileId,
             @PathVariable("addressId") UUID addressId
     ) {
-        Order order = orderMapper.mapToEntity(saveOrderDTO);
+        Order order = orderMapper.mapToEntity(saveOrderDTO, null);
         Order newOrder = orderService.save(order, profileId, addressId);
         OrderDTO newOrderDTO = orderMapper.mapFromEntity(newOrder);
 
@@ -51,7 +51,8 @@ public class OrderController {
             @PathVariable("orderId") UUID orderId,
             @RequestBody SaveOrderDTO saveOrderDTO
     ) {
-        Order order = orderMapper.mapToEntity(saveOrderDTO);
+        Order existingOrder = orderService.findById(orderId);
+        Order order = orderMapper.mapToEntity(saveOrderDTO, existingOrder);
         Order updateOrder = orderService.updateById(orderId, order);
         OrderDTO updateOrderDTO = orderMapper.mapFromEntity(updateOrder);
 

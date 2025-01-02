@@ -4,6 +4,8 @@ import com.jeyofdev.shopping_krist.auth_user.AuthUser;
 import com.jeyofdev.shopping_krist.domain.address.Address;
 import com.jeyofdev.shopping_krist.domain.address.AddressRepository;
 import com.jeyofdev.shopping_krist.domain.cart.Cart;
+import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
+import com.jeyofdev.shopping_krist.domain.cartItem.CartItemRepository;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import com.jeyofdev.shopping_krist.domain.profile.ProfileRepository;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
@@ -15,6 +17,7 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProfileRepository profileRepository;
     private final AddressRepository addressRepository;
+    private final CartItemRepository cartItemRepository;
 
     public List<Order> findAll() {
         return orderRepository.findAll();
@@ -43,6 +47,14 @@ public class OrderService {
                         () -> new NotFoundException(MessageFormat.format("Address with id {0} not found", addressId))
                 );
 
+        List<CartItem> cartItems = order.getCartItems().stream()
+                .map(cartItem -> {
+                    cartItem.setOrder(order);
+                    return cartItem;
+                })
+                .collect(Collectors.toList());
+        order.setCartItems(cartItems);
+
         order.setCreatedAt(new Date());
         order.setProfile(profile);
         order.setShippingAddress(shippingAddress);
@@ -54,6 +66,7 @@ public class OrderService {
     public Order updateById(UUID orderId, Order updatedOrder) {
         Order existingOrder = findById(orderId);
         existingOrder.setStatus(updatedOrder.getStatus() != null ? updatedOrder.getStatus() : existingOrder.getStatus());
+        existingOrder.setCartItems(updatedOrder.getCartItems() != null ? updatedOrder.getCartItems() : existingOrder.getCartItems());
 
         return orderRepository.save(existingOrder);
     }

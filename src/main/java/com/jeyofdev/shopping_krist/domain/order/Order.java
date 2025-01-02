@@ -2,11 +2,13 @@ package com.jeyofdev.shopping_krist.domain.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeyofdev.shopping_krist.domain.address.Address;
+import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -36,4 +38,7 @@ public class Order {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     @JsonIgnore
     private Address shippingAddress;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<CartItem> cartItems;
 }
