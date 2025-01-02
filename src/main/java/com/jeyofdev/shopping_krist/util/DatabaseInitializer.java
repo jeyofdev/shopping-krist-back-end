@@ -1,7 +1,15 @@
 package com.jeyofdev.shopping_krist.util;
 
+import com.jeyofdev.shopping_krist.auth.AuthService;
+import com.jeyofdev.shopping_krist.auth.model.RegisterRequest;
+import com.jeyofdev.shopping_krist.auth_user.AuthUser;
+import com.jeyofdev.shopping_krist.auth_user.AuthUserRepository;
+import com.jeyofdev.shopping_krist.auth_user.AuthUserService;
 import com.jeyofdev.shopping_krist.core.enums.Color;
 import com.jeyofdev.shopping_krist.core.enums.Size;
+import com.jeyofdev.shopping_krist.data.AllDataResponse;
+import com.jeyofdev.shopping_krist.data.AllDataService;
+import com.jeyofdev.shopping_krist.data.UserDataResponse;
 import com.jeyofdev.shopping_krist.domain.cart.CartDomainMapper;
 import com.jeyofdev.shopping_krist.domain.cart.CartServiceBase;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemDomainMapper;
@@ -14,16 +22,21 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.sql.*;
 import java.text.MessageFormat;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class DatabaseInitializer implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(DatabaseInitializer.class);
+
+    private final AllDataService allDataService;
+    private final AuthService authService;
 
     private final ProductServiceBase productService;
     private final ProductDomainMapper productMapper;
@@ -57,9 +70,23 @@ public class DatabaseInitializer implements CommandLineRunner {
     }
 
     private void createDatas() throws IOException {
-        this.createProducts();
+        this.createUsers();
+
+        /*this.createProducts();*/
        /*this.createCarts();
        this.createCartItems();*/
+    }
+
+    private void createUsers() throws IOException {
+        AllDataResponse allDataList = allDataService.getAllDatas();
+
+        for (UserDataResponse user : allDataList.getUserDataResponseList()) {
+            authService.register(RegisterRequest.builder()
+                    .email(user.getEmail())
+                    .password(user.getPassword())
+                    .role(user.getRole().equalsIgnoreCase("ADMIN") ? "ADMIN" : "USER")
+                    .build());
+        }
     }
 
     private void createProducts() {
