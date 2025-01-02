@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
-    private final OrderMapper orderMapper;
+    private final OrderDomainMapper orderMapper;
 
     @GetMapping
     public ResponseEntity<List<OrderDTO>> findAllOrder() {

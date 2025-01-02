@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AddressController {
     private final AddressService addressService;
-    private final AddressMapper addressMapper;
+    private final AddressDomainMapper addressMapper;
 
     @GetMapping
     public ResponseEntity<List<AddressDTO>> findAllAddress() {

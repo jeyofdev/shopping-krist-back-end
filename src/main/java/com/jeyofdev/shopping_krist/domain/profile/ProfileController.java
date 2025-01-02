@@ -14,7 +14,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProfileController {
     private final ProfileService profileService;
-    private final ProfileMapper profileMapper;
+    private final ProfileDomainMapper profileMapper;
 
     @GetMapping("/{profileId}")
     public ResponseEntity<ProfileDTO> findProfileById(@PathVariable("profileId") UUID profileId) {

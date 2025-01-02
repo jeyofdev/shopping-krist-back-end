@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-    private final ProductMapper productMapper;
+    private final ProductDomainMapper productMapper;
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> findAllCity() {

@@ -2,16 +2,12 @@ package com.jeyofdev.shopping_krist.util;
 
 import com.jeyofdev.shopping_krist.core.enums.Color;
 import com.jeyofdev.shopping_krist.core.enums.Size;
-import com.jeyofdev.shopping_krist.domain.cart.Cart;
-import com.jeyofdev.shopping_krist.domain.cart.CartMapper;
+import com.jeyofdev.shopping_krist.domain.cart.CartDomainMapper;
 import com.jeyofdev.shopping_krist.domain.cart.CartService;
-import com.jeyofdev.shopping_krist.domain.cart.dto.SaveCartDTO;
-import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
-import com.jeyofdev.shopping_krist.domain.cartItem.CartItemMapper;
+import com.jeyofdev.shopping_krist.domain.cartItem.CartItemDomainMapper;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemService;
-import com.jeyofdev.shopping_krist.domain.cartItem.dto.SaveCartItemDTO;
 import com.jeyofdev.shopping_krist.domain.product.Product;
-import com.jeyofdev.shopping_krist.domain.product.ProductMapper;
+import com.jeyofdev.shopping_krist.domain.product.ProductDomainMapper;
 import com.jeyofdev.shopping_krist.domain.product.ProductService;
 import com.jeyofdev.shopping_krist.domain.product.dto.SaveProductDTO;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +19,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.sql.*;
 import java.text.MessageFormat;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -31,11 +26,11 @@ public class DatabaseInitializer implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(DatabaseInitializer.class);
 
     private final ProductService productService;
-    private final ProductMapper productMapper;
+    private final ProductDomainMapper productMapper;
     private final CartService cartService;
-    private final CartMapper cartMapper;
+    private final CartDomainMapper cartMapper;
     private final CartItemService cartItemService;
-    private final CartItemMapper cartItemMapper;
+    private final CartItemDomainMapper cartItemMapper;
 
     @Override
     public void run(String... args) throws Exception {

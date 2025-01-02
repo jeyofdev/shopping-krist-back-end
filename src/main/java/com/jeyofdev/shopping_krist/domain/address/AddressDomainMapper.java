@@ -1,11 +1,13 @@
 package com.jeyofdev.shopping_krist.domain.address;
 
+import com.jeyofdev.shopping_krist.core.interfaces.mapper.IDomainMapper;
 import com.jeyofdev.shopping_krist.domain.address.dto.AddressDTO;
 import com.jeyofdev.shopping_krist.domain.address.dto.SaveAddressDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AddressMapper {
+public class AddressDomainMapper implements IDomainMapper<Address, AddressDTO, SaveAddressDTO> {
+    @Override
     public AddressDTO mapFromEntity(Address address) {
         return new AddressDTO(
                 address.getId(),
@@ -18,6 +20,7 @@ public class AddressMapper {
         );
     }
 
+    @Override
     public Address mapToEntity(SaveAddressDTO saveAddressDTO) {
         return Address.builder()
                 .name(saveAddressDTO.name())

@@ -1,11 +1,13 @@
 package com.jeyofdev.shopping_krist.domain.notification;
 
+import com.jeyofdev.shopping_krist.core.interfaces.mapper.IDomainMapper;
 import com.jeyofdev.shopping_krist.domain.notification.dto.NotificationDTO;
 import com.jeyofdev.shopping_krist.domain.notification.dto.SaveNotificationDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NotificationMapper {
+public class NotificationDomainMapper implements IDomainMapper<Notification, NotificationDTO, SaveNotificationDTO> {
+    @Override
     public NotificationDTO mapFromEntity(Notification notification) {
         return new NotificationDTO(
                 notification.getId(),
@@ -15,6 +17,7 @@ public class NotificationMapper {
         );
     }
 
+    @Override
     public Notification mapToEntity(SaveNotificationDTO saveNotificationDTO) {
         return Notification.builder()
                 .title(saveNotificationDTO.title())

@@ -1,11 +1,13 @@
 package com.jeyofdev.shopping_krist.domain.profileSettings;
 
+import com.jeyofdev.shopping_krist.core.interfaces.mapper.IDomainMapper;
 import com.jeyofdev.shopping_krist.domain.profileSettings.dto.ProfileSettingsDTO;
 import com.jeyofdev.shopping_krist.domain.profileSettings.dto.SaveProfileSettingsDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProfileSettingsMapper {
+public class ProfileSettingsDomainMapper implements IDomainMapper<ProfileSettings, ProfileSettingsDTO, SaveProfileSettingsDTO> {
+    @Override
     public ProfileSettingsDTO mapFromEntity(ProfileSettings profileSettings) {
         return new ProfileSettingsDTO(
                 profileSettings.getId(),
@@ -15,6 +17,7 @@ public class ProfileSettingsMapper {
         );
     }
 
+    @Override
     public ProfileSettings mapToEntity(SaveProfileSettingsDTO saveProfileSettingsDTO) {
         return ProfileSettings.builder()
                 .appearance(saveProfileSettingsDTO.appearance())

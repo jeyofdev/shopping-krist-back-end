@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.order;
 
+import com.jeyofdev.shopping_krist.core.interfaces.mapper.IDomainMapper;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemRepository;
 import com.jeyofdev.shopping_krist.domain.cartItem.dto.CartItemDTO;
@@ -10,16 +11,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class OrderMapper {
+public class OrderDomainMapper implements IDomainMapper<Order, OrderDTO, SaveOrderDTO> {
     private final CartItemRepository cartItemRepository;
 
+    @Override
     public OrderDTO mapFromEntity(Order order) {
         return new OrderDTO(
                 order.getId(),
@@ -33,6 +34,7 @@ public class OrderMapper {
         );
     }
 
+    @Override
     public Order mapToEntity(SaveOrderDTO saveOrderDTO, Order existingOrder) {
         List<UUID> cartItemIds = saveOrderDTO.cartItemIds() != null && !saveOrderDTO.cartItemIds().isEmpty()
                 ? saveOrderDTO.cartItemIds()
