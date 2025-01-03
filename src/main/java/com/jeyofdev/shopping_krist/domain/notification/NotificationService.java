@@ -12,12 +12,12 @@ import java.text.MessageFormat;
 import java.util.UUID;
 
 @Service
-public class NotificationServiceBase extends AbstractDomainServiceBase<Notification, NotificationRepository> {
+public class NotificationService extends AbstractDomainServiceBase<Notification, NotificationRepository> {
     private final NotificationRepository notificationRepository;
     private final ProfileRepository profileRepository;
 
     @Autowired
-    public NotificationServiceBase(NotificationRepository notificationRepository, ProfileRepository profileRepository) {
+    public NotificationService(NotificationRepository notificationRepository, ProfileRepository profileRepository) {
         super(notificationRepository, "notification");
         this.notificationRepository = notificationRepository;
         this.profileRepository = profileRepository;

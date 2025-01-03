@@ -6,6 +6,7 @@ import com.jeyofdev.shopping_krist.domain.profile.ProfileRepository;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -23,6 +24,7 @@ public class CartServiceBase extends AbstractDomainServiceBase<Cart, CartReposit
         this.profileRepository = profileRepository;
     }
 
+    @Transactional
     public Cart save(Cart cart, UUID profileId) {
         Profile profile = profileRepository.findById(profileId).orElseThrow(
                 () -> new NotFoundException(MessageFormat.format("Entity Profile with id {0} cannot be found", profileId)));

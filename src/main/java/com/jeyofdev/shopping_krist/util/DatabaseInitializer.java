@@ -8,12 +8,13 @@ import com.jeyofdev.shopping_krist.core.enums.Color;
 import com.jeyofdev.shopping_krist.core.enums.DarkMode;
 import com.jeyofdev.shopping_krist.core.enums.Size;
 import com.jeyofdev.shopping_krist.data.*;
-import com.jeyofdev.shopping_krist.domain.cart.CartDomainMapper;
+import com.jeyofdev.shopping_krist.domain.cart.Cart;
 import com.jeyofdev.shopping_krist.domain.cart.CartServiceBase;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemDomainMapper;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemServiceBase;
 import com.jeyofdev.shopping_krist.domain.city.City;
 import com.jeyofdev.shopping_krist.domain.city.CityService;
+import com.jeyofdev.shopping_krist.domain.notification.NotificationService;
 import com.jeyofdev.shopping_krist.domain.product.Product;
 import com.jeyofdev.shopping_krist.domain.product.ProductDomainMapper;
 import com.jeyofdev.shopping_krist.domain.product.ProductServiceBase;
@@ -44,10 +45,9 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final ProfileService profilService;
     private final ProfileSettingsService profilSettingsService;
     private final ProductServiceBase productService;
+    private final CartServiceBase cartService;
 
     private final ProductDomainMapper productMapper;
-    private final CartServiceBase cartService;
-    private final CartDomainMapper cartMapper;
     private final CartItemServiceBase cartItemService;
     private final CartItemDomainMapper cartItemMapper;
 
@@ -83,8 +83,8 @@ public class DatabaseInitializer implements CommandLineRunner {
         createProfile(allDataList.getUserDataResponseList(), allDataList.getProfileDataResponseList());
         createProfilSettings(allDataList.getProfileSettingsDataResponse());
         createProducts(allDataList.getProductDataResponseList());
-       /*this.createCarts();
-       this.createCartItems();*/
+       this.createCarts();
+      /* this.createCartItems();*/
     }
 
     private void createUsers(List<UserDataResponse> userDataResponseList) throws IOException {
@@ -156,13 +156,20 @@ public class DatabaseInitializer implements CommandLineRunner {
         }
     }
 
-    /*private void createCarts() {
-        Cart cartA = cartMapper.mapToEntity(new SaveCartDTO());
+    private void createCarts() {
+        List<Profile> profileList = profilService.findAll();
+
+        for (Profile profile : profileList) {
+            UUID profileId = profile.getId();
+            cartService.save(Cart.builder().build(), profileId);
+        }
+
+       /* Cart cartA = cartMapper.mapToEntity(new SaveCartDTO());
         Cart cartB = cartMapper.mapToEntity(new SaveCartDTO());
 
         cartService.save(cartA);
-        cartService.save(cartB);
-    }*/
+        cartService.save(cartB);*/
+    }
 
     /*private void createCartItems() {
         CartItem cartItemA = cartItemMapper.mapToEntity(new SaveCartItemDTO(5));
