@@ -23,6 +23,7 @@ public class NotificationService extends AbstractDomainServiceBase<Notification,
         this.profileRepository = profileRepository;
     }
 
+    @Transactional
     public Notification save(Notification notification, UUID profileId) {
         Profile profile = profileRepository.findById(profileId).orElseThrow(
                 () -> new NotFoundException(MessageFormat.format(" Profile Notification with id {0} cannot be found", profileId)));

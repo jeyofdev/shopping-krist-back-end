@@ -14,6 +14,7 @@ import com.jeyofdev.shopping_krist.domain.cartItem.CartItemDomainMapper;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemServiceBase;
 import com.jeyofdev.shopping_krist.domain.city.City;
 import com.jeyofdev.shopping_krist.domain.city.CityService;
+import com.jeyofdev.shopping_krist.domain.notification.Notification;
 import com.jeyofdev.shopping_krist.domain.notification.NotificationService;
 import com.jeyofdev.shopping_krist.domain.product.Product;
 import com.jeyofdev.shopping_krist.domain.product.ProductDomainMapper;
@@ -46,6 +47,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final ProfileSettingsService profilSettingsService;
     private final ProductServiceBase productService;
     private final CartServiceBase cartService;
+    private final NotificationService notificationService;
 
     private final ProductDomainMapper productMapper;
     private final CartItemServiceBase cartItemService;
@@ -82,8 +84,10 @@ public class DatabaseInitializer implements CommandLineRunner {
         createCities(allDataList.getCityDataResponseList());
         createProfile(allDataList.getUserDataResponseList(), allDataList.getProfileDataResponseList());
         createProfilSettings(allDataList.getProfileSettingsDataResponse());
+        createNotifications(allDataList.getNotificationDataResponseList());
         createProducts(allDataList.getProductDataResponseList());
-       this.createCarts();
+        createCarts();
+
       /* this.createCartItems();*/
     }
 
@@ -138,6 +142,19 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .isEmailNotification(profileSettingsDataResponse.isEmailNotification())
                     .build(), profileId
             );
+        }
+    }
+
+    private void createNotifications(List<NotificationDataResponse> notificationDataResponseList) {
+        List<Profile> profileList = profilService.findAll();
+        UUID firstProfileId = profileList.getFirst().getId();
+
+        for (NotificationDataResponse notification : notificationDataResponseList) {
+            notificationService.save(Notification.builder()
+                    .title(notification.getTitle())
+                    .description(notification.getDescription())
+                    .isRead(notification.isRead())
+                    .build(), firstProfileId);
         }
     }
 

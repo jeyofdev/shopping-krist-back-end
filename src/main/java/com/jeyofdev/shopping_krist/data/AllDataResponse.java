@@ -23,4 +23,7 @@ public class AllDataResponse {
 
     @JsonProperty("products")
     private List<ProductDataResponse> productDataResponseList;
+
+    @JsonProperty("notifications")
+    private List<NotificationDataResponse> notificationDataResponseList;
 }

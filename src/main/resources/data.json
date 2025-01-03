@@ -60,5 +60,17 @@
         "color": "WHITE",
         "size": "XL"
       }
+  ],
+  "notifications": [
+    {
+      "title": "New product",
+      "description": "New product available in store",
+      "isRead": false
+    },
+    {
+      "title": "New order",
+      "description": "you just add new order",
+      "isRead": false
+    }
   ]
 }
