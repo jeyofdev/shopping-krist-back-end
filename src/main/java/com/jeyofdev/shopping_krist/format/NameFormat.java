@@ -2,8 +2,6 @@ package com.jeyofdev.shopping_krist.format;
 
 import lombok.*;
 
-import java.text.MessageFormat;
-
 @Data
 @Builder
 @NoArgsConstructor

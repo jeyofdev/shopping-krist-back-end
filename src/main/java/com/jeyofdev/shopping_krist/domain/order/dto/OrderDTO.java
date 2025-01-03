@@ -13,7 +13,7 @@ public record OrderDTO(
         Date createdAt,
         String status,
         Profile profile,
-        Address shippingAddress,
-        List<CartItemDTO> cartItems
+        Address shippingAddress
+       /* List<CartItemDTO> cartItems*/
 ) {
 }

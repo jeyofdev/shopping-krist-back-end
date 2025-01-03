@@ -27,10 +27,10 @@ public class OrderDomainMapper implements IDomainMapper<Order, OrderDTO, SaveOrd
                 order.getCreatedAt(),
                 order.getStatus(),
                 order.getProfile(),
-                order.getShippingAddress(),
-                order.getCartItems().stream()
+                order.getShippingAddress()
+                /*order.getCartItems().stream()
                         .map(cartItem -> new CartItemDTO(cartItem.getId(), cartItem.getQuantity(), cartItem.getProduct(), cartItem.getCart()))
-                        .collect(Collectors.toList())
+                        .collect(Collectors.toList())*/
         );
     }
 

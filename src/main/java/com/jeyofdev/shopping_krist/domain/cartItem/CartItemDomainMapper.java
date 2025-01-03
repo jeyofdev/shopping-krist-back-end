@@ -3,6 +3,8 @@ package com.jeyofdev.shopping_krist.domain.cartItem;
 import com.jeyofdev.shopping_krist.core.interfaces.mapper.IDomainMapper;
 import com.jeyofdev.shopping_krist.domain.cartItem.dto.CartItemDTO;
 import com.jeyofdev.shopping_krist.domain.cartItem.dto.SaveCartItemDTO;
+import com.jeyofdev.shopping_krist.format.PriceFormat;
+import com.jeyofdev.shopping_krist.format.ProductPreviewFormat;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,8 +14,15 @@ public class CartItemDomainMapper implements IDomainMapper<CartItem, CartItemDTO
         return new CartItemDTO(
                 cartItem.getId(),
                 cartItem.getQuantity(),
-                cartItem.getProduct(),
-                cartItem.getCart()
+                cartItem.getProduct().getId(),
+                cartItem.getProduct().getBrand(),
+                cartItem.getProduct().getName(),
+                PriceFormat.builder()
+                        .price(cartItem.getProduct().getPrice())
+                        .build(),
+                cartItem.getProduct().getColor(),
+                cartItem.getProduct().getSize(),
+                cartItem.getCart().getId()
         );
     }
 

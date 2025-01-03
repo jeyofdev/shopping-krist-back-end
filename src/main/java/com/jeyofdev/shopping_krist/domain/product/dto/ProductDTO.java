@@ -2,6 +2,7 @@ package com.jeyofdev.shopping_krist.domain.product.dto;
 
 import com.jeyofdev.shopping_krist.core.enums.Color;
 import com.jeyofdev.shopping_krist.core.enums.Size;
+import com.jeyofdev.shopping_krist.format.PriceFormat;
 
 import java.util.UUID;
 
@@ -10,8 +11,7 @@ public record ProductDTO(
         String brand,
         String name,
         String description,
-        Double price,
-        Double oldPrice,
+        PriceFormat price,
         int stock,
         Color color,
         Size size

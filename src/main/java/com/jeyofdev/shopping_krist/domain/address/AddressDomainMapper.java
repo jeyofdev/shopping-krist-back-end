@@ -3,6 +3,7 @@ package com.jeyofdev.shopping_krist.domain.address;
 import com.jeyofdev.shopping_krist.core.interfaces.mapper.IDomainMapper;
 import com.jeyofdev.shopping_krist.domain.address.dto.AddressDTO;
 import com.jeyofdev.shopping_krist.domain.address.dto.SaveAddressDTO;
+import com.jeyofdev.shopping_krist.format.AddressFormat;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,10 +14,12 @@ public class AddressDomainMapper implements IDomainMapper<Address, AddressDTO, S
                 address.getId(),
                 address.getName(),
                 address.getPhone(),
-                address.getStreetNumber(),
-                address.getStreet(),
-                address.getZipCode(),
-                address.getCity() != null ? address.getCity().getName() : null
+                AddressFormat.builder()
+                        .streetNumber(address.getStreetNumber())
+                        .street(address.getStreet())
+                        .zipCode(address.getZipCode())
+                        .city(address.getCity() != null ? address.getCity().getName() : null)
+                        .build()
         );
     }
 
