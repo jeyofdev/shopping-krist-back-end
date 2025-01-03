@@ -14,4 +14,7 @@ public class AllDataResponse {
 
     @JsonProperty("cities")
     private List<CityDataResponse> cityDataResponseList;
+
+    @JsonProperty("profiles")
+    private List<ProfileDataResponse> profileDataResponseList;
 }

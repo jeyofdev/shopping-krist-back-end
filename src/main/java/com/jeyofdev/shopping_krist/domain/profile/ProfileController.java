@@ -1,5 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.profile;
 
+import com.jeyofdev.shopping_krist.domain.product.Product;
+import com.jeyofdev.shopping_krist.domain.product.dto.ProductDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfileDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.SaveProfileDTO;
 import lombok.RequiredArgsConstructor;
@@ -7,14 +9,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/profile")
 @RequiredArgsConstructor
 public class ProfileController {
-    private final ProfileServiceBase profileService;
+    private final ProfileService profileService;
     private final ProfileDomainMapper profileMapper;
+
+    @GetMapping
+    public ResponseEntity<List<ProfileDTO>> findAllProfile() {
+        List<Profile> profileList = profileService.findAll();
+        List<ProfileDTO> profileListDTOList = profileList.stream().map(profileMapper::mapFromEntity).toList();
+
+        return new ResponseEntity<>(profileListDTOList, HttpStatus.OK);
+    }
 
     @GetMapping("/{profileId}")
     public ResponseEntity<ProfileDTO> findProfileById(@PathVariable("profileId") UUID profileId) {

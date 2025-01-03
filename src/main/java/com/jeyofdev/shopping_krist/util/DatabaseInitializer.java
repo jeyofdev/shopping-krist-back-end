@@ -1,13 +1,12 @@
 package com.jeyofdev.shopping_krist.util;
 
 import com.jeyofdev.shopping_krist.auth.AuthService;
+import com.jeyofdev.shopping_krist.auth.model.AuthResponse;
+import com.jeyofdev.shopping_krist.auth.model.LoginRequest;
 import com.jeyofdev.shopping_krist.auth.model.RegisterRequest;
 import com.jeyofdev.shopping_krist.core.enums.Color;
 import com.jeyofdev.shopping_krist.core.enums.Size;
-import com.jeyofdev.shopping_krist.data.AllDataResponse;
-import com.jeyofdev.shopping_krist.data.AllDataService;
-import com.jeyofdev.shopping_krist.data.CityDataResponse;
-import com.jeyofdev.shopping_krist.data.UserDataResponse;
+import com.jeyofdev.shopping_krist.data.*;
 import com.jeyofdev.shopping_krist.domain.cart.CartDomainMapper;
 import com.jeyofdev.shopping_krist.domain.cart.CartServiceBase;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemDomainMapper;
@@ -18,6 +17,8 @@ import com.jeyofdev.shopping_krist.domain.product.Product;
 import com.jeyofdev.shopping_krist.domain.product.ProductDomainMapper;
 import com.jeyofdev.shopping_krist.domain.product.ProductServiceBase;
 import com.jeyofdev.shopping_krist.domain.product.dto.SaveProductDTO;
+import com.jeyofdev.shopping_krist.domain.profile.Profile;
+import com.jeyofdev.shopping_krist.domain.profile.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -37,6 +39,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final AllDataService allDataService;
     private final AuthService authService;
     private final CityService cityService;
+    private final ProfileService profilService;
 
     private final ProductServiceBase productService;
     private final ProductDomainMapper productMapper;
@@ -74,6 +77,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 
         this.createUsers(allDataList.getUserDataResponseList());
         this.createCities(allDataList.getCityDataResponseList());
+        this.createProfile(allDataList.getUserDataResponseList(), allDataList.getProfileDataResponseList());
 
         /*this.createProducts();*/
        /*this.createCarts();
@@ -98,7 +102,25 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .build()
             );
         }
+    }
 
+    private void createProfile(List<UserDataResponse> userDataResponseList, List<ProfileDataResponse> profileDataResponseList) {
+        for (UserDataResponse user : userDataResponseList) {
+            AuthResponse authResponse = authService.login(LoginRequest.builder()
+                    .email(user.getEmail())
+                    .password(user.getPassword())
+                    .build());
+
+            int userDataIndex = userDataResponseList.indexOf(user);
+            ProfileDataResponse profileData = profileDataResponseList.get(userDataIndex);
+            profilService.save(Profile.builder()
+                    .firstname(profileData.getFirstname())
+                    .lastname(profileData.getLastname())
+                    .phone(profileData.getPhone())
+                    .address(profileData.getAddress())
+                    .build(), UUID.fromString(authResponse.getUserId())
+            );
+        }
     }
 
     private void createProducts() {

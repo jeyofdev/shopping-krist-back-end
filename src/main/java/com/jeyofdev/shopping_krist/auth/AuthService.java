@@ -98,6 +98,7 @@ public class AuthService implements IAuthService {
             return AuthResponse.builder()
                     .token(jwtToken)
                     .message("Logged In")
+                    .userId(user.getId().toString())
                     .build();
 
         } catch (BadCredentialsException ex) {

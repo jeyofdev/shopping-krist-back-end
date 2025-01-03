@@ -13,17 +13,18 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
-public class ProfileServiceBase extends AbstractDomainServiceBase<Profile, ProfileRepository> {
+public class ProfileService extends AbstractDomainServiceBase<Profile, ProfileRepository> {
     private final ProfileRepository profileRepository;
     private final AuthUserRepository authUserRepository;
 
     @Autowired
-    public ProfileServiceBase(ProfileRepository profileRepository, AuthUserRepository authUserRepository) {
+    public ProfileService(ProfileRepository profileRepository, AuthUserRepository authUserRepository) {
         super(profileRepository, "profile");
         this.profileRepository = profileRepository;
         this.authUserRepository = authUserRepository;
     }
 
+    @Transactional
     public Profile save(Profile profile, UUID userId) {
         AuthUser user = authUserRepository.findById(userId)
                 .orElseThrow(

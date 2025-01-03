@@ -19,5 +19,19 @@
       "name": "Paris",
       "zipCode": "75000"
     }
+  ],
+  "profiles": [
+    {
+      "firstname": "john",
+      "lastname": "doe",
+      "phone": "0123456789",
+      "address": "10 rue de la republique 33590 Mérignac"
+    },
+    {
+      "firstname": "jane",
+      "lastname": "doe",
+      "phone": "0123456745",
+      "address": "10 rue de la republique 33590 Mérignac"
+    }
   ]
 }
