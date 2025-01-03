@@ -38,5 +38,27 @@
     "appearance": "dark",
     "isPushNotification": false,
     "isEmailNotification": false
-  }
+  },
+  "products": [
+      {
+        "brand": "adidas",
+        "name": "men red t-shirt",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus viverra ligula nec sapien imperdiet, eu mattis enim cursus. Donec tristique arcu eget dolor blandit, posuere porta mi rhoncus. Nulla non urna metus. Sed ullamcorper non quam id euismod. Pellentesque ac dolor et ante tincidunt dignissim. Ut cursus mi eu odio convallis, vitae accumsan ipsum luctus. Aenean massa sapien, pretium egestas sollicitudin nec, vulputate a diam. Vestibulum at lobortis urna.",
+        "price": 11.99,
+        "oldPrice": 15.99,
+        "stock": 23,
+        "color": "BLUE",
+        "size": "L"
+      },
+      {
+        "brand": "nike",
+        "name": "short white",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus viverra ligula nec sapien imperdiet, eu mattis enim cursus. Donec tristique arcu eget dolor blandit, posuere porta mi rhoncus. Nulla non urna metus. Sed ullamcorper non quam id euismod. Pellentesque ac dolor et ante tincidunt dignissim. Ut cursus mi eu odio convallis, vitae accumsan ipsum luctus. Aenean massa sapien, pretium egestas sollicitudin nec, vulputate a diam. Vestibulum at lobortis urna.",
+        "price": 25.99,
+        "oldPrice": 35.99,
+        "stock": 2,
+        "color": "WHITE",
+        "size": "XL"
+      }
+  ]
 }

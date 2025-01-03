@@ -17,7 +17,6 @@ import com.jeyofdev.shopping_krist.domain.city.CityService;
 import com.jeyofdev.shopping_krist.domain.product.Product;
 import com.jeyofdev.shopping_krist.domain.product.ProductDomainMapper;
 import com.jeyofdev.shopping_krist.domain.product.ProductServiceBase;
-import com.jeyofdev.shopping_krist.domain.product.dto.SaveProductDTO;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import com.jeyofdev.shopping_krist.domain.profile.ProfileService;
 import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
@@ -44,8 +43,8 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final CityService cityService;
     private final ProfileService profilService;
     private final ProfileSettingsService profilSettingsService;
-
     private final ProductServiceBase productService;
+
     private final ProductDomainMapper productMapper;
     private final CartServiceBase cartService;
     private final CartDomainMapper cartMapper;
@@ -79,12 +78,11 @@ public class DatabaseInitializer implements CommandLineRunner {
     private void createDatas() throws IOException {
         AllDataResponse allDataList = allDataService.getAllDatas();
 
-        this.createUsers(allDataList.getUserDataResponseList());
-        this.createCities(allDataList.getCityDataResponseList());
-        this.createProfile(allDataList.getUserDataResponseList(), allDataList.getProfileDataResponseList());
+        createUsers(allDataList.getUserDataResponseList());
+        createCities(allDataList.getCityDataResponseList());
+        createProfile(allDataList.getUserDataResponseList(), allDataList.getProfileDataResponseList());
         createProfilSettings(allDataList.getProfileSettingsDataResponse());
-
-        /*this.createProducts();*/
+        createProducts(allDataList.getProductDataResponseList());
        /*this.createCarts();
        this.createCartItems();*/
     }
@@ -118,7 +116,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 
             int userDataIndex = userDataResponseList.indexOf(user);
             ProfileDataResponse profileData = profileDataResponseList.get(userDataIndex);
-            Profile profile = profilService.save(Profile.builder()
+            profilService.save(Profile.builder()
                     .firstname(profileData.getFirstname())
                     .lastname(profileData.getLastname())
                     .phone(profileData.getPhone())
@@ -143,30 +141,19 @@ public class DatabaseInitializer implements CommandLineRunner {
         }
     }
 
-    private void createProducts() {
-        Product productA = productMapper.mapToEntity(new SaveProductDTO(
-                "adidas",
-                "men red t-shirt",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus viverra ligula nec sapien imperdiet, eu mattis enim cursus. Donec tristique arcu eget dolor blandit, posuere porta mi rhoncus. Nulla non urna metus. Sed ullamcorper non quam id euismod. Pellentesque ac dolor et ante tincidunt dignissim. Ut cursus mi eu odio convallis, vitae accumsan ipsum luctus. Aenean massa sapien, pretium egestas sollicitudin nec, vulputate a diam. Vestibulum at lobortis urna.",
-                11.99,
-                15.99,
-                23,
-                Color.BLUE,
-                Size.L
-        ));
-
-        Product productB = productMapper.mapToEntity(new SaveProductDTO(
-                "nike",
-                "short white",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus viverra ligula nec sapien imperdiet, eu mattis enim cursus. Donec tristique arcu eget dolor blandit, posuere porta mi rhoncus. Nulla non urna metus. Sed ullamcorper non quam id euismod. Pellentesque ac dolor et ante tincidunt dignissim. Ut cursus mi eu odio convallis, vitae accumsan ipsum luctus. Aenean massa sapien, pretium egestas sollicitudin nec, vulputate a diam. Vestibulum at lobortis urna.",
-                25.99,
-                35.99,
-                2,
-                Color.WHITE,
-                Size.XL
-        ));
-        productService.save(productA);
-        productService.save(productB);
+    private void createProducts(List<ProductDataResponse> productDataResponseList) {
+        for (ProductDataResponse product : productDataResponseList) {
+            productService.save(Product.builder()
+                    .brand(product.getBrand())
+                    .name(product.getName())
+                    .description(product.getDescription())
+                    .price(product.getPrice())
+                    .oldPrice(product.getOldPrice())
+                    .stock(product.getStock())
+                    .color(Color.valueOf(product.getColor()))
+                    .size(Size.valueOf(product.getSize()))
+                    .build());
+        }
     }
 
     /*private void createCarts() {

@@ -20,4 +20,7 @@ public class AllDataResponse {
 
     @JsonProperty("profileSettings")
     private ProfileSettingsDataResponse profileSettingsDataResponse;
+
+    @JsonProperty("products")
+    private List<ProductDataResponse> productDataResponseList;
 }
