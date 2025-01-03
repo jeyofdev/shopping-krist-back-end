@@ -3,6 +3,7 @@ package com.jeyofdev.shopping_krist.domain.profile;
 import com.jeyofdev.shopping_krist.core.interfaces.mapper.IDomainMapper;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfileDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.SaveProfileDTO;
+import com.jeyofdev.shopping_krist.format.NameFormat;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,8 +14,10 @@ public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, S
     public ProfileDTO mapFromEntity(Profile profile) {
         return new ProfileDTO(
                 profile.getId(),
-                profile.getFirstname(),
-                profile.getLastname(),
+                NameFormat.builder()
+                        .firstname(profile.getFirstname())
+                        .lastname(profile.getLastname())
+                        .build(),
                 profile.getPhone(),
                 profile.getUser().getEmail(),
                 profile.getAddress(),
