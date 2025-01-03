@@ -27,6 +27,7 @@ public class AddressService extends AbstractDomainServiceBase<Address, AddressRe
         this.profileRepository = profileRepository;
     }
 
+    @Transactional
     public Address save(Address address, UUID cityId, UUID profileId) {
         City city = cityRepository.findById(cityId)
                 .orElseThrow(

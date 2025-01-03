@@ -80,5 +80,21 @@
     {
       "quantity": 1
     }
+  ],
+  "addresses": [
+    {
+      "name": "john doe",
+      "phone": "0123456789",
+      "streetNumber": "23",
+      "street": "rue de la republique",
+      "zipCode": "33000"
+    },
+    {
+      "name": "jane doe",
+      "phone": "0143569932",
+      "streetNumber": "22",
+      "street": "rue de la republique",
+      "zipCode": "75000"
+    }
   ]
 }

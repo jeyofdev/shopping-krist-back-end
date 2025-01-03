@@ -8,6 +8,8 @@ import com.jeyofdev.shopping_krist.core.enums.Color;
 import com.jeyofdev.shopping_krist.core.enums.DarkMode;
 import com.jeyofdev.shopping_krist.core.enums.Size;
 import com.jeyofdev.shopping_krist.data.*;
+import com.jeyofdev.shopping_krist.domain.address.Address;
+import com.jeyofdev.shopping_krist.domain.address.AddressService;
 import com.jeyofdev.shopping_krist.domain.cart.Cart;
 import com.jeyofdev.shopping_krist.domain.cart.CartServiceBase;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
@@ -50,6 +52,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final CartServiceBase cartService;
     private final NotificationService notificationService;
     private final CartItemService cartItemService;
+    private final AddressService addressService;
 
     private final ProductDomainMapper productMapper;
     private final CartItemDomainMapper cartItemMapper;
@@ -85,6 +88,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         createCities(allDataList.getCityDataResponseList());
         createProfile(allDataList.getUserDataResponseList(), allDataList.getProfileDataResponseList());
         createProfilSettings(allDataList.getProfileSettingsDataResponse());
+        createAddresses(allDataList.getAddressDataResponseList());
         createNotifications(allDataList.getNotificationDataResponseList());
         createProducts(allDataList.getProductDataResponseList());
         createCarts();
@@ -143,6 +147,27 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .isPushNotification(profileSettingsDataResponse.isPushNotification())
                     .isEmailNotification(profileSettingsDataResponse.isEmailNotification())
                     .build(), profileId
+            );
+        }
+    }
+
+    private void createAddresses(List<AddressDataResponse> addressDataResponseList) {
+        List<Profile> profileList = profilService.findAll();
+        UUID firstProfileId = profileList.getFirst().getId();
+
+        List<City> cityList = cityService.findAll();
+
+        for(AddressDataResponse address : addressDataResponseList) {
+            int index = addressDataResponseList.indexOf(address);
+            UUID cityId = cityList.get(index).getId();
+
+            addressService.save(Address.builder()
+                    .name(address.getName())
+                    .phone(address.getPhone())
+                    .streetNumber(address.getStreetNumber())
+                    .street(address.getStreet())
+                    .zipCode(address.getZipCode())
+                    .build(), cityId, firstProfileId
             );
         }
     }

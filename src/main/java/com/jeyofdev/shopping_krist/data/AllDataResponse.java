@@ -29,4 +29,7 @@ public class AllDataResponse {
 
     @JsonProperty("cartItems")
     private List<CartItemDataResponse> cartItemDataResponseList;
+
+    @JsonProperty("addresses")
+    private List<AddressDataResponse> AddressDataResponseList;
 }
