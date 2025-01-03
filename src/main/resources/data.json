@@ -33,5 +33,10 @@
       "phone": "0123456745",
       "address": "10 rue de la republique 33590 Mérignac"
     }
-  ]
+  ],
+  "profileSettings": {
+    "appearance": "dark",
+    "isPushNotification": false,
+    "isEmailNotification": false
+  }
 }

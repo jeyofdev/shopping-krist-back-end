@@ -12,17 +12,18 @@ import java.text.MessageFormat;
 import java.util.UUID;
 
 @Service
-public class ProfileSettingsServiceBase extends AbstractDomainServiceBase<ProfileSettings, ProfileSettingsRepository> {
+public class ProfileSettingsService extends AbstractDomainServiceBase<ProfileSettings, ProfileSettingsRepository> {
     private final ProfileSettingsRepository profileSettingsRepository;
     private final ProfileRepository profileRepository;
 
     @Autowired
-    public ProfileSettingsServiceBase(ProfileSettingsRepository profileSettingsRepository, ProfileRepository profileRepository) {
+    public ProfileSettingsService(ProfileSettingsRepository profileSettingsRepository, ProfileRepository profileRepository) {
         super(profileSettingsRepository, "profileSettings");
         this.profileSettingsRepository = profileSettingsRepository;
         this.profileRepository = profileRepository;
     }
 
+    @Transactional
     public ProfileSettings save(ProfileSettings profileSettings, UUID profileId) {
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(

@@ -5,6 +5,7 @@ import com.jeyofdev.shopping_krist.auth.model.AuthResponse;
 import com.jeyofdev.shopping_krist.auth.model.LoginRequest;
 import com.jeyofdev.shopping_krist.auth.model.RegisterRequest;
 import com.jeyofdev.shopping_krist.core.enums.Color;
+import com.jeyofdev.shopping_krist.core.enums.DarkMode;
 import com.jeyofdev.shopping_krist.core.enums.Size;
 import com.jeyofdev.shopping_krist.data.*;
 import com.jeyofdev.shopping_krist.domain.cart.CartDomainMapper;
@@ -19,6 +20,8 @@ import com.jeyofdev.shopping_krist.domain.product.ProductServiceBase;
 import com.jeyofdev.shopping_krist.domain.product.dto.SaveProductDTO;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import com.jeyofdev.shopping_krist.domain.profile.ProfileService;
+import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
+import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettingsService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +43,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final AuthService authService;
     private final CityService cityService;
     private final ProfileService profilService;
+    private final ProfileSettingsService profilSettingsService;
 
     private final ProductServiceBase productService;
     private final ProductDomainMapper productMapper;
@@ -78,6 +82,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         this.createUsers(allDataList.getUserDataResponseList());
         this.createCities(allDataList.getCityDataResponseList());
         this.createProfile(allDataList.getUserDataResponseList(), allDataList.getProfileDataResponseList());
+        createProfilSettings(allDataList.getProfileSettingsDataResponse());
 
         /*this.createProducts();*/
        /*this.createCarts();
@@ -113,12 +118,27 @@ public class DatabaseInitializer implements CommandLineRunner {
 
             int userDataIndex = userDataResponseList.indexOf(user);
             ProfileDataResponse profileData = profileDataResponseList.get(userDataIndex);
-            profilService.save(Profile.builder()
+            Profile profile = profilService.save(Profile.builder()
                     .firstname(profileData.getFirstname())
                     .lastname(profileData.getLastname())
                     .phone(profileData.getPhone())
                     .address(profileData.getAddress())
                     .build(), UUID.fromString(authResponse.getUserId())
+            );
+        }
+    }
+
+    private void createProfilSettings(ProfileSettingsDataResponse profileSettingsDataResponse) {
+        List<Profile> profileList = profilService.findAll();
+
+        for (Profile profile : profileList) {
+            UUID profileId = profile.getId();
+
+            profilSettingsService.save(ProfileSettings.builder()
+                    .appearance(DarkMode.valueOf(profileSettingsDataResponse.getAppearance().toUpperCase()))
+                    .isPushNotification(profileSettingsDataResponse.isPushNotification())
+                    .isEmailNotification(profileSettingsDataResponse.isEmailNotification())
+                    .build(), profileId
             );
         }
     }

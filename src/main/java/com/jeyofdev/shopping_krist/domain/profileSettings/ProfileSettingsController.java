@@ -14,7 +14,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/profile/settings")
 @RequiredArgsConstructor
 public class ProfileSettingsController {
-    private final ProfileSettingsServiceBase profileSettingsService;
+    private final ProfileSettingsService profileSettingsService;
     private final ProfileSettingsDomainMapper profileSettingsMapper;
 
     @GetMapping

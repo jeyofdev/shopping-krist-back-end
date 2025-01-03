@@ -17,4 +17,7 @@ public class AllDataResponse {
 
     @JsonProperty("profiles")
     private List<ProfileDataResponse> profileDataResponseList;
+
+    @JsonProperty("profileSettings")
+    private ProfileSettingsDataResponse profileSettingsDataResponse;
 }
