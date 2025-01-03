@@ -14,13 +14,13 @@ import java.text.MessageFormat;
 import java.util.UUID;
 
 @Service
-public class AddressServiceBase extends AbstractDomainServiceBase<Address, AddressRepository> {
+public class AddressService extends AbstractDomainServiceBase<Address, AddressRepository> {
     private final AddressRepository addressRepository;
     private final CityRepository cityRepository;
     private final ProfileRepository profileRepository;
 
     @Autowired
-    public AddressServiceBase(AddressRepository addressRepository, CityRepository cityRepository, ProfileRepository profileRepository) {
+    public AddressService(AddressRepository addressRepository, CityRepository cityRepository, ProfileRepository profileRepository) {
         super(addressRepository, "address");
         this.addressRepository = addressRepository;
         this.cityRepository = cityRepository;

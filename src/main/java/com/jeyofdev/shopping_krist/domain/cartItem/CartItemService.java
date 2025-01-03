@@ -14,13 +14,13 @@ import java.text.MessageFormat;
 import java.util.UUID;
 
 @Service
-public class CartItemServiceBase extends AbstractDomainServiceBase<CartItem, CartItemRepository> {
+public class CartItemService extends AbstractDomainServiceBase<CartItem, CartItemRepository> {
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
 
     @Autowired
-    public CartItemServiceBase(CartItemRepository cartItemRepository, ProductRepository productRepository, CartRepository cartRepository) {
+    public CartItemService(CartItemRepository cartItemRepository, ProductRepository productRepository, CartRepository cartRepository) {
         super(cartItemRepository, "cartItem");
         this.cartItemRepository = cartItemRepository;
         this.productRepository = productRepository;

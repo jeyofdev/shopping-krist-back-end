@@ -10,8 +10,9 @@ import com.jeyofdev.shopping_krist.core.enums.Size;
 import com.jeyofdev.shopping_krist.data.*;
 import com.jeyofdev.shopping_krist.domain.cart.Cart;
 import com.jeyofdev.shopping_krist.domain.cart.CartServiceBase;
+import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemDomainMapper;
-import com.jeyofdev.shopping_krist.domain.cartItem.CartItemServiceBase;
+import com.jeyofdev.shopping_krist.domain.cartItem.CartItemService;
 import com.jeyofdev.shopping_krist.domain.city.City;
 import com.jeyofdev.shopping_krist.domain.city.CityService;
 import com.jeyofdev.shopping_krist.domain.notification.Notification;
@@ -48,9 +49,9 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final ProductServiceBase productService;
     private final CartServiceBase cartService;
     private final NotificationService notificationService;
+    private final CartItemService cartItemService;
 
     private final ProductDomainMapper productMapper;
-    private final CartItemServiceBase cartItemService;
     private final CartItemDomainMapper cartItemMapper;
 
     @Override
@@ -87,6 +88,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         createNotifications(allDataList.getNotificationDataResponseList());
         createProducts(allDataList.getProductDataResponseList());
         createCarts();
+        createCartItems(allDataList.getCartItemDataResponseList());
 
       /* this.createCartItems();*/
     }
@@ -180,12 +182,23 @@ public class DatabaseInitializer implements CommandLineRunner {
             UUID profileId = profile.getId();
             cartService.save(Cart.builder().build(), profileId);
         }
+    }
 
-       /* Cart cartA = cartMapper.mapToEntity(new SaveCartDTO());
-        Cart cartB = cartMapper.mapToEntity(new SaveCartDTO());
+    private void createCartItems(List<CartItemDataResponse> cartItemDataResponseList) {
+        List<Product> productList = productService.findAll();
+        List<Cart> cartList = cartService.findAll();
 
-        cartService.save(cartA);
-        cartService.save(cartB);*/
+        UUID firstCartId = cartList.getFirst().getId();
+
+        for (Product product : productList) {
+            UUID productId = product.getId();
+            int productIndex = productList.indexOf(product);
+
+            CartItemDataResponse cartItemData = cartItemDataResponseList.get(productIndex);
+            cartItemService.save(CartItem.builder()
+                    .quantity(cartItemData.getQuantity())
+                    .build(), productId, firstCartId);
+        }
     }
 
     /*private void createCartItems() {

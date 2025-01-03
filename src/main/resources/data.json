@@ -72,5 +72,13 @@
       "description": "you just add new order",
       "isRead": false
     }
+  ],
+  "cartItems": [
+    {
+      "quantity": 2
+    },
+    {
+      "quantity": 1
+    }
   ]
 }

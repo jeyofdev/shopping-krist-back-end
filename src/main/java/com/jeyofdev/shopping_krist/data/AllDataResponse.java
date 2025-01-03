@@ -26,4 +26,7 @@ public class AllDataResponse {
 
     @JsonProperty("notifications")
     private List<NotificationDataResponse> notificationDataResponseList;
+
+    @JsonProperty("cartItems")
+    private List<CartItemDataResponse> cartItemDataResponseList;
 }
