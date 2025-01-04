@@ -4,9 +4,9 @@ import com.jeyofdev.shopping_krist.domain.address.Address;
 import com.jeyofdev.shopping_krist.domain.notification.Notification;
 import com.jeyofdev.shopping_krist.domain.order.Order;
 import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
+import com.jeyofdev.shopping_krist.format.ListRelationFormat;
 import com.jeyofdev.shopping_krist.format.NameFormat;
 
-import java.util.List;
 import java.util.UUID;
 
 public record ProfileDTO(
@@ -15,9 +15,9 @@ public record ProfileDTO(
         String phone,
         String email,
         String address,
-        List<Address> deliveryAddressList,
+        ListRelationFormat<Address> deliveryAddressList,
         ProfileSettings profileSettings,
-        List<Notification> notificationList,
-        List<Order> orderList
+        ListRelationFormat<Notification> notificationList,
+        ListRelationFormat<Order> orderList
 ) {
 }

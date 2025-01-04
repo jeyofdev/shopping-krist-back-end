@@ -93,8 +93,6 @@ public class DatabaseInitializer implements CommandLineRunner {
         createProducts(allDataList.getProductDataResponseList());
         createCarts();
         createCartItems(allDataList.getCartItemDataResponseList());
-
-      /* this.createCartItems();*/
     }
 
     private void createUsers(List<UserDataResponse> userDataResponseList) throws IOException {
@@ -225,16 +223,4 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .build(), productId, firstCartId);
         }
     }
-
-    /*private void createCartItems() {
-        CartItem cartItemA = cartItemMapper.mapToEntity(new SaveCartItemDTO(5));
-        CartItem cartItemB = cartItemMapper.mapToEntity(new SaveCartItemDTO(2));
-
-        UUID firstProductId = productService.findAll().getFirst().getId();
-        UUID secondProductId = productService.findAll().get(1).getId();
-        UUID firstCartId = cartService.findAll().getFirst().getId();
-
-        cartItemService.save(cartItemA, firstProductId, firstCartId);
-        cartItemService.save(cartItemB, secondProductId, firstCartId);
-    }*/
 }
