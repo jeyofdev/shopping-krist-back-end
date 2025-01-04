@@ -1,12 +1,15 @@
 package com.jeyofdev.shopping_krist.domain.order;
 
 import com.jeyofdev.shopping_krist.core.interfaces.mapper.IDomainMapper;
+import com.jeyofdev.shopping_krist.domain.address.dto.AddressDTO;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemRepository;
 import com.jeyofdev.shopping_krist.domain.cartItem.dto.CartItemDTO;
 import com.jeyofdev.shopping_krist.domain.order.dto.OrderDTO;
 import com.jeyofdev.shopping_krist.domain.order.dto.SaveOrderDTO;
+import com.jeyofdev.shopping_krist.domain.profile.dto.ProfileDTO;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
+import com.jeyofdev.shopping_krist.format.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -26,11 +29,48 @@ public class OrderDomainMapper implements IDomainMapper<Order, OrderDTO, SaveOrd
                 order.getId(),
                 order.getCreatedAt(),
                 order.getStatus(),
-                order.getProfile(),
-                order.getShippingAddress()
-                /*order.getCartItems().stream()
-                        .map(cartItem -> new CartItemDTO(cartItem.getId(), cartItem.getQuantity(), cartItem.getProduct(), cartItem.getCart()))
-                        .collect(Collectors.toList())*/
+                ProfilePreviewFormat.builder()
+                        .id(order.getProfile().getId())
+                        .name(NameFormat.builder()
+                                .firstname(order.getProfile().getFirstname())
+                                .lastname(order.getProfile().getLastname())
+                                .build()
+                        )
+                        .phone(order.getProfile().getPhone())
+                        .address(order.getProfile().getAddress())
+                        .email(order.getProfile().getUser().getEmail())
+                        .build(),
+                order.getShippingAddress() != null ? new AddressDTO(
+                        order.getShippingAddress().getId(),
+                        order.getShippingAddress().getName(),
+                        order.getShippingAddress().getPhone(),
+                        order.getShippingAddress().getCity() != null ? AddressFormat.builder()
+                                .streetNumber(order.getShippingAddress().getStreetNumber())
+                                .street(order.getShippingAddress().getStreet())
+                                .zipCode(order.getShippingAddress().getZipCode())
+                                .city(order.getShippingAddress().getCity().getName())
+                                .build() : null
+                ) : null,
+                ListRelationFormat.<CartItemPreviewFormat>builder()
+                        .size(order.getCartItems().size())
+                        .results(order.getCartItems().stream()
+                                .map(cartItem -> CartItemPreviewFormat.builder()
+                                        .id(cartItem.getId())
+                                        .quantity(cartItem.getQuantity())
+                                        .product(ProductPreviewFormat.builder()
+                                                .id(cartItem.getProduct().getId())
+                                                .brand(cartItem.getProduct().getBrand())
+                                                .name(cartItem.getProduct().getName())
+                                                .price(PriceFormat.builder()
+                                                        .price(cartItem.getProduct().getPrice())
+                                                        .oldPrice(cartItem.getProduct().getOldPrice())
+                                                        .build())
+                                                .color(cartItem.getProduct().getColor())
+                                                .size(cartItem.getProduct().getSize())
+                                                .build())
+                                        .build())
+                                .collect(Collectors.toList()))
+                        .build()
         );
     }
 

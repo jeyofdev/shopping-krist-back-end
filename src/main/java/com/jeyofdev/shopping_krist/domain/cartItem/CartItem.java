@@ -7,7 +7,6 @@ import com.jeyofdev.shopping_krist.domain.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity

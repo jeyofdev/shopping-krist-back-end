@@ -1,8 +1,8 @@
 package com.jeyofdev.shopping_krist.domain.profile.dto;
 
-import com.jeyofdev.shopping_krist.domain.address.Address;
+import com.jeyofdev.shopping_krist.domain.address.dto.AddressDTO;
 import com.jeyofdev.shopping_krist.domain.notification.Notification;
-import com.jeyofdev.shopping_krist.domain.order.Order;
+import com.jeyofdev.shopping_krist.domain.order.dto.OrderDTO;
 import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
 import com.jeyofdev.shopping_krist.format.ListRelationFormat;
 import com.jeyofdev.shopping_krist.format.NameFormat;
@@ -15,9 +15,9 @@ public record ProfileDTO(
         String phone,
         String email,
         String address,
-        ListRelationFormat<Address> deliveryAddressList,
+        ListRelationFormat<AddressDTO> deliveryAddressList,
         ProfileSettings profileSettings,
         ListRelationFormat<Notification> notificationList,
-        ListRelationFormat<Order> orderList
+        ListRelationFormat<OrderDTO> orderList
 ) {
 }

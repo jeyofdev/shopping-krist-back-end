@@ -12,4 +12,6 @@ import java.util.UUID;
 public class CartItemPreviewFormat {
     private UUID id;
     private int quantity;
+    private ProductPreviewFormat product;
+
 }
