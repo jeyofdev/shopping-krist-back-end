@@ -5,6 +5,7 @@ import com.jeyofdev.shopping_krist.core.enums.Color;
 import com.jeyofdev.shopping_krist.core.enums.DarkMode;
 import com.jeyofdev.shopping_krist.core.enums.Size;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
+import com.jeyofdev.shopping_krist.domain.category.Category;
 import com.jeyofdev.shopping_krist.domain.comment.Comment;
 import com.jeyofdev.shopping_krist.domain.notification.Notification;
 import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
@@ -61,4 +62,12 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Comment> commentList = new ArrayList<>();
+
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categoryList = new ArrayList<>();
 }

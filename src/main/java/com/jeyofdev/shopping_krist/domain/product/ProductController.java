@@ -35,7 +35,7 @@ public class ProductController {
 
     @PostMapping()
     public ResponseEntity<ProductDTO> saveProduct(@RequestBody SaveProductDTO saveProductDTO) {
-        Product product = productMapper.mapToEntity(saveProductDTO);
+        Product product = productMapper.mapToEntity(saveProductDTO, null);
         Product newProduct = productService.save(product);
         ProductDTO newProductDTO = productMapper.mapFromEntity(newProduct);
 

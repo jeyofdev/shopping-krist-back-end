@@ -9,6 +9,5 @@ public record CommentDTO(
         String review,
         Integer rating,
         Date createdDate
-
 ) {
 }
