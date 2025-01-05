@@ -53,12 +53,7 @@ public class OrderDomainMapper implements IDomainMapper<Order, OrderDTO, SaveOrd
     }
 
     private ListRelationFormat<CartItemPreviewFormat> getCartItemListResponse(Order order) {
-        return ListRelationFormat.<CartItemPreviewFormat>builder()
-                .size(order.getCartItems().size())
-                .results(order.getCartItems().stream()
-                        .map(CartItemPreviewFormat::get)
-                        .collect(Collectors.toList()))
-                .build();
+        return ListRelationFormat.get(order.getCartItems(), CartItemPreviewFormat::get);
     }
 
     private AddressDTO getShippingAddressResponse(Order order) {

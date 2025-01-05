@@ -11,7 +11,7 @@ import com.jeyofdev.shopping_krist.domain.profile.dto.SaveProfileDTO;
 import com.jeyofdev.shopping_krist.format.*;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
 @Component
 public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, SaveProfileDTO> {
@@ -24,7 +24,7 @@ public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, S
                 profile.getPhone(),
                 profile.getUser().getEmail(),
                 profile.getAddress(),
-                getAddressListResponse(profile),
+                getDeliveryAddressListResponse(profile),
                 profile.getProfileSettings(),
                 getNotificationListResponse(profile),
                 getOrderListResponse(profile)
@@ -41,41 +41,28 @@ public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, S
                 .build();
     }
 
-    private ListRelationFormat<AddressDTO> getAddressListResponse(Profile profile) {
-        return ListRelationFormat.<AddressDTO>builder()
-                .size(profile.getDeliveryAddressList().size())
-                .results(profile.getDeliveryAddressList().stream()
-                        .map(address -> new AddressDTO(
-                                address.getId(),
-                                address.getName(),
-                                address.getPhone(),
-                                AddressFormat.get(address)
-                        )).toList()
-                )
-
-                .build();
+    private ListRelationFormat<AddressDTO> getDeliveryAddressListResponse(Profile profile) {
+        return ListRelationFormat.get(profile.getDeliveryAddressList(), deliveryAddress -> new AddressDTO(
+                deliveryAddress.getId(),
+                deliveryAddress.getName(),
+                deliveryAddress.getPhone(),
+                AddressFormat.get(deliveryAddress)
+        ));
     }
 
     private ListRelationFormat<Notification> getNotificationListResponse(Profile profile) {
-        return ListRelationFormat.<Notification>builder()
-                .size(profile.getNotificationList().size())
-                .results(profile.getNotificationList())
-                .build();
+        return ListRelationFormat.get(profile.getNotificationList(), Function.identity());
     }
 
     private ListRelationFormat<OrderDTO> getOrderListResponse(Profile profile) {
-        return ListRelationFormat.<OrderDTO>builder()
-                .size(profile.getOrderList().size())
-                .results(profile.getOrderList().stream().map(order -> new OrderDTO(
-                                order.getId(),
-                                order.getCreatedAt(),
-                                order.getStatus(),
-                                getProfilPreviewResponse(order),
-                                getOrderAddressResponse(order),
-                                getOrderCartItemListResponse(order)
-                        )).collect(Collectors.toList())
-                )
-                .build();
+        return ListRelationFormat.get(profile.getOrderList(), order -> new OrderDTO(
+                order.getId(),
+                order.getCreatedAt(),
+                order.getStatus(),
+                getProfilPreviewResponse(order),
+                getOrderAddressResponse(order),
+                getOrderCartItemListResponse(order)
+        ));
     }
 
     private ProfilePreviewDTO getProfilPreviewResponse(Order order) {
@@ -93,11 +80,6 @@ public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, S
     }
 
     private ListRelationFormat<CartItemPreviewFormat> getOrderCartItemListResponse(Order order) {
-        return ListRelationFormat.<CartItemPreviewFormat>builder()
-                .size(order.getCartItems().size())
-                .results(order.getCartItems().stream()
-                        .map(CartItemPreviewFormat::get)
-                        .collect(Collectors.toList()))
-                .build();
+        return ListRelationFormat.get(order.getCartItems(), CartItemPreviewFormat::get);
     }
 }

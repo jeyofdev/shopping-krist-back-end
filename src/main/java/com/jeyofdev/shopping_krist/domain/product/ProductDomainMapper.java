@@ -17,7 +17,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -65,29 +64,19 @@ public class ProductDomainMapper implements IDomainMapper<Product, ProductDTO, S
     }
 
     private ListRelationFormat<CommentDTO> getCommentListResponse(Product product) {
-        return ListRelationFormat.<CommentDTO>builder()
-                .size(product.getCommentList() == null ? 0 : product.getCommentList().size())
-                .results(product.getCommentList() == null ? new ArrayList<>() : product.getCommentList().stream()
-                        .map(comment -> new CommentDTO(
-                                comment.getId(),
-                                comment.getTitle(),
-                                comment.getReview(),
-                                comment.getRating(),
-                                comment.getCreatedAt()
-                        )).collect(Collectors.toList())
-                )
-                .build();
+        return ListRelationFormat.get(product.getCommentList(), comment -> new CommentDTO(
+                comment.getId(),
+                comment.getTitle(),
+                comment.getReview(),
+                comment.getRating(),
+                comment.getCreatedAt()
+        ));
     }
 
     private ListRelationFormat<CategoryDTO> getCategoryListResponse(Product product) {
-        return ListRelationFormat.<CategoryDTO>builder()
-                .size(product.getCategoryList() == null ? 0 : product.getCategoryList().size())
-                .results(product.getCategoryList() == null ? new ArrayList<>() : product.getCategoryList().stream()
-                        .map(category -> new CategoryDTO(
-                                category.getId(),
-                                category.getName()
-                        )).collect(Collectors.toList())
-                )
-                .build();
+        return ListRelationFormat.get(product.getCategoryList(), category -> new CategoryDTO(
+                category.getId(),
+                category.getName()
+        ));
     }
 }

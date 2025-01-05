@@ -7,8 +7,6 @@ import com.jeyofdev.shopping_krist.domain.profile.dto.ProfilePreviewDTO;
 import com.jeyofdev.shopping_krist.format.*;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
-
 @Component
 public class CartDomainMapper implements IDomainMapper<Cart, CartDTO, SaveCartDTO> {
     @Override
@@ -29,12 +27,7 @@ public class CartDomainMapper implements IDomainMapper<Cart, CartDTO, SaveCartDT
     }
 
     private ListRelationFormat<CartItemPreviewFormat> getCartItemListResponse(Cart cart) {
-        return ListRelationFormat.<CartItemPreviewFormat>builder()
-                .size(cart.getCartItemList().size())
-                .results(cart.getCartItemList().stream()
-                        .map(CartItemPreviewFormat::get)
-                        .collect(Collectors.toList()))
-                .build();
+        return ListRelationFormat.get(cart.getCartItemList(),CartItemPreviewFormat::get);
     }
 
     private ProfilePreviewDTO getProfilePreviewResponse(Cart cart) {
