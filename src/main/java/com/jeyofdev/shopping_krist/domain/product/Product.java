@@ -5,6 +5,9 @@ import com.jeyofdev.shopping_krist.core.enums.Color;
 import com.jeyofdev.shopping_krist.core.enums.DarkMode;
 import com.jeyofdev.shopping_krist.core.enums.Size;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
+import com.jeyofdev.shopping_krist.domain.comment.Comment;
+import com.jeyofdev.shopping_krist.domain.notification.Notification;
+import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -54,4 +57,8 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<CartItem> cartItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Comment> commentList = new ArrayList<>();
 }

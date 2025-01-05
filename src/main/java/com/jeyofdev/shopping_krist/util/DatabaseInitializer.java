@@ -84,7 +84,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     private void createDatas() throws IOException {
         AllDataResponse allDataList = allDataService.getAllDatas();
 
-        /*createUsers(allDataList.getUserDataResponseList());
+        createUsers(allDataList.getUserDataResponseList());
         createCities(allDataList.getCityDataResponseList());
         createProfile(allDataList.getUserDataResponseList(), allDataList.getProfileDataResponseList());
         createProfilSettings(allDataList.getProfileSettingsDataResponse());
@@ -92,7 +92,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         createNotifications(allDataList.getNotificationDataResponseList());
         createProducts(allDataList.getProductDataResponseList());
         createCarts();
-        createCartItems(allDataList.getCartItemDataResponseList());*/
+        createCartItems(allDataList.getCartItemDataResponseList());
     }
 
     private void createUsers(List<UserDataResponse> userDataResponseList) throws IOException {

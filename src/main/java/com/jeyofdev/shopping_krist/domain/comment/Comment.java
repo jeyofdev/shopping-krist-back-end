@@ -1,5 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.comment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeyofdev.shopping_krist.domain.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,4 +32,8 @@ public class Comment {
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private Date createdAt;
 
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Product product;
 }
