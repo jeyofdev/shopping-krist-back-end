@@ -16,9 +16,7 @@ public class CartItemDomainMapper implements IDomainMapper<CartItem, CartItemDTO
                 cartItem.getProduct().getId(),
                 cartItem.getProduct().getBrand(),
                 cartItem.getProduct().getName(),
-                PriceFormat.builder()
-                        .price(cartItem.getProduct().getPrice())
-                        .build(),
+                PriceFormat.get(cartItem.getProduct()),
                 cartItem.getProduct().getColor(),
                 cartItem.getProduct().getSize(),
                 cartItem.getCart().getId()

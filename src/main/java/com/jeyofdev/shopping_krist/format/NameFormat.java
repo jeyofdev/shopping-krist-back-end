@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.format;
 
+import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import lombok.*;
 
 @Data
@@ -28,5 +29,12 @@ public class NameFormat {
         this.firstname = firstname;
         this.lastname = lastname;
         setFullname();
+    }
+
+    public static NameFormat get(Profile profile) {
+        return NameFormat.builder()
+                .firstname(profile.getFirstname())
+                .lastname(profile.getLastname())
+                .build();
     }
 }

@@ -31,10 +31,7 @@ public class ProductDomainMapper implements IDomainMapper<Product, ProductDTO, S
                 product.getBrand(),
                 product.getName(),
                 product.getDescription(),
-                PriceFormat.builder()
-                        .price(product.getPrice())
-                        .oldPrice(product.getOldPrice())
-                        .build(),
+                PriceFormat.get(product),
                 product.getStock(),
                 product.getColor(),
                 product.getSize(),

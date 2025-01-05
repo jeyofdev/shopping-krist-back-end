@@ -3,6 +3,7 @@ package com.jeyofdev.shopping_krist.domain.cart;
 import com.jeyofdev.shopping_krist.core.interfaces.mapper.IDomainMapper;
 import com.jeyofdev.shopping_krist.domain.cart.dto.CartDTO;
 import com.jeyofdev.shopping_krist.domain.cart.dto.SaveCartDTO;
+import com.jeyofdev.shopping_krist.domain.profile.dto.ProfilePreviewDTO;
 import com.jeyofdev.shopping_krist.format.*;
 import org.springframework.stereotype.Component;
 
@@ -31,36 +32,20 @@ public class CartDomainMapper implements IDomainMapper<Cart, CartDTO, SaveCartDT
         return ListRelationFormat.<CartItemPreviewFormat>builder()
                 .size(cart.getCartItemList().size())
                 .results(cart.getCartItemList().stream()
-                        .map(cartItem -> CartItemPreviewFormat.builder()
-                                .id(cartItem.getId())
-                                .quantity(cartItem.getQuantity())
-                                .product(ProductPreviewFormat.builder()
-                                        .id(cartItem.getProduct().getId())
-                                        .brand(cartItem.getProduct().getBrand())
-                                        .name(cartItem.getProduct().getName())
-                                        .price(PriceFormat.builder()
-                                                .price(cartItem.getProduct().getPrice())
-                                                .oldPrice(cartItem.getProduct().getOldPrice())
-                                                .build())
-                                        .color(cartItem.getProduct().getColor())
-                                        .size(cartItem.getProduct().getSize())
-                                        .build())
-                                .build())
+                        .map(CartItemPreviewFormat::get)
                         .collect(Collectors.toList()))
                 .build();
     }
 
-    private ProfilePreviewFormat getProfilePreviewResponse(Cart cart) {
-        return ProfilePreviewFormat.builder()
+    private ProfilePreviewDTO getProfilePreviewResponse(Cart cart) {
+        ProfilePreviewFormat profilePreviewFormat = ProfilePreviewFormat.builder()
                 .id(cart.getProfile().getId())
-                .name(NameFormat.builder()
-                        .firstname(cart.getProfile().getFirstname())
-                        .lastname(cart.getProfile().getLastname())
-                        .build()
-                )
+                .name(NameFormat.get(cart.getProfile()))
                 .phone(cart.getProfile().getPhone())
                 .address(cart.getProfile().getAddress())
                 .email(cart.getProfile().getUser().getEmail())
                 .build();
+
+        return ProfilePreviewDTO.fromFormat(profilePreviewFormat);
     }
 }

@@ -6,6 +6,7 @@ import com.jeyofdev.shopping_krist.domain.notification.Notification;
 import com.jeyofdev.shopping_krist.domain.order.Order;
 import com.jeyofdev.shopping_krist.domain.order.dto.OrderDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfileDTO;
+import com.jeyofdev.shopping_krist.domain.profile.dto.ProfilePreviewDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.SaveProfileDTO;
 import com.jeyofdev.shopping_krist.format.*;
 import org.springframework.stereotype.Component;
@@ -19,10 +20,7 @@ public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, S
     public ProfileDTO mapFromEntity(Profile profile) {
         return new ProfileDTO(
                 profile.getId(),
-                NameFormat.builder()
-                        .firstname(profile.getFirstname())
-                        .lastname(profile.getLastname())
-                        .build(),
+                NameFormat.get(profile),
                 profile.getPhone(),
                 profile.getUser().getEmail(),
                 profile.getAddress(),
@@ -51,12 +49,7 @@ public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, S
                                 address.getId(),
                                 address.getName(),
                                 address.getPhone(),
-                                AddressFormat.builder()
-                                        .streetNumber(address.getStreetNumber())
-                                        .street(address.getStreet())
-                                        .zipCode(address.getZipCode())
-                                        .city(address.getCity().getName())
-                                        .build()
+                                AddressFormat.get(address)
                         )).toList()
                 )
 
@@ -85,17 +78,9 @@ public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, S
                 .build();
     }
 
-    private ProfilePreviewFormat getProfilPreviewResponse(Order order) {
-        return ProfilePreviewFormat.builder()
-                .id(order.getProfile().getId())
-                .name(NameFormat.builder()
-                        .firstname(order.getProfile().getFirstname())
-                        .lastname(order.getProfile().getLastname())
-                        .build())
-                .phone(order.getProfile().getPhone())
-                .address(order.getProfile().getAddress())
-                .email(order.getProfile().getUser().getEmail())
-                .build();
+    private ProfilePreviewDTO getProfilPreviewResponse(Order order) {
+        ProfilePreviewFormat profilePreviewFormat = ProfilePreviewFormat.get(order.getProfile());
+        return ProfilePreviewDTO.fromFormat(profilePreviewFormat);
     }
 
     private AddressDTO getOrderAddressResponse(Order order) {
@@ -103,12 +88,7 @@ public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, S
                 order.getShippingAddress().getId(),
                 order.getShippingAddress().getName(),
                 order.getShippingAddress().getPhone(),
-                AddressFormat.builder()
-                        .streetNumber(order.getShippingAddress().getStreetNumber())
-                        .street(order.getShippingAddress().getStreet())
-                        .zipCode(order.getShippingAddress().getZipCode())
-                        .city(order.getShippingAddress().getCity().getName())
-                        .build()
+                AddressFormat.get(order.getShippingAddress())
         );
     }
 
@@ -116,21 +96,7 @@ public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, S
         return ListRelationFormat.<CartItemPreviewFormat>builder()
                 .size(order.getCartItems().size())
                 .results(order.getCartItems().stream()
-                        .map(cartItem -> CartItemPreviewFormat.builder()
-                                .id(cartItem.getId())
-                                .quantity(cartItem.getQuantity())
-                                .product(ProductPreviewFormat.builder()
-                                        .id(cartItem.getProduct().getId())
-                                        .brand(cartItem.getProduct().getBrand())
-                                        .name(cartItem.getProduct().getName())
-                                        .price(PriceFormat.builder()
-                                                .price(cartItem.getProduct().getPrice())
-                                                .oldPrice(cartItem.getProduct().getOldPrice())
-                                                .build())
-                                        .color(cartItem.getProduct().getColor())
-                                        .size(cartItem.getProduct().getSize())
-                                        .build())
-                                .build())
+                        .map(CartItemPreviewFormat::get)
                         .collect(Collectors.toList()))
                 .build();
     }
