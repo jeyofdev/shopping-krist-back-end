@@ -24,6 +24,7 @@ public class CommentService extends AbstractDomainServiceBase<Comment, CommentRe
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public Comment save(Comment comment, UUID productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(

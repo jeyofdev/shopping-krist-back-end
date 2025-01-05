@@ -18,6 +18,8 @@ import com.jeyofdev.shopping_krist.domain.category.Category;
 import com.jeyofdev.shopping_krist.domain.category.CategoryService;
 import com.jeyofdev.shopping_krist.domain.city.City;
 import com.jeyofdev.shopping_krist.domain.city.CityService;
+import com.jeyofdev.shopping_krist.domain.comment.Comment;
+import com.jeyofdev.shopping_krist.domain.comment.CommentService;
 import com.jeyofdev.shopping_krist.domain.notification.Notification;
 import com.jeyofdev.shopping_krist.domain.notification.NotificationService;
 import com.jeyofdev.shopping_krist.domain.product.Product;
@@ -46,14 +48,15 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final AllDataService allDataService;
     private final AuthService authService;
     private final CityService cityService;
-    private final ProfileService profilService;
-    private final ProfileSettingsService profilSettingsService;
+    private final ProfileService profileService;
+    private final ProfileSettingsService profileSettingsService;
     private final ProductServiceBase productService;
     private final CartServiceBase cartService;
     private final NotificationService notificationService;
     private final CartItemService cartItemService;
     private final AddressService addressService;
     private final CategoryService categoryService;
+    private final CommentService commentService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -85,11 +88,12 @@ public class DatabaseInitializer implements CommandLineRunner {
         createUsers(allDataList.getUserDataResponseList());
         createCities(allDataList.getCityDataResponseList());
         createProfile(allDataList.getUserDataResponseList(), allDataList.getProfileDataResponseList());
-        createProfilSettings(allDataList.getProfileSettingsDataResponse());
+        createProfileSettings(allDataList.getProfileSettingsDataResponse());
         createAddresses(allDataList.getAddressDataResponseList());
         createNotifications(allDataList.getNotificationDataResponseList());
         createCategories(allDataList.getCategoriesDataResponseList());
         createProducts(allDataList.getProductDataResponseList());
+        createComments(allDataList.getCommentDataResponseList());
         createCarts();
         createCartItems(allDataList.getCartItemDataResponseList());
     }
@@ -123,7 +127,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 
             int userDataIndex = userDataResponseList.indexOf(user);
             ProfileDataResponse profileData = profileDataResponseList.get(userDataIndex);
-            profilService.save(Profile.builder()
+            profileService.save(Profile.builder()
                     .firstname(profileData.getFirstname())
                     .lastname(profileData.getLastname())
                     .phone(profileData.getPhone())
@@ -133,13 +137,13 @@ public class DatabaseInitializer implements CommandLineRunner {
         }
     }
 
-    private void createProfilSettings(ProfileSettingsDataResponse profileSettingsDataResponse) {
-        List<Profile> profileList = profilService.findAll();
+    private void createProfileSettings(ProfileSettingsDataResponse profileSettingsDataResponse) {
+        List<Profile> profileList = profileService.findAll();
 
         for (Profile profile : profileList) {
             UUID profileId = profile.getId();
 
-            profilSettingsService.save(ProfileSettings.builder()
+            profileSettingsService.save(ProfileSettings.builder()
                     .appearance(DarkMode.valueOf(profileSettingsDataResponse.getAppearance().toUpperCase()))
                     .isPushNotification(profileSettingsDataResponse.isPushNotification())
                     .isEmailNotification(profileSettingsDataResponse.isEmailNotification())
@@ -149,7 +153,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     }
 
     private void createAddresses(List<AddressDataResponse> addressDataResponseList) {
-        List<Profile> profileList = profilService.findAll();
+        List<Profile> profileList = profileService.findAll();
         UUID firstProfileId = profileList.getFirst().getId();
 
         List<City> cityList = cityService.findAll();
@@ -170,7 +174,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     }
 
     private void createNotifications(List<NotificationDataResponse> notificationDataResponseList) {
-        List<Profile> profileList = profilService.findAll();
+        List<Profile> profileList = profileService.findAll();
         UUID firstProfileId = profileList.getFirst().getId();
 
         for (NotificationDataResponse notification : notificationDataResponseList) {
@@ -218,8 +222,22 @@ public class DatabaseInitializer implements CommandLineRunner {
         }
     }
 
+    private void createComments(List<CommentDataResponse> commentDataResponseList) {
+        List<Product> productList = productService.findAll();
+        UUID firstProduct = productList.getFirst().getId();
+
+        for (CommentDataResponse comment : commentDataResponseList) {
+            commentService.save(Comment.builder()
+                    .title(comment.getTitle())
+                    .review(comment.getReview())
+                    .rating(comment.getRating())
+                    .build(), firstProduct
+            );
+        }
+    }
+
     private void createCarts() {
-        List<Profile> profileList = profilService.findAll();
+        List<Profile> profileList = profileService.findAll();
 
         for (Profile profile : profileList) {
             UUID profileId = profile.getId();

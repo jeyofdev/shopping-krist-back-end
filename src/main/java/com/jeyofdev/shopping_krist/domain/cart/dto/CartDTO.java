@@ -11,7 +11,7 @@ public record CartDTO(
         UUID id,
         Date createdDate,
         Date updatedDate,
-        ListRelationFormat<CartItemPreviewDTO> cartItemList,
+        ListRelationFormat<CartItemPreviewDTO> cartItems,
         ProfilePreviewDTO profile
 ) {
 }

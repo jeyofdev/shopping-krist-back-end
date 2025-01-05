@@ -35,4 +35,7 @@ public class AllDataResponse {
 
     @JsonProperty("categories")
     private List<CategoryDataResponse> categoriesDataResponseList;
+
+    @JsonProperty("comments")
+    private List<CommentDataResponse> commentDataResponseList;
 }

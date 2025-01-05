@@ -78,6 +78,18 @@
         "size": "XL"
       }
   ],
+  "comments": [
+    {
+      "title": "great product",
+      "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pulvinar, eros at finibus lacinia, lacus dolor faucibus orci, sed lacinia erat quam et ex. Aenean eget finibus augue, quis tincidunt augue. Aenean id convallis arcu. Vivamus eu leo nec mi faucibus dignissim vitae nec tellus. Fusce ut dictum nisi. Interdum.",
+      "rating": 5
+    },
+    {
+      "title": "top product",
+      "review": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lobortis est suscipit purus molestie scelerisque. Suspendisse commodo, ante eu ornare pulvinar, nisl eros ornare tellus, ut consectetur justo lacus quis leo. Ut tempor libero vel hendrerit molestie. Vivamus molestie pellentesque.",
+      "rating": 4
+    }
+  ],
   "notifications": [
     {
       "title": "New product",

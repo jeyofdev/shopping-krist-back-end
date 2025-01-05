@@ -15,9 +15,9 @@ public record ProfileDTO(
         String phone,
         String email,
         String address,
-        ListRelationFormat<AddressDTO> deliveryAddressList,
+        ListRelationFormat<AddressDTO> deliveryAddresses,
         ProfileSettingsDTO profileSettings,
-        ListRelationFormat<NotificationDTO> notificationList,
-        ListRelationFormat<OrderDTO> orderList
+        ListRelationFormat<NotificationDTO> notifications,
+        ListRelationFormat<OrderDTO> orders
 ) {
 }
