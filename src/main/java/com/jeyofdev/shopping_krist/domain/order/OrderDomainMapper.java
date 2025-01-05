@@ -27,48 +27,9 @@ public class OrderDomainMapper implements IDomainMapper<Order, OrderDTO, SaveOrd
                 order.getId(),
                 order.getCreatedAt(),
                 order.getStatus(),
-                ProfilePreviewFormat.builder()
-                        .id(order.getProfile().getId())
-                        .name(NameFormat.builder()
-                                .firstname(order.getProfile().getFirstname())
-                                .lastname(order.getProfile().getLastname())
-                                .build()
-                        )
-                        .phone(order.getProfile().getPhone())
-                        .address(order.getProfile().getAddress())
-                        .email(order.getProfile().getUser().getEmail())
-                        .build(),
-                order.getShippingAddress() != null ? new AddressDTO(
-                        order.getShippingAddress().getId(),
-                        order.getShippingAddress().getName(),
-                        order.getShippingAddress().getPhone(),
-                        order.getShippingAddress().getCity() != null ? AddressFormat.builder()
-                                .streetNumber(order.getShippingAddress().getStreetNumber())
-                                .street(order.getShippingAddress().getStreet())
-                                .zipCode(order.getShippingAddress().getZipCode())
-                                .city(order.getShippingAddress().getCity().getName())
-                                .build() : null
-                ) : null,
-                ListRelationFormat.<CartItemPreviewFormat>builder()
-                        .size(order.getCartItems().size())
-                        .results(order.getCartItems().stream()
-                                .map(cartItem -> CartItemPreviewFormat.builder()
-                                        .id(cartItem.getId())
-                                        .quantity(cartItem.getQuantity())
-                                        .product(ProductPreviewFormat.builder()
-                                                .id(cartItem.getProduct().getId())
-                                                .brand(cartItem.getProduct().getBrand())
-                                                .name(cartItem.getProduct().getName())
-                                                .price(PriceFormat.builder()
-                                                        .price(cartItem.getProduct().getPrice())
-                                                        .oldPrice(cartItem.getProduct().getOldPrice())
-                                                        .build())
-                                                .color(cartItem.getProduct().getColor())
-                                                .size(cartItem.getProduct().getSize())
-                                                .build())
-                                        .build())
-                                .collect(Collectors.toList()))
-                        .build()
+                getProfilePreviewResponse(order),
+                getShippingAddressResponse(order),
+                getCartItemListResponse(order)
         );
     }
 
@@ -87,6 +48,57 @@ public class OrderDomainMapper implements IDomainMapper<Order, OrderDTO, SaveOrd
         return Order.builder()
                 .status(saveOrderDTO.status())
                 .cartItems(cartItems)
+                .build();
+    }
+
+    private ListRelationFormat<CartItemPreviewFormat> getCartItemListResponse(Order order) {
+        return ListRelationFormat.<CartItemPreviewFormat>builder()
+                .size(order.getCartItems().size())
+                .results(order.getCartItems().stream()
+                        .map(cartItem -> CartItemPreviewFormat.builder()
+                                .id(cartItem.getId())
+                                .quantity(cartItem.getQuantity())
+                                .product(ProductPreviewFormat.builder()
+                                        .id(cartItem.getProduct().getId())
+                                        .brand(cartItem.getProduct().getBrand())
+                                        .name(cartItem.getProduct().getName())
+                                        .price(PriceFormat.builder()
+                                                .price(cartItem.getProduct().getPrice())
+                                                .oldPrice(cartItem.getProduct().getOldPrice())
+                                                .build())
+                                        .color(cartItem.getProduct().getColor())
+                                        .size(cartItem.getProduct().getSize())
+                                        .build())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+    private AddressDTO getShippingAddressResponse(Order order) {
+        return order.getShippingAddress() != null ? new AddressDTO(
+                order.getShippingAddress().getId(),
+                order.getShippingAddress().getName(),
+                order.getShippingAddress().getPhone(),
+                order.getShippingAddress().getCity() != null ? AddressFormat.builder()
+                        .streetNumber(order.getShippingAddress().getStreetNumber())
+                        .street(order.getShippingAddress().getStreet())
+                        .zipCode(order.getShippingAddress().getZipCode())
+                        .city(order.getShippingAddress().getCity().getName())
+                        .build() : null
+        ) : null;
+    }
+
+    private ProfilePreviewFormat getProfilePreviewResponse(Order order) {
+        return ProfilePreviewFormat.builder()
+                .id(order.getProfile().getId())
+                .name(NameFormat.builder()
+                        .firstname(order.getProfile().getFirstname())
+                        .lastname(order.getProfile().getLastname())
+                        .build()
+                )
+                .phone(order.getProfile().getPhone())
+                .address(order.getProfile().getAddress())
+                .email(order.getProfile().getUser().getEmail())
                 .build();
     }
 }

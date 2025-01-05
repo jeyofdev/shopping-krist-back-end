@@ -61,10 +61,8 @@ public class AddressService extends AbstractDomainServiceBase<Address, AddressRe
     }
 
     @Transactional
-    public String deleteById(UUID addressId) {
+    public void deleteById(UUID addressId) {
         findById(addressId);
         addressRepository.deleteById(addressId);
-
-        return "Your account has been successfully deleted.";
     }
 }

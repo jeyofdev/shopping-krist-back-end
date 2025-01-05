@@ -14,12 +14,7 @@ public class AddressDomainMapper implements IDomainMapper<Address, AddressDTO, S
                 address.getId(),
                 address.getName(),
                 address.getPhone(),
-                AddressFormat.builder()
-                        .streetNumber(address.getStreetNumber())
-                        .street(address.getStreet())
-                        .zipCode(address.getZipCode())
-                        .city(address.getCity() != null ? address.getCity().getName() : null)
-                        .build()
+                getAddressResponse(address)
         );
     }
 
@@ -32,6 +27,15 @@ public class AddressDomainMapper implements IDomainMapper<Address, AddressDTO, S
                 .street(saveAddressDTO.street())
                 .street(saveAddressDTO.street())
                 .zipCode(saveAddressDTO.zipCode())
+                .build();
+    }
+
+    private AddressFormat getAddressResponse(Address address) {
+        return AddressFormat.builder()
+                .streetNumber(address.getStreetNumber())
+                .street(address.getStreet())
+                .zipCode(address.getZipCode())
+                .city(address.getCity() != null ? address.getCity().getName() : null)
                 .build();
     }
 }
