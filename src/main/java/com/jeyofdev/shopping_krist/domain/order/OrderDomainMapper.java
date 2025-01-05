@@ -4,6 +4,7 @@ import com.jeyofdev.shopping_krist.core.interfaces.mapper.IDomainMapper;
 import com.jeyofdev.shopping_krist.domain.address.dto.AddressDTO;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemRepository;
+import com.jeyofdev.shopping_krist.domain.cartItem.dto.CartItemPreviewDTO;
 import com.jeyofdev.shopping_krist.domain.order.dto.OrderDTO;
 import com.jeyofdev.shopping_krist.domain.order.dto.SaveOrderDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfilePreviewDTO;
@@ -52,8 +53,12 @@ public class OrderDomainMapper implements IDomainMapper<Order, OrderDTO, SaveOrd
                 .build();
     }
 
-    private ListRelationFormat<CartItemPreviewFormat> getCartItemListResponse(Order order) {
-        return ListRelationFormat.get(order.getCartItems(), CartItemPreviewFormat::get);
+    private ListRelationFormat<CartItemPreviewDTO> getCartItemListResponse(Order order) {
+        return ListRelationFormat.get(order.getCartItems(), cartItem -> new CartItemPreviewDTO(
+                cartItem.getId(),
+                cartItem.getQuantity(),
+                ProductPreviewFormat.get(cartItem.getProduct())
+        ));
     }
 
     private AddressDTO getShippingAddressResponse(Order order) {

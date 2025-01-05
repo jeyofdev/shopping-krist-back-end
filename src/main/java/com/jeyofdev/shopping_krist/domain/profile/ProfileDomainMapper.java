@@ -2,16 +2,16 @@ package com.jeyofdev.shopping_krist.domain.profile;
 
 import com.jeyofdev.shopping_krist.core.interfaces.mapper.IDomainMapper;
 import com.jeyofdev.shopping_krist.domain.address.dto.AddressDTO;
-import com.jeyofdev.shopping_krist.domain.notification.Notification;
+import com.jeyofdev.shopping_krist.domain.cartItem.dto.CartItemPreviewDTO;
+import com.jeyofdev.shopping_krist.domain.notification.dto.NotificationDTO;
 import com.jeyofdev.shopping_krist.domain.order.Order;
 import com.jeyofdev.shopping_krist.domain.order.dto.OrderDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfileDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfilePreviewDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.SaveProfileDTO;
+import com.jeyofdev.shopping_krist.domain.profileSettings.dto.ProfileSettingsDTO;
 import com.jeyofdev.shopping_krist.format.*;
 import org.springframework.stereotype.Component;
-
-import java.util.function.Function;
 
 @Component
 public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, SaveProfileDTO> {
@@ -25,7 +25,7 @@ public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, S
                 profile.getUser().getEmail(),
                 profile.getAddress(),
                 getDeliveryAddressListResponse(profile),
-                profile.getProfileSettings(),
+                getProfileSettingsResponse(profile),
                 getNotificationListResponse(profile),
                 getOrderListResponse(profile)
         );
@@ -50,8 +50,22 @@ public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, S
         ));
     }
 
-    private ListRelationFormat<Notification> getNotificationListResponse(Profile profile) {
-        return ListRelationFormat.get(profile.getNotificationList(), Function.identity());
+    private ProfileSettingsDTO getProfileSettingsResponse(Profile profile) {
+        return new ProfileSettingsDTO(
+                profile.getProfileSettings().getId(),
+                profile.getProfileSettings().getAppearance(),
+                profile.getProfileSettings().isPushNotification(),
+                profile.getProfileSettings().isEmailNotification()
+        );
+    }
+
+    private ListRelationFormat<NotificationDTO> getNotificationListResponse(Profile profile) {
+        return ListRelationFormat.get(profile.getNotificationList(), notification -> new NotificationDTO(
+                notification.getId(),
+                notification.getTitle(),
+                notification.getDescription(),
+                notification.isRead()
+        ));
     }
 
     private ListRelationFormat<OrderDTO> getOrderListResponse(Profile profile) {
@@ -79,7 +93,11 @@ public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, S
         );
     }
 
-    private ListRelationFormat<CartItemPreviewFormat> getOrderCartItemListResponse(Order order) {
-        return ListRelationFormat.get(order.getCartItems(), CartItemPreviewFormat::get);
+    private ListRelationFormat<CartItemPreviewDTO> getOrderCartItemListResponse(Order order) {
+        return ListRelationFormat.get(order.getCartItems(), cartItem -> new CartItemPreviewDTO(
+                cartItem.getId(),
+                cartItem.getQuantity(),
+                ProductPreviewFormat.get(cartItem.getProduct())
+        ));
     }
 }

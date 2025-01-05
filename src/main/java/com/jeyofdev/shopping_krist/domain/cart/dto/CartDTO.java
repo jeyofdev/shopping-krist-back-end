@@ -1,7 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.cart.dto;
 
+import com.jeyofdev.shopping_krist.domain.cartItem.dto.CartItemPreviewDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfilePreviewDTO;
-import com.jeyofdev.shopping_krist.format.CartItemPreviewFormat;
 import com.jeyofdev.shopping_krist.format.ListRelationFormat;
 
 import java.util.Date;
@@ -11,7 +11,7 @@ public record CartDTO(
         UUID id,
         Date createdDate,
         Date updatedDate,
-        ListRelationFormat<CartItemPreviewFormat> cartItemList,
+        ListRelationFormat<CartItemPreviewDTO> cartItemList,
         ProfilePreviewDTO profile
 ) {
 }

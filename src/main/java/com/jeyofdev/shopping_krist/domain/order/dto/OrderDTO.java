@@ -1,8 +1,8 @@
 package com.jeyofdev.shopping_krist.domain.order.dto;
 
 import com.jeyofdev.shopping_krist.domain.address.dto.AddressDTO;
+import com.jeyofdev.shopping_krist.domain.cartItem.dto.CartItemPreviewDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfilePreviewDTO;
-import com.jeyofdev.shopping_krist.format.CartItemPreviewFormat;
 import com.jeyofdev.shopping_krist.format.ListRelationFormat;
 
 import java.util.Date;
@@ -14,6 +14,6 @@ public record OrderDTO(
         String status,
         ProfilePreviewDTO profile,
         AddressDTO shippingAddress,
-        ListRelationFormat<CartItemPreviewFormat> cartItems
+        ListRelationFormat<CartItemPreviewDTO> cartItems
 ) {
 }
