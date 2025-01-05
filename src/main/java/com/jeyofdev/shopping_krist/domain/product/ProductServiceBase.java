@@ -25,10 +25,8 @@ public class ProductServiceBase extends AbstractDomainServiceBase<Product, Produ
         this.categoryRepository = categoryRepository;
     }
 
+    @Transactional
     public Product save(Product product) {
-        System.out.println("oppppppppppppps");
-        System.out.println(product);
-
         if (product.getCategoryList() != null) {
             System.out.println("in condition");
             List<Category> categoryList = categoryRepository.findAllById(product.getCategoryList().stream().map(Category::getId).toList());

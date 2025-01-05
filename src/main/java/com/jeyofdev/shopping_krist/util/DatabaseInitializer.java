@@ -13,14 +13,14 @@ import com.jeyofdev.shopping_krist.domain.address.AddressService;
 import com.jeyofdev.shopping_krist.domain.cart.Cart;
 import com.jeyofdev.shopping_krist.domain.cart.CartServiceBase;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
-import com.jeyofdev.shopping_krist.domain.cartItem.CartItemDomainMapper;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemService;
+import com.jeyofdev.shopping_krist.domain.category.Category;
+import com.jeyofdev.shopping_krist.domain.category.CategoryService;
 import com.jeyofdev.shopping_krist.domain.city.City;
 import com.jeyofdev.shopping_krist.domain.city.CityService;
 import com.jeyofdev.shopping_krist.domain.notification.Notification;
 import com.jeyofdev.shopping_krist.domain.notification.NotificationService;
 import com.jeyofdev.shopping_krist.domain.product.Product;
-import com.jeyofdev.shopping_krist.domain.product.ProductDomainMapper;
 import com.jeyofdev.shopping_krist.domain.product.ProductServiceBase;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import com.jeyofdev.shopping_krist.domain.profile.ProfileService;
@@ -53,9 +53,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final NotificationService notificationService;
     private final CartItemService cartItemService;
     private final AddressService addressService;
-
-    private final ProductDomainMapper productMapper;
-    private final CartItemDomainMapper cartItemMapper;
+    private final CategoryService categoryService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -90,6 +88,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         createProfilSettings(allDataList.getProfileSettingsDataResponse());
         createAddresses(allDataList.getAddressDataResponseList());
         createNotifications(allDataList.getNotificationDataResponseList());
+        createCategories(allDataList.getCategoriesDataResponseList());
         createProducts(allDataList.getProductDataResponseList());
         createCarts();
         createCartItems(allDataList.getCartItemDataResponseList());
@@ -183,7 +182,27 @@ public class DatabaseInitializer implements CommandLineRunner {
         }
     }
 
+    private void createCategories(List<CategoryDataResponse> categoryDataResponseList) {
+        for (CategoryDataResponse category : categoryDataResponseList) {
+            categoryService.save(Category.builder()
+                    .name(category.getName())
+                    .build()
+            );
+        }
+    }
+
     private void createProducts(List<ProductDataResponse> productDataResponseList) {
+        List<Category> categoryList = categoryService.findAll();
+
+        List<UUID> randomCategoryIdList = categoryList.stream()
+            .map(Category::getId)
+            .limit(2)
+            .toList();
+
+        List<Category> randomCategoryList = categoryList.stream()
+                .filter(category -> randomCategoryIdList.contains(category.getId()))
+                .toList();
+
         for (ProductDataResponse product : productDataResponseList) {
             productService.save(Product.builder()
                     .brand(product.getBrand())
@@ -194,6 +213,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .stock(product.getStock())
                     .color(Color.valueOf(product.getColor()))
                     .size(Size.valueOf(product.getSize()))
+                    .categoryList(randomCategoryList)
                     .build());
         }
     }

@@ -31,5 +31,8 @@ public class AllDataResponse {
     private List<CartItemDataResponse> cartItemDataResponseList;
 
     @JsonProperty("addresses")
-    private List<AddressDataResponse> AddressDataResponseList;
+    private List<AddressDataResponse> addressDataResponseList;
+
+    @JsonProperty("categories")
+    private List<CategoryDataResponse> categoriesDataResponseList;
 }

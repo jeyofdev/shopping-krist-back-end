@@ -39,6 +39,23 @@
     "isPushNotification": false,
     "isEmailNotification": false
   },
+  "categories": [
+    {
+      "name": "Women"
+    },
+    {
+      "name": "Men"
+    },
+    {
+      "name": "Kids"
+    },
+    {
+      "name": "Bags"
+    },
+    {
+      "name": "Accessories"
+    }
+  ],
   "products": [
       {
         "brand": "adidas",

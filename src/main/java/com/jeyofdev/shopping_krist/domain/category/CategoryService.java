@@ -1,8 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.category;
 
 import com.jeyofdev.shopping_krist.core.abstracts.AbstractDomainServiceBase;
-import com.jeyofdev.shopping_krist.domain.address.Address;
-import com.jeyofdev.shopping_krist.domain.city.City;
 import com.jeyofdev.shopping_krist.domain.product.Product;
 import com.jeyofdev.shopping_krist.domain.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,8 @@ public class CategoryService extends AbstractDomainServiceBase<Category, Categor
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
     }
-    
+
+    @Transactional
     public Category save(Category category) {
         return categoryRepository.save(category);
     }
