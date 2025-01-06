@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
-    private final CategoryDomainMapper categoryMapper;
+    private final CategoryMapper categoryMapper;
 
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> findAllCategory() {

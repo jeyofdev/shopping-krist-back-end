@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CartItemController {
     private final CartItemService cartItemService;
-    private final CartItemDomainMapper cartItemMapper;
+    private final CartItemMapper cartItemMapper;
 
     @GetMapping
     public ResponseEntity<List<CartItemDTO>> findAllCartItem() {

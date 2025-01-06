@@ -6,7 +6,7 @@ import com.jeyofdev.shopping_krist.domain.city.dto.SaveCityDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CityDomainMapper implements IDomainMapper<City, CityDTO, SaveCityDTO> {
+public class CityMapper implements IDomainMapper<City, CityDTO, SaveCityDTO> {
     @Override
     public CityDTO mapFromEntity(City city) {
         return new CityDTO(

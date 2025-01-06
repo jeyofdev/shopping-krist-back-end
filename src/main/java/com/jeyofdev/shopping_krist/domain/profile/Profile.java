@@ -6,6 +6,7 @@ import com.jeyofdev.shopping_krist.domain.address.Address;
 import com.jeyofdev.shopping_krist.domain.cart.Cart;
 import com.jeyofdev.shopping_krist.domain.notification.Notification;
 import com.jeyofdev.shopping_krist.domain.order.Order;
+import com.jeyofdev.shopping_krist.domain.product.Product;
 import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
 import jakarta.persistence.*;
 import lombok.*;
@@ -62,4 +63,7 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Order> orderList = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "profileList", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Product> productList = new ArrayList<>();
 }

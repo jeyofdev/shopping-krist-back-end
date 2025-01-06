@@ -20,7 +20,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class ProductDomainMapper implements IDomainMapper<Product, ProductDTO, SaveProductDTO> {
+public class ProductMapper implements IDomainMapper<Product, ProductDTO, SaveProductDTO> {
     private final CategoryRepository categoryRepository;
 
     @Override

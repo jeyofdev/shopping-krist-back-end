@@ -6,7 +6,7 @@ import com.jeyofdev.shopping_krist.domain.profileSettings.dto.SaveProfileSetting
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProfileSettingsDomainMapper implements IDomainMapper<ProfileSettings, ProfileSettingsDTO, SaveProfileSettingsDTO> {
+public class ProfileSettingsMapper implements IDomainMapper<ProfileSettings, ProfileSettingsDTO, SaveProfileSettingsDTO> {
     @Override
     public ProfileSettingsDTO mapFromEntity(ProfileSettings profileSettings) {
         return new ProfileSettingsDTO(

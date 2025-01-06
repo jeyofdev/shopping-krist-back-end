@@ -3,9 +3,13 @@ package com.jeyofdev.shopping_krist.domain.profile;
 import com.jeyofdev.shopping_krist.core.interfaces.mapper.IDomainMapper;
 import com.jeyofdev.shopping_krist.domain.address.dto.AddressDTO;
 import com.jeyofdev.shopping_krist.domain.cartItem.dto.CartItemPreviewDTO;
+import com.jeyofdev.shopping_krist.domain.category.dto.CategoryDTO;
+import com.jeyofdev.shopping_krist.domain.comment.dto.CommentDTO;
 import com.jeyofdev.shopping_krist.domain.notification.dto.NotificationDTO;
 import com.jeyofdev.shopping_krist.domain.order.Order;
 import com.jeyofdev.shopping_krist.domain.order.dto.OrderDTO;
+import com.jeyofdev.shopping_krist.domain.product.Product;
+import com.jeyofdev.shopping_krist.domain.product.dto.ProductDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfileDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfilePreviewDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.SaveProfileDTO;
@@ -14,7 +18,7 @@ import com.jeyofdev.shopping_krist.format.*;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, SaveProfileDTO> {
+public class ProfileMapper implements IDomainMapper<Profile, ProfileDTO, SaveProfileDTO> {
 
     @Override
     public ProfileDTO mapFromEntity(Profile profile) {
@@ -27,7 +31,8 @@ public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, S
                 getDeliveryAddressListResponse(profile),
                 getProfileSettingsResponse(profile),
                 getNotificationListResponse(profile),
-                getOrderListResponse(profile)
+                getOrderListResponse(profile),
+                getProductListResponse(profile)
         );
     }
 
@@ -65,6 +70,38 @@ public class ProfileDomainMapper implements IDomainMapper<Profile, ProfileDTO, S
                 notification.getTitle(),
                 notification.getDescription(),
                 notification.isRead()
+        ));
+    }
+
+    private ListRelationFormat<ProductDTO> getProductListResponse(Profile profile) {
+        return ListRelationFormat.get(profile.getProductList(), product -> new ProductDTO(
+                product.getId(),
+                product.getBrand(),
+                product.getName(),
+                product.getDescription(),
+                PriceFormat.get(product),
+                product.getStock(),
+                product.getColor(),
+                product.getSize(),
+                getCommentListResponse(product),
+                getCategoryListResponse(product)
+        ));
+    }
+
+    private ListRelationFormat<CommentDTO> getCommentListResponse(Product product) {
+        return ListRelationFormat.get(product.getCommentList(), comment -> new CommentDTO(
+                comment.getId(),
+                comment.getTitle(),
+                comment.getReview(),
+                comment.getRating(),
+                comment.getCreatedAt()
+        ));
+    }
+
+    private ListRelationFormat<CategoryDTO> getCategoryListResponse(Product product) {
+        return ListRelationFormat.get(product.getCategoryList(), category -> new CategoryDTO(
+                category.getId(),
+                category.getName()
         ));
     }
 

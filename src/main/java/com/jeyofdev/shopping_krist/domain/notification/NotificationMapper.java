@@ -6,7 +6,7 @@ import com.jeyofdev.shopping_krist.domain.notification.dto.SaveNotificationDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NotificationDomainMapper implements IDomainMapper<Notification, NotificationDTO, SaveNotificationDTO> {
+public class NotificationMapper implements IDomainMapper<Notification, NotificationDTO, SaveNotificationDTO> {
     @Override
     public NotificationDTO mapFromEntity(Notification notification) {
         return new NotificationDTO(

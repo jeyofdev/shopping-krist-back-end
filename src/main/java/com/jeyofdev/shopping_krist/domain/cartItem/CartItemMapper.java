@@ -7,7 +7,7 @@ import com.jeyofdev.shopping_krist.format.PriceFormat;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CartItemDomainMapper implements IDomainMapper<CartItem, CartItemDTO, SaveCartItemDTO> {
+public class CartItemMapper implements IDomainMapper<CartItem, CartItemDTO, SaveCartItemDTO> {
     @Override
     public CartItemDTO mapFromEntity(CartItem cartItem) {
         return new CartItemDTO(

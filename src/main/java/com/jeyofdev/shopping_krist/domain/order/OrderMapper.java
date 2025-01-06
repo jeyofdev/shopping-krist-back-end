@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class OrderDomainMapper implements IDomainMapper<Order, OrderDTO, SaveOrderDTO> {
+public class OrderMapper implements IDomainMapper<Order, OrderDTO, SaveOrderDTO> {
     private final CartItemRepository cartItemRepository;
 
     @Override

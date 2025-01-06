@@ -6,7 +6,7 @@ import com.jeyofdev.shopping_krist.domain.category.dto.SaveCategoryDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CategoryDomainMapper implements IDomainMapper<Category, CategoryDTO, SaveCategoryDTO> {
+public class CategoryMapper implements IDomainMapper<Category, CategoryDTO, SaveCategoryDTO> {
     @Override
     public CategoryDTO mapFromEntity(Category category) {
         return new CategoryDTO(

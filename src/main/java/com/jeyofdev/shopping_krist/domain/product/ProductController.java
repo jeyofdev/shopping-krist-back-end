@@ -14,8 +14,8 @@ import java.util.UUID;
 @RequestMapping("/api/v1/product")
 @RequiredArgsConstructor
 public class ProductController {
-    private final ProductServiceBase productService;
-    private final ProductDomainMapper productMapper;
+    private final ProductService productService;
+    private final ProductMapper productMapper;
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> findAllCity() {
@@ -40,6 +40,17 @@ public class ProductController {
         ProductDTO newProductDTO = productMapper.mapFromEntity(newProduct);
 
         return new ResponseEntity<>(newProductDTO, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{productId}/profile/{profileId}")
+    public ResponseEntity<ProductDTO> addProductToWishlish(
+            @PathVariable("productId") UUID productId,
+            @PathVariable("profileId") UUID profileId
+    ) {
+        Product product = productService.addProductToProfile(productId, profileId);
+        ProductDTO productDTO = productMapper.mapFromEntity(product);
+
+        return new ResponseEntity<>(productDTO, HttpStatus.OK);
     }
 
     @PutMapping("/{productId}")

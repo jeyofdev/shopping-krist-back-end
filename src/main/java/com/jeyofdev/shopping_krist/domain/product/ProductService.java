@@ -3,26 +3,32 @@ package com.jeyofdev.shopping_krist.domain.product;
 import com.jeyofdev.shopping_krist.core.abstracts.AbstractDomainServiceBase;
 import com.jeyofdev.shopping_krist.domain.category.Category;
 import com.jeyofdev.shopping_krist.domain.category.CategoryRepository;
+import com.jeyofdev.shopping_krist.domain.profile.Profile;
+import com.jeyofdev.shopping_krist.domain.profile.ProfileRepository;
+import com.jeyofdev.shopping_krist.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ProductServiceBase extends AbstractDomainServiceBase<Product, ProductRepository> {
-    private static final Logger log = LoggerFactory.getLogger(ProductServiceBase.class);
+public class ProductService extends AbstractDomainServiceBase<Product, ProductRepository> {
+    private static final Logger log = LoggerFactory.getLogger(ProductService.class);
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ProfileRepository profileRepository;
 
     @Autowired
-    public ProductServiceBase(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, ProfileRepository profileRepository) {
         super(productRepository, "product");
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.profileRepository = profileRepository;
     }
 
     @Transactional
@@ -33,6 +39,16 @@ public class ProductServiceBase extends AbstractDomainServiceBase<Product, Produ
             product.setCategoryList(categoryList);
         }
 
+        return productRepository.save(product);
+    }
+
+    public Product addProductToProfile(UUID productId, UUID profileId) {
+        Product product = findById(productId);
+        Profile profile = profileRepository.findById(profileId).orElseThrow(
+                () -> new NotFoundException(MessageFormat.format("Profile with id {0} not found", profileId))
+        );
+
+        product.getProfileList().add(profile);
         return productRepository.save(product);
     }
 

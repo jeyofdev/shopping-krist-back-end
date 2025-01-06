@@ -23,7 +23,7 @@ import com.jeyofdev.shopping_krist.domain.comment.CommentService;
 import com.jeyofdev.shopping_krist.domain.notification.Notification;
 import com.jeyofdev.shopping_krist.domain.notification.NotificationService;
 import com.jeyofdev.shopping_krist.domain.product.Product;
-import com.jeyofdev.shopping_krist.domain.product.ProductServiceBase;
+import com.jeyofdev.shopping_krist.domain.product.ProductService;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import com.jeyofdev.shopping_krist.domain.profile.ProfileService;
 import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
@@ -50,7 +50,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final CityService cityService;
     private final ProfileService profileService;
     private final ProfileSettingsService profileSettingsService;
-    private final ProductServiceBase productService;
+    private final ProductService productService;
     private final CartServiceBase cartService;
     private final NotificationService notificationService;
     private final CartItemService cartItemService;

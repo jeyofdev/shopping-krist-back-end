@@ -7,7 +7,7 @@ import com.jeyofdev.shopping_krist.format.AddressFormat;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AddressDomainMapper implements IDomainMapper<Address, AddressDTO, SaveAddressDTO> {
+public class AddressMapper implements IDomainMapper<Address, AddressDTO, SaveAddressDTO> {
     @Override
     public AddressDTO mapFromEntity(Address address) {
         return new AddressDTO(

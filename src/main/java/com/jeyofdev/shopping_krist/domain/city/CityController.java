@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CityController {
     private final CityService cityService;
-    private final CityDomainMapper cityMapper;
+    private final CityMapper cityMapper;
 
     @GetMapping
     public ResponseEntity<List<CityDTO>> findAllCity() {

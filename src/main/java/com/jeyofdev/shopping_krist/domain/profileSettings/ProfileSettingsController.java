@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProfileSettingsController {
     private final ProfileSettingsService profileSettingsService;
-    private final ProfileSettingsDomainMapper profileSettingsMapper;
+    private final ProfileSettingsMapper profileSettingsMapper;
 
     @GetMapping
     public ResponseEntity<List<ProfileSettingsDTO>> findAllProfileSettings() {

@@ -9,7 +9,7 @@ import com.jeyofdev.shopping_krist.format.*;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CartDomainMapper implements IDomainMapper<Cart, CartDTO, SaveCartDTO> {
+public class CartMapper implements IDomainMapper<Cart, CartDTO, SaveCartDTO> {
     @Override
     public CartDTO mapFromEntity(Cart cart) {
         return new CartDTO(

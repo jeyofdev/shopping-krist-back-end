@@ -1,7 +1,5 @@
 package com.jeyofdev.shopping_krist.domain.profile;
 
-import com.jeyofdev.shopping_krist.domain.product.Product;
-import com.jeyofdev.shopping_krist.domain.product.dto.ProductDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfileDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.SaveProfileDTO;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProfileController {
     private final ProfileService profileService;
-    private final ProfileDomainMapper profileMapper;
+    private final ProfileMapper profileMapper;
 
     @GetMapping
     public ResponseEntity<List<ProfileDTO>> findAllProfile() {

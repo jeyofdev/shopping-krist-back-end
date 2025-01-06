@@ -6,7 +6,7 @@ import com.jeyofdev.shopping_krist.domain.comment.dto.SaveCommentDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CommentDomainMapper implements IDomainMapper<Comment, CommentDTO, SaveCommentDTO> {
+public class CommentMapper implements IDomainMapper<Comment, CommentDTO, SaveCommentDTO> {
     @Override
     public CommentDTO mapFromEntity(Comment comment) {
         return new CommentDTO(

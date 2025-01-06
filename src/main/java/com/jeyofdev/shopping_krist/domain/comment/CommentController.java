@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;
-    private final CommentDomainMapper commentMapper;
+    private final CommentMapper commentMapper;
 
     @GetMapping
     public ResponseEntity<List<CommentDTO>> findAllComment() {

@@ -8,6 +8,7 @@ import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import com.jeyofdev.shopping_krist.domain.category.Category;
 import com.jeyofdev.shopping_krist.domain.comment.Comment;
 import com.jeyofdev.shopping_krist.domain.notification.Notification;
+import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
 import jakarta.persistence.*;
 import lombok.*;
@@ -70,4 +71,12 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private List<Category> categoryList = new ArrayList<>();
+
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "product_profile",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "profile_id")
+    )
+    private List<Profile> profileList = new ArrayList<>();
 }
