@@ -3,7 +3,7 @@ package com.jeyofdev.shopping_krist.domain.profile.dto;
 import com.jeyofdev.shopping_krist.domain.address.dto.AddressDTO;
 import com.jeyofdev.shopping_krist.domain.notification.dto.NotificationDTO;
 import com.jeyofdev.shopping_krist.domain.order.dto.OrderDTO;
-import com.jeyofdev.shopping_krist.domain.product.dto.ProductDTO;
+import com.jeyofdev.shopping_krist.domain.product.dto.ProductPreviewDTO;
 import com.jeyofdev.shopping_krist.domain.profileSettings.dto.ProfileSettingsDTO;
 import com.jeyofdev.shopping_krist.format.ListRelationFormat;
 import com.jeyofdev.shopping_krist.format.NameFormat;
@@ -20,6 +20,6 @@ public record ProfileDTO(
         ProfileSettingsDTO profileSettings,
         ListRelationFormat<NotificationDTO> notifications,
         ListRelationFormat<OrderDTO> orders,
-        ListRelationFormat<ProductDTO> wishlist
+        ListRelationFormat<ProductPreviewDTO> wishlist
 ) {
 }

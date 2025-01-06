@@ -42,6 +42,7 @@ public class ProductService extends AbstractDomainServiceBase<Product, ProductRe
         return productRepository.save(product);
     }
 
+    @Transactional
     public Product addProductToProfile(UUID productId, UUID profileId) {
         Product product = findById(productId);
         Profile profile = profileRepository.findById(profileId).orElseThrow(

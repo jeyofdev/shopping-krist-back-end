@@ -57,7 +57,7 @@ public class AuthService implements IAuthService {
             authUserRepository.save(user);
 
             // send email
-            emailService.sendValidationEmail(user.getEmail(), verificationToken);
+            /*emailService.sendValidationEmail(user.getEmail(), verificationToken);*/
 
             // response to client
             return RegisterResponse.builder()
@@ -128,7 +128,7 @@ public class AuthService implements IAuthService {
         authUserRepository.save(user);
 
         // send email
-        emailService.sendSuccessValidationEmail(user.getEmail());
+        /*emailService.sendSuccessValidationEmail(user.getEmail());*/
 
         return MessageResponse.builder()
                 .message("Your email is verified! You now have full access to your account.")
@@ -156,7 +156,7 @@ public class AuthService implements IAuthService {
             authUserRepository.save(user);
 
             // send email
-            emailService.sendSuccessUpdatePasswordEmail(user.getEmail());
+           /* emailService.sendSuccessUpdatePasswordEmail(user.getEmail());*/
 
             return MessageResponse.builder()
                     .message("Your password has been updated successfully.")
@@ -214,7 +214,7 @@ public class AuthService implements IAuthService {
         authUserRepository.save(user);
 
         // send email
-        emailService.sendSuccessUpdatePasswordEmail(user.getEmail());
+       /* emailService.sendSuccessUpdatePasswordEmail(user.getEmail());*/
 
         return MessageResponse.builder()
                 .message("Your password has been updated successfully. You can now use your new password to log in.")

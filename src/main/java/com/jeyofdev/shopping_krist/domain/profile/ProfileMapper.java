@@ -10,6 +10,7 @@ import com.jeyofdev.shopping_krist.domain.order.Order;
 import com.jeyofdev.shopping_krist.domain.order.dto.OrderDTO;
 import com.jeyofdev.shopping_krist.domain.product.Product;
 import com.jeyofdev.shopping_krist.domain.product.dto.ProductDTO;
+import com.jeyofdev.shopping_krist.domain.product.dto.ProductPreviewDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfileDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfilePreviewDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.SaveProfileDTO;
@@ -73,8 +74,8 @@ public class ProfileMapper implements IDomainMapper<Profile, ProfileDTO, SavePro
         ));
     }
 
-    private ListRelationFormat<ProductDTO> getProductListResponse(Profile profile) {
-        return ListRelationFormat.get(profile.getProductList(), product -> new ProductDTO(
+    private ListRelationFormat<ProductPreviewDTO> getProductListResponse(Profile profile) {
+        return ListRelationFormat.get(profile.getProductList(), product -> new ProductPreviewDTO(
                 product.getId(),
                 product.getBrand(),
                 product.getName(),
@@ -83,7 +84,7 @@ public class ProfileMapper implements IDomainMapper<Profile, ProfileDTO, SavePro
                 product.getStock(),
                 product.getColor(),
                 product.getSize(),
-                getCommentListResponse(product),
+                product.getCommentList().size(),
                 getCategoryListResponse(product)
         ));
     }

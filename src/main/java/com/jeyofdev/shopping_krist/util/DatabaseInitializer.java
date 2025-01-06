@@ -96,6 +96,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         createComments(allDataList.getCommentDataResponseList());
         createCarts();
         createCartItems(allDataList.getCartItemDataResponseList());
+        addProductToWishlist();
     }
 
     private void createUsers(List<UserDataResponse> userDataResponseList) throws IOException {
@@ -260,5 +261,15 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .quantity(cartItemData.getQuantity())
                     .build(), productId, firstCartId);
         }
+    }
+
+    private void addProductToWishlist() {
+        List<Product> productList = productService.findAll();
+        UUID productId = productList.getFirst().getId();
+
+        List<Profile> profileList = profileService.findAll();
+        UUID profileId = profileList.getLast().getId();
+
+        productService.addProductToProfile(productId, profileId);
     }
 }
