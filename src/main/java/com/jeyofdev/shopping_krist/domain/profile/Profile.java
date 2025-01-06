@@ -9,6 +9,9 @@ import com.jeyofdev.shopping_krist.domain.order.Order;
 import com.jeyofdev.shopping_krist.domain.product.Product;
 import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -27,16 +30,24 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "firstname", columnDefinition = "VARCHAR(50)")
+    @Column(name = "firstname", columnDefinition = "VARCHAR(30)")
+    @NotNull(message = "The firstname field is required.")
+    @Size(min = 2, max = 30, message = "The firstname field must contain between {min} and {max} characters.")
     private String firstname;
 
-    @Column(name = "lastname", columnDefinition = "VARCHAR(50)")
+    @Column(name = "lastname", columnDefinition = "VARCHAR(80)")
+    @NotNull(message = "The lastname field is required.")
+    @Size(min = 3, max = 80, message = "The lastname field must contain between {min} and {max} characters.")
     private String lastname;
 
     @Column(name = "phone", columnDefinition = "VARCHAR(10)")
+    @NotNull(message = "The phone number field is required.")
+    @Pattern(regexp = "^\\+?[0-9]*$", message = "Please provide a valid phone number.")
     private String phone;
 
     @Column(name = "address", columnDefinition = "VARCHAR(150)")
+    @NotNull(message = "The address field is required.")
+    @Size(min = 10, max = 255, message = "The address field must contain between {min} and {max} characters.")
     private String address;
 
     @OneToOne(cascade = {CascadeType.ALL})

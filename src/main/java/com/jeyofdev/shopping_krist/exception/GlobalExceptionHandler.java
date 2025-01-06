@@ -3,6 +3,8 @@ package com.jeyofdev.shopping_krist.exception;
 import com.jeyofdev.shopping_krist.exception.model.ErrorResponse;
 import com.jeyofdev.shopping_krist.util.Helper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -10,6 +12,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -92,6 +96,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception, HttpServletRequest request) {
         return handleException(exception, HttpStatus.BAD_REQUEST, request, null);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException exception, HttpServletRequest request) {
+        String errorMessage = exception.getConstraintViolations().stream()
+                .map(ConstraintViolation::getMessage)
+                .toList().getFirst();
+
+        return handleException(exception, HttpStatus.BAD_REQUEST, request, errorMessage);
     }
 
     /**
