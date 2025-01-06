@@ -19,9 +19,7 @@ public class Application {
 				config.getDbUser(),
 				config.getDbPassword(),
 				config.getDbName()
-		);
-
-		System.out.println("hello world");*/
+		);*/
 
 		SpringApplication.run(Application.class, args);
 	}

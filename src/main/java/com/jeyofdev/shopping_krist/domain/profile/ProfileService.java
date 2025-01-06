@@ -32,7 +32,11 @@ public class ProfileService extends AbstractDomainServiceBase<Profile, ProfileRe
                 );
 
         profile.setUser(user);
+        profile.setDeliveryAddressList(new ArrayList<>());
+        profile.setNotificationList(new ArrayList<>());
         profile.setOrderList(new ArrayList<>());
+        profile.setProductList(new ArrayList<>());
+        profile.setProfileSettings(null);
 
         return profileRepository.save(profile);
     }

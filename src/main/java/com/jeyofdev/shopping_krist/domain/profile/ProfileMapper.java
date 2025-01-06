@@ -9,7 +9,6 @@ import com.jeyofdev.shopping_krist.domain.notification.dto.NotificationDTO;
 import com.jeyofdev.shopping_krist.domain.order.Order;
 import com.jeyofdev.shopping_krist.domain.order.dto.OrderDTO;
 import com.jeyofdev.shopping_krist.domain.product.Product;
-import com.jeyofdev.shopping_krist.domain.product.dto.ProductDTO;
 import com.jeyofdev.shopping_krist.domain.product.dto.ProductPreviewDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfileDTO;
 import com.jeyofdev.shopping_krist.domain.profile.dto.ProfilePreviewDTO;
@@ -57,12 +56,17 @@ public class ProfileMapper implements IDomainMapper<Profile, ProfileDTO, SavePro
     }
 
     private ProfileSettingsDTO getProfileSettingsResponse(Profile profile) {
-        return new ProfileSettingsDTO(
-                profile.getProfileSettings().getId(),
-                profile.getProfileSettings().getAppearance(),
-                profile.getProfileSettings().isPushNotification(),
-                profile.getProfileSettings().isEmailNotification()
-        );
+        if (profile.getProfileSettings() != null) {
+            return new ProfileSettingsDTO(
+                    profile.getProfileSettings().getId(),
+                    profile.getProfileSettings().getAppearance(),
+                    profile.getProfileSettings().isPushNotification(),
+                    profile.getProfileSettings().isEmailNotification()
+            );
+        }
+
+        return null;
+
     }
 
     private ListRelationFormat<NotificationDTO> getNotificationListResponse(Profile profile) {

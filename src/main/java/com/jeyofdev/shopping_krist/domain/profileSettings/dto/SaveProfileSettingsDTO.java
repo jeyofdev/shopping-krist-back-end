@@ -4,6 +4,7 @@ import com.jeyofdev.shopping_krist.core.enums.DarkMode;
 
 public record SaveProfileSettingsDTO(
         DarkMode appearance,
+
         boolean isPushNotification,
         boolean isEmailNotification
 ) {

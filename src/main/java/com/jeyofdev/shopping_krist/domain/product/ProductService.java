@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,10 +35,12 @@ public class ProductService extends AbstractDomainServiceBase<Product, ProductRe
     @Transactional
     public Product save(Product product) {
         if (product.getCategoryList() != null) {
-            System.out.println("in condition");
             List<Category> categoryList = categoryRepository.findAllById(product.getCategoryList().stream().map(Category::getId).toList());
             product.setCategoryList(categoryList);
         }
+
+        product.setCommentList(new ArrayList<>());
+        product.setProfileList(new ArrayList<>());
 
         return productRepository.save(product);
     }
