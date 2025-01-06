@@ -42,7 +42,7 @@ public class Profile {
 
     @Column(name = "phone", columnDefinition = "VARCHAR(10)")
     @NotNull(message = "The phone number field is required.")
-    @Pattern(regexp = "^\\+?[0-9]*$", message = "Please provide a valid phone number.")
+    @Pattern(regexp = "^\\d{10}$", message = "Please provide a valid phone number.")
     private String phone;
 
     @Column(name = "address", columnDefinition = "VARCHAR(150)")

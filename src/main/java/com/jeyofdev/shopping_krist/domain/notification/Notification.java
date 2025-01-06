@@ -3,6 +3,8 @@ package com.jeyofdev.shopping_krist.domain.notification;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.UUID;
@@ -20,9 +22,12 @@ public class Notification {
     private UUID id;
 
     @Column(name = "title", columnDefinition = "VARCHAR(200)")
+    @NotBlank(message = "The title field is required.")
+    @Size(min = 3, max = 200, message = "The title field must contain between {min} and {max} characters.")
     private String title;
 
     @Column(name = "description", columnDefinition = "TEXT")
+    @NotBlank(message = "The title field is required.")
     private String description;
 
     @Column(name = "is_read", columnDefinition = "BOOLEAN" , nullable = false)
