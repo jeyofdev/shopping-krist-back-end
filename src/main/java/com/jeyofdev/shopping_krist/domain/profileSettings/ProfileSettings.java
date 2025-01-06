@@ -1,6 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.profileSettings;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeyofdev.shopping_krist.annotation.ValidDarkMode;
 import com.jeyofdev.shopping_krist.core.enums.DarkMode;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import jakarta.persistence.*;
@@ -21,7 +22,8 @@ public class ProfileSettings {
     private UUID id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "appearance", columnDefinition = "VARCHAR(10)")
+    @Column(name = "appearance", columnDefinition = "VARCHAR(5)")
+    @ValidDarkMode(message = "The appearance field must be 'light' or 'dark'.")
     private DarkMode appearance;
 
     @Column(name = "push_notification", columnDefinition = "BOOLEAN" , nullable = false)
