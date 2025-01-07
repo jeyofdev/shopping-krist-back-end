@@ -112,6 +112,11 @@ public class GlobalExceptionHandler {
         return handleException(exception, HttpStatus.BAD_REQUEST, request, null);
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ErrorResponse> handleNullPointerException(NullPointerException exception, HttpServletRequest request) {
+        return handleException(exception, HttpStatus.BAD_REQUEST, request, null);
+    }
+
     /**
      * Others
      */

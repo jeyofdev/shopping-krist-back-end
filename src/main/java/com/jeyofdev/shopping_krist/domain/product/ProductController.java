@@ -58,7 +58,7 @@ public class ProductController {
             @PathVariable("productId") UUID productId,
             @RequestBody SaveProductDTO saveProductDTO
     ) {
-        Product product = productMapper.mapToEntity(saveProductDTO);
+        Product product = productMapper.mapToEntity(saveProductDTO, null);
         Product updateProduct = productService.updateById(productId, product);
         ProductDTO updateProductDTO = productMapper.mapFromEntity(updateProduct);
 

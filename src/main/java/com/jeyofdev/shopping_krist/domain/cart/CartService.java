@@ -14,12 +14,12 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class CartServiceBase extends AbstractDomainServiceBase<Cart, CartRepository> {
+public class CartService extends AbstractDomainServiceBase<Cart, CartRepository> {
     private final CartRepository cartRepository;
     private final ProfileRepository profileRepository;
 
     @Autowired
-    public CartServiceBase(CartRepository cartRepository, ProfileRepository profileRepository) {
+    public CartService(CartRepository cartRepository, ProfileRepository profileRepository) {
         super(cartRepository, "cart");
         this.cartRepository = cartRepository;
         this.profileRepository = profileRepository;
@@ -42,7 +42,6 @@ public class CartServiceBase extends AbstractDomainServiceBase<Cart, CartReposit
         Cart existingCart = findById(cartId);
 
         existingCart.setUpdatedAt(new Date());
-        existingCart.setCartItemList(updatedCart.getCartItemList());
 
         return cartRepository.save(existingCart);
     }

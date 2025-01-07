@@ -11,7 +11,7 @@ import com.jeyofdev.shopping_krist.data.*;
 import com.jeyofdev.shopping_krist.domain.address.Address;
 import com.jeyofdev.shopping_krist.domain.address.AddressService;
 import com.jeyofdev.shopping_krist.domain.cart.Cart;
-import com.jeyofdev.shopping_krist.domain.cart.CartServiceBase;
+import com.jeyofdev.shopping_krist.domain.cart.CartService;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItemService;
 import com.jeyofdev.shopping_krist.domain.category.Category;
@@ -51,7 +51,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final ProfileService profileService;
     private final ProfileSettingsService profileSettingsService;
     private final ProductService productService;
-    private final CartServiceBase cartService;
+    private final CartService cartService;
     private final NotificationService notificationService;
     private final CartItemService cartItemService;
     private final AddressService addressService;

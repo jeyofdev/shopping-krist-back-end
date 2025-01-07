@@ -14,7 +14,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 public class CartController {
-    private final CartServiceBase cartService;
+    private final CartService cartService;
     private final CartMapper cartMapper;
 
     @GetMapping
