@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.jeyofdev.shopping_krist.core.serializer.ColorDeserializer;
 
 @JsonDeserialize(using = ColorDeserializer.class)
-public enum Color {
+public enum ColorEnum {
     BLACK,
     WHITE,
     BLUE,

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.jeyofdev.shopping_krist.core.serializer.SizeDeserializer;
 
 @JsonDeserialize(using = SizeDeserializer.class)
-public enum Size {
+public enum SizeEnum {
     S,
     M,
     L,

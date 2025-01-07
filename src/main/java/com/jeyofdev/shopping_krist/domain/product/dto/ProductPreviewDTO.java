@@ -1,7 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.product.dto;
 
-import com.jeyofdev.shopping_krist.core.enums.Color;
-import com.jeyofdev.shopping_krist.core.enums.Size;
+import com.jeyofdev.shopping_krist.core.enums.ColorEnum;
+import com.jeyofdev.shopping_krist.core.enums.SizeEnum;
 import com.jeyofdev.shopping_krist.domain.category.dto.CategoryDTO;
 import com.jeyofdev.shopping_krist.format.ListRelationFormat;
 import com.jeyofdev.shopping_krist.format.PriceFormat;
@@ -15,8 +15,8 @@ public record ProductPreviewDTO(
         String description,
         PriceFormat price,
         int stock,
-        Color color,
-        Size size,
+        ColorEnum color,
+        SizeEnum size,
         int comments,
         ListRelationFormat<CategoryDTO> categories
 ) {

@@ -1,7 +1,7 @@
 package com.jeyofdev.shopping_krist.domain.product.dto;
 
-import com.jeyofdev.shopping_krist.core.enums.Color;
-import com.jeyofdev.shopping_krist.core.enums.Size;
+import com.jeyofdev.shopping_krist.core.enums.ColorEnum;
+import com.jeyofdev.shopping_krist.core.enums.SizeEnum;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,8 +13,8 @@ public record SaveProductDTO(
         Double price,
         Double oldPrice,
         int stock,
-        Color color,
-        Size size,
+        ColorEnum color,
+        SizeEnum size,
         List<UUID> categoryIds
 ) {
 

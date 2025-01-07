@@ -4,9 +4,9 @@ import com.jeyofdev.shopping_krist.auth.AuthService;
 import com.jeyofdev.shopping_krist.auth.model.AuthResponse;
 import com.jeyofdev.shopping_krist.auth.model.LoginRequest;
 import com.jeyofdev.shopping_krist.auth.model.RegisterRequest;
-import com.jeyofdev.shopping_krist.core.enums.Color;
-import com.jeyofdev.shopping_krist.core.enums.DarkMode;
-import com.jeyofdev.shopping_krist.core.enums.Size;
+import com.jeyofdev.shopping_krist.core.enums.ColorEnum;
+import com.jeyofdev.shopping_krist.core.enums.DarkModeEnum;
+import com.jeyofdev.shopping_krist.core.enums.SizeEnum;
 import com.jeyofdev.shopping_krist.data.*;
 import com.jeyofdev.shopping_krist.domain.address.Address;
 import com.jeyofdev.shopping_krist.domain.address.AddressService;
@@ -145,7 +145,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             UUID profileId = profile.getId();
 
             profileSettingsService.save(ProfileSettings.builder()
-                    .appearance(DarkMode.valueOf(profileSettingsDataResponse.getAppearance().toUpperCase()))
+                    .appearance(profileSettingsDataResponse.getAppearance() != null ? DarkModeEnum.valueOf(profileSettingsDataResponse.getAppearance().toUpperCase()) : null)
                     .isPushNotification(profileSettingsDataResponse.isPushNotification())
                     .isEmailNotification(profileSettingsDataResponse.isEmailNotification())
                     .build(), profileId
@@ -216,8 +216,8 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .price(product.getPrice())
                     .oldPrice(product.getOldPrice())
                     .stock(product.getStock())
-                    .color(Color.valueOf(product.getColor()))
-                    .size(Size.valueOf(product.getSize()))
+                    .color(ColorEnum.valueOf(product.getColor()))
+                    .size(SizeEnum.valueOf(product.getSize()))
                     .categoryList(randomCategoryList)
                     .build());
         }

@@ -1,22 +1,21 @@
 package com.jeyofdev.shopping_krist.domain.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jeyofdev.shopping_krist.core.enums.Color;
-import com.jeyofdev.shopping_krist.core.enums.DarkMode;
-import com.jeyofdev.shopping_krist.core.enums.Size;
+import com.jeyofdev.shopping_krist.annotation.ValidEnum;
+import com.jeyofdev.shopping_krist.core.enums.ColorEnum;
+import com.jeyofdev.shopping_krist.core.enums.DarkModeEnum;
+import com.jeyofdev.shopping_krist.core.enums.SizeEnum;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import com.jeyofdev.shopping_krist.domain.category.Category;
 import com.jeyofdev.shopping_krist.domain.comment.Comment;
-import com.jeyofdev.shopping_krist.domain.notification.Notification;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
-import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -35,12 +34,12 @@ public class Product {
 
     @Column(name = "brand", columnDefinition = "VARCHAR(50)")
     @NotNull(message = "The brand field is required.")
-    @jakarta.validation.constraints.Size(min = 2, max = 30, message = "The brand field must contain between {min} and {max} characters.")
+    @Size(min = 2, max = 30, message = "The brand field must contain between {min} and {max} characters.")
     private String brand;
 
     @Column(name = "name", columnDefinition = "TEXT")
     @NotNull(message = "The name field is required.")
-    @jakarta.validation.constraints.Size(min = 2, message = "The name field must be at least {min} characters.")
+    @Size(min = 2, message = "The name field must be at least {min} characters.")
     private String name;
 
     @Column(name = "description", columnDefinition = "TEXT")
@@ -64,11 +63,15 @@ public class Product {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "color", columnDefinition = "VARCHAR(10)")
-    private Color color;
+    @NotNull(message = "The color field is required.")
+    @ValidEnum(enumClass = ColorEnum.class, message = "The color field must a color.")
+    private ColorEnum color;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "size", columnDefinition = "VARCHAR(3)")
-    private Size size;
+    @NotNull(message = "The size field is required.")
+    @ValidEnum(enumClass = SizeEnum.class, message = "The size field must a size.")
+    private SizeEnum size;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore

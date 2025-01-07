@@ -1,6 +1,6 @@
 package com.jeyofdev.shopping_krist.annotation;
 
-import com.jeyofdev.shopping_krist.validation.DarkModeValidator;
+import com.jeyofdev.shopping_krist.validation.EnumValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -9,13 +9,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = DarkModeValidator.class)
+@Constraint(validatedBy = EnumValidator.class)
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ValidDarkMode {
-    String message() default "Invalid appearance value. Must be 'light' or 'dark'.";
+public @interface ValidEnum {
+    String message() default "Invalid value";
 
     Class<?>[] groups() default {};
-    
+
     Class<? extends Payload>[] payload() default {};
+
+    Class<? extends Enum<?>> enumClass();
 }

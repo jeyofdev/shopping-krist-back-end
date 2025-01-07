@@ -107,6 +107,11 @@ public class GlobalExceptionHandler {
         return handleException(exception, HttpStatus.BAD_REQUEST, request, errorMessage);
     }
 
+    @ExceptionHandler(InvalidEnumValueException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidEnumValueException(InvalidEnumValueException exception, HttpServletRequest request) {
+        return handleException(exception, HttpStatus.BAD_REQUEST, request, null);
+    }
+
     /**
      * Others
      */
