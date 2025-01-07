@@ -1,12 +1,12 @@
 package com.jeyofdev.shopping_krist.domain.order.dto;
 
-import java.util.Date;
+import com.jeyofdev.shopping_krist.core.enums.OrderStatusEnum;
+
 import java.util.List;
 import java.util.UUID;
 
 public record SaveOrderDTO(
-        /*Date createdAt,*/
-        String status,
+        OrderStatusEnum status,
         List<UUID> cartItemIds
 ) {
 }

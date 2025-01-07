@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeyofdev.shopping_krist.domain.city.City;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.UUID;
@@ -25,28 +22,28 @@ public class Address {
     private UUID id;
 
     @Column(name = "name", columnDefinition = "VARCHAR(100)")
-    @NotBlank(message = "The name field is required.")
-    @Size(min = 5, max = 100, message = "The name field must contain between {min} and {max} characters.")
+    @NotNull(message = AddressValidationMessages.REQUIRED_NAME)
+    @Size(min = 5, max = 100, message = AddressValidationMessages.VALID_NAME)
     private String name;
 
     @Column(name = "phone", columnDefinition = "VARCHAR(10)")
-    @NotNull(message = "The phone number field is required.")
-    @Pattern(regexp = "^\\d{10}$", message = "Please provide a valid phone number.")
+    @NotNull(message = AddressValidationMessages.REQUIRED_PHONE)
+    @Pattern(regexp = "^\\d{10}$", message = AddressValidationMessages.VALID_PHONE)
     private String phone;
 
     @Column(name = "street_number", columnDefinition = "VARCHAR(4)")
-    @NotBlank(message = "The name street number is required.")
-    @Pattern(regexp = "^[0-9]{1,4}$", message = "The street number must be a maximum of 4 digits.")
+    @NotNull(message = AddressValidationMessages.REQUIRED_STREET_NUMBER)
+    @Pattern(regexp = "^[0-9]{1,4}$", message = AddressValidationMessages.VALID_STREET_NUMBER)
     private String streetNumber;
 
     @Column(name = "street", columnDefinition = "VARCHAR(100)")
-    @NotBlank(message = "The street field is required.")
-    @Size(min = 3, max = 100, message = "The street field must contain between {min} and {max} characters.")
+    @NotNull(message = AddressValidationMessages.REQUIRED_STREET)
+    @Size(min = 3, max = 100, message = AddressValidationMessages.VALID_STREET_SIZE)
     private String street;
 
     @Column(name = "zip_code", columnDefinition = "VARCHAR(5)")
-    @NotBlank(message = "The zip code field is required.")
-    @Pattern(regexp = "\\d{5}", message = "The zip code must be exactly 5 digits.")
+    @NotNull(message = AddressValidationMessages.REQUIRED_ZIP_CODE)
+    @Pattern(regexp = "\\d{5}", message = AddressValidationMessages.VALID_ZIP_CODE)
     private String zipCode;
 
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})

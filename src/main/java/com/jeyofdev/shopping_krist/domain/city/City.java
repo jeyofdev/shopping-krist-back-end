@@ -1,9 +1,8 @@
 package com.jeyofdev.shopping_krist.domain.city;
 
+import com.jeyofdev.shopping_krist.core.constants.Regex;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.UUID;
@@ -21,13 +20,12 @@ public class City {
     private UUID id;
 
     @Column(name = "name", columnDefinition = "VARCHAR(50)")
-    @NotBlank(message = "The name field is required.")
-    @Size(min = 2, max = 50, message = "The name field must contain between {min} and {max} characters.")
+    @NotNull(message = CityValidationMessages.REQUIRED_NAME)
+    @Size(min = 2, max = 50, message = CityValidationMessages.VALID_NAME)
     private String name;
 
-
     @Column(name = "zip_code", columnDefinition = "VARCHAR(5)")
-    @NotBlank(message = "The zip code field is required.")
-    @Pattern(regexp = "\\d{5}", message = "The zip code must be exactly 5 digits.")
+    @NotNull(message = CityValidationMessages.REQUIRED_ZIP_CODE)
+    @Pattern(regexp = Regex.ZIP_CODE_PATTERN, message = CityValidationMessages.VALID_ZIP_CODE)
     private String zipCode;
 }

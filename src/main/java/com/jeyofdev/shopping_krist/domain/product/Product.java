@@ -3,17 +3,13 @@ package com.jeyofdev.shopping_krist.domain.product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeyofdev.shopping_krist.annotation.ValidEnum;
 import com.jeyofdev.shopping_krist.core.enums.ColorEnum;
-import com.jeyofdev.shopping_krist.core.enums.DarkModeEnum;
 import com.jeyofdev.shopping_krist.core.enums.SizeEnum;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import com.jeyofdev.shopping_krist.domain.category.Category;
 import com.jeyofdev.shopping_krist.domain.comment.Comment;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -33,44 +29,44 @@ public class Product {
     private UUID id;
 
     @Column(name = "brand", columnDefinition = "VARCHAR(50)")
-    @NotNull(message = "The brand field is required.")
-    @Size(min = 2, max = 30, message = "The brand field must contain between {min} and {max} characters.")
+    @NotNull(message = ProductValidationMessages.REQUIRED_BRAND)
+    @Size(min = 2, max = 30, message = ProductValidationMessages.VALID_BRAND)
     private String brand;
 
     @Column(name = "name", columnDefinition = "TEXT")
-    @NotNull(message = "The name field is required.")
-    @Size(min = 2, message = "The name field must be at least {min} characters.")
+    @NotNull(message = ProductValidationMessages.REQUIRED_NAME)
+    @Size(min = 2, message = ProductValidationMessages.VALID_NAME)
     private String name;
 
     @Column(name = "description", columnDefinition = "TEXT")
-    @NotBlank(message = "The review field is required.")
+    @NotNull(message = ProductValidationMessages.REQUIRED_DESCRIPTION)
     private String description;
 
     @Column(name = "price", columnDefinition = "DECIMAL(10, 2)")
-    @NotNull(message = "The price field is required.")
-    @Min(value = 0, message = "The price must be at least 0.")
+    @NotNull(message = ProductValidationMessages.REQUIRED_PRICE)
+    @Min(value = 0, message = ProductValidationMessages.MIN_PRICE)
     private Double price;
 
     @Column(name = "old_price", columnDefinition = "DECIMAL(10, 2)")
-    @NotNull(message = "The old price field is required.")
-    @Min(value = 0, message = "The old price must be at least 0.")
+    @NotNull(message = ProductValidationMessages.REQUIRED_OLD_PRICE)
+    @Min(value = 0, message = ProductValidationMessages.MIN_OLD_PRICE)
     private Double oldPrice;
 
     @Column(name = "stock", columnDefinition = "INT")
-    @NotNull(message = "The stock field is required.")
-    @Min(value = 0, message ="The minimum stock must be at least 0.")
+    @NotNull(message = ProductValidationMessages.REQUIRED_STOCK)
+    @Min(value = 0, message = ProductValidationMessages.MIN_STOCK)
     private Integer stock;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "color", columnDefinition = "VARCHAR(10)")
-    @NotNull(message = "The color field is required.")
-    @ValidEnum(enumClass = ColorEnum.class, message = "The color field must a color.")
+    @NotNull(message = ProductValidationMessages.REQUIRED_COLOR)
+    @ValidEnum(enumClass = ColorEnum.class, message = ProductValidationMessages.VALID_COLOR)
     private ColorEnum color;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "size", columnDefinition = "VARCHAR(3)")
-    @NotNull(message = "The size field is required.")
-    @ValidEnum(enumClass = SizeEnum.class, message = "The size field must a size.")
+    @NotNull(message = ProductValidationMessages.REQUIRED_SIZE)
+    @ValidEnum(enumClass = SizeEnum.class, message = ProductValidationMessages.VALID_SIZE)
     private SizeEnum size;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)

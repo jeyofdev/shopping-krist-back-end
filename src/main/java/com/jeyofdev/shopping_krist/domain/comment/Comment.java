@@ -22,18 +22,18 @@ public class Comment {
     private UUID id;
 
     @Column(name = "title", columnDefinition = "VARCHAR(255)")
-    @NotBlank(message = "The title field is required.")
-    @Size(min = 3, max = 255, message = "The title field must contain between {min} and {max} characters.")
+    @NotNull(message = CommentValidationMessages.REQUIRED_TITLE)
+    @Size(min = 3, max = 255, message = CommentValidationMessages.VALID_TITLE)
     private String title;
 
     @Column(name = "review", columnDefinition = "TEXT")
-    @NotBlank(message = "The review field is required.")
+    @NotNull(message = CommentValidationMessages.REQUIRED_REVIEW)
     private String review;
 
     @Column(name = "rating", columnDefinition = "INT")
-    @NotNull(message = "The rating field is required.")
-    @Min(value = 1, message ="The minimum rating must be at least 1.")
-    @Max(value = 5, message ="The maximum rating mut be 5.")
+    @NotNull(message = CommentValidationMessages.REQUIRED_RATING)
+    @Min(value = 1, message = CommentValidationMessages.MIN_RATING)
+    @Max(value = 5, message = CommentValidationMessages.MAX_RATING)
     private Integer rating;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")

@@ -1,12 +1,13 @@
 package com.jeyofdev.shopping_krist.domain.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeyofdev.shopping_krist.annotation.ValidEnum;
+import com.jeyofdev.shopping_krist.core.enums.OrderStatusEnum;
 import com.jeyofdev.shopping_krist.domain.address.Address;
 import com.jeyofdev.shopping_krist.domain.cartItem.CartItem;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.Date;
@@ -28,10 +29,11 @@ public class Order {
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private Date createdAt;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "VARCHAR(50)")
-    @NotBlank(message = "The status field is required.")
-    @Size(min = 3, max = 50, message = "The status field must contain between {min} and {max} characters.")
-    private String status;
+    @NotNull(message = OrderValidationMessages.REQUIRED_STATUS)
+    @ValidEnum(enumClass = OrderStatusEnum.class, message = OrderValidationMessages.VALID_STATUS)
+    private OrderStatusEnum status;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "profile_id", referencedColumnName = "id")

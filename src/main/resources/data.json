@@ -24,13 +24,13 @@
     {
       "firstname": "john",
       "lastname": "doe",
-      "phone": "0123456789",
+      "phone": "(+33) 1 23 45 67 89",
       "address": "10 rue de la republique 33590 Mérignac"
     },
     {
       "firstname": "jane",
       "lastname": "doe",
-      "phone": "0123456745",
+      "phone": "(+33) 1 23 45 67 45",
       "address": "10 rue de la republique 33590 Mérignac"
     }
   ],

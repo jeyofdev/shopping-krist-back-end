@@ -5,7 +5,7 @@ import com.jeyofdev.shopping_krist.annotation.ValidEnum;
 import com.jeyofdev.shopping_krist.core.enums.DarkModeEnum;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.UUID;
@@ -24,9 +24,8 @@ public class ProfileSettings {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "appearance", columnDefinition = "VARCHAR(5)")
-    @NotNull(message = "The appearance field is required.")
-    @ValidEnum(enumClass = DarkModeEnum.class, message = "The appearance field must be 'light' or 'dark'.")
-
+    @NotNull(message = ProfileSettingsValidationMessages.REQUIRED_APPEARANCE)
+    @ValidEnum(enumClass = DarkModeEnum.class, message = ProfileSettingsValidationMessages.VALID_APPEARANCE)
     private DarkModeEnum appearance;
 
     @Column(name = "push_notification", columnDefinition = "BOOLEAN" , nullable = false)
