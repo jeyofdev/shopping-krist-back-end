@@ -5,6 +5,9 @@ import com.jeyofdev.shopping_krist.domain.cart.Cart;
 import com.jeyofdev.shopping_krist.domain.order.Order;
 import com.jeyofdev.shopping_krist.domain.product.Product;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.UUID;
@@ -22,6 +25,8 @@ public class CartItem {
     private UUID id;
 
     @Column(name = "quantity", columnDefinition = "INT")
+    @NotNull(message = "The quantity field is required.")
+    @Min(value = 1, message ="The minimum quantity must be at least 0.")
     private Integer quantity;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})

@@ -11,6 +11,9 @@ import com.jeyofdev.shopping_krist.domain.notification.Notification;
 import com.jeyofdev.shopping_krist.domain.profile.Profile;
 import com.jeyofdev.shopping_krist.domain.profileSettings.ProfileSettings;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -31,21 +34,32 @@ public class Product {
     private UUID id;
 
     @Column(name = "brand", columnDefinition = "VARCHAR(50)")
+    @NotNull(message = "The brand field is required.")
+    @jakarta.validation.constraints.Size(min = 2, max = 30, message = "The brand field must contain between {min} and {max} characters.")
     private String brand;
 
     @Column(name = "name", columnDefinition = "TEXT")
+    @NotNull(message = "The name field is required.")
+    @jakarta.validation.constraints.Size(min = 2, message = "The name field must be at least {min} characters.")
     private String name;
 
     @Column(name = "description", columnDefinition = "TEXT")
+    @NotBlank(message = "The review field is required.")
     private String description;
 
     @Column(name = "price", columnDefinition = "DECIMAL(10, 2)")
+    @NotNull(message = "The price field is required.")
+    @Min(value = 0, message = "The price must be at least 0.")
     private Double price;
 
     @Column(name = "old_price", columnDefinition = "DECIMAL(10, 2)")
+    @NotNull(message = "The old price field is required.")
+    @Min(value = 0, message = "The old price must be at least 0.")
     private Double oldPrice;
 
     @Column(name = "stock", columnDefinition = "INT")
+    @NotNull(message = "The stock field is required.")
+    @Min(value = 0, message ="The minimum stock must be at least 0.")
     private Integer stock;
 
     @Enumerated(EnumType.STRING)
