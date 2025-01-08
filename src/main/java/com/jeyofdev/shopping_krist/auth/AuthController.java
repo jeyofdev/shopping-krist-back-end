@@ -1,13 +1,14 @@
 package com.jeyofdev.shopping_krist.auth;
 
 import com.jeyofdev.shopping_krist.auth.model.*;
+import com.jeyofdev.shopping_krist.core.constants.ApiRoutes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping(ApiRoutes.BASE_API_V1 + "/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

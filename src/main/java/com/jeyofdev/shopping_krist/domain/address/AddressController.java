@@ -1,9 +1,9 @@
 package com.jeyofdev.shopping_krist.domain.address;
 
+import com.jeyofdev.shopping_krist.core.constants.ApiRoutes;
 import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.address.dto.AddressDTO;
 import com.jeyofdev.shopping_krist.domain.address.dto.SaveAddressDTO;
-import com.jeyofdev.shopping_krist.domain.city.dto.CityDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/address")
+@RequestMapping(ApiRoutes.BASE_API_V1 + ApiRoutes.ADDRESS)
 @RequiredArgsConstructor
 public class AddressController {
     private final AddressService addressService;
@@ -41,7 +41,7 @@ public class AddressController {
         );
     }
 
-    @PostMapping("/city/{cityId}/profile/{profileId}")
+    @PostMapping(ApiRoutes.CITY + "/{cityId}/" + ApiRoutes.PROFILE + "/{profileId}")
     public ResponseEntity<DomainSuccessResponse<AddressDTO>> saveAddress(
             @RequestBody SaveAddressDTO saveAddressDTO,
             @PathVariable("cityId") UUID cityId,

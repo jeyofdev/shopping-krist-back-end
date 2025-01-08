@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.notification;
 
+import com.jeyofdev.shopping_krist.core.constants.ApiRoutes;
 import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.notification.dto.NotificationDTO;
 import com.jeyofdev.shopping_krist.domain.notification.dto.SaveNotificationDTO;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/notification")
+@RequestMapping(ApiRoutes.BASE_API_V1 + ApiRoutes.NOTIFICATION)
 @RequiredArgsConstructor
 public class NotificationController {
     private final NotificationService notificationService;
@@ -40,7 +41,7 @@ public class NotificationController {
         );
     }
 
-    @PostMapping("profile/{profileId}")
+    @PostMapping(ApiRoutes.PROFILE + "/{profileId}")
     public ResponseEntity<DomainSuccessResponse<NotificationDTO>> saveNotification(
             @RequestBody SaveNotificationDTO saveNotificationDTO,
             @PathVariable("profileId") UUID profileId

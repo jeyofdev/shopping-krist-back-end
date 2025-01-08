@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.category;
 
+import com.jeyofdev.shopping_krist.core.constants.ApiRoutes;
 import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.category.dto.CategoryDTO;
 import com.jeyofdev.shopping_krist.domain.category.dto.SaveCategoryDTO;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/category")
+@RequestMapping(ApiRoutes.BASE_API_V1 + ApiRoutes.CATEGORY)
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;

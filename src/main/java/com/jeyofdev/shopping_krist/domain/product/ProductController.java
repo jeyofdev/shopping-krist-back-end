@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.product;
 
+import com.jeyofdev.shopping_krist.core.constants.ApiRoutes;
 import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.product.dto.ProductDTO;
 import com.jeyofdev.shopping_krist.domain.product.dto.SaveProductDTO;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/product")
+@RequestMapping(ApiRoutes.BASE_API_V1 + ApiRoutes.PRODUCT)
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
@@ -52,7 +53,7 @@ public class ProductController {
         );
     }
 
-    @PostMapping("/{productId}/profile/{profileId}")
+    @PostMapping("/{productId}" + ApiRoutes.PROFILE + "/{profileId}")
     public ResponseEntity<DomainSuccessResponse<ProductDTO>> addProductToWishlish(
             @PathVariable("productId") UUID productId,
             @PathVariable("profileId") UUID profileId

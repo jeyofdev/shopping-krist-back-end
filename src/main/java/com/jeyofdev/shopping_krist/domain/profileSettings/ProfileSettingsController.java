@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.profileSettings;
 
+import com.jeyofdev.shopping_krist.core.constants.ApiRoutes;
 import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.profileSettings.dto.ProfileSettingsDTO;
 import com.jeyofdev.shopping_krist.domain.profileSettings.dto.SaveProfileSettingsDTO;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/profile/settings")
+@RequestMapping(ApiRoutes.BASE_API_V1 + ApiRoutes.PROFILE_SETTINGS)
 @RequiredArgsConstructor
 public class ProfileSettingsController {
     private final ProfileSettingsService profileSettingsService;
@@ -40,7 +41,7 @@ public class ProfileSettingsController {
         );
     }
 
-    @PostMapping("/profile/{profileId}")
+    @PostMapping(ApiRoutes.PROFILE + "/{profileId}")
     public ResponseEntity<DomainSuccessResponse<ProfileSettingsDTO>> saveProfileSettings(
             @RequestBody SaveProfileSettingsDTO saveProfileSettingsDTO,
             @PathVariable UUID profileId

@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.city;
 
+import com.jeyofdev.shopping_krist.core.constants.ApiRoutes;
 import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.city.dto.CityDTO;
 import com.jeyofdev.shopping_krist.domain.city.dto.SaveCityDTO;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/city")
+@RequestMapping(ApiRoutes.BASE_API_V1 + ApiRoutes.CITY)
 @RequiredArgsConstructor
 public class CityController {
     private final CityService cityService;

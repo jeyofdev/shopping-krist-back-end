@@ -1,6 +1,7 @@
 package com.jeyofdev.shopping_krist.auth_user;
 
 import com.jeyofdev.shopping_krist.auth_user.dto.AuthUserDTO;
+import com.jeyofdev.shopping_krist.core.constants.ApiRoutes;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping(ApiRoutes.BASE_API_V1 + ApiRoutes.USER)
 @RequiredArgsConstructor
 public class AuthUserController {
 

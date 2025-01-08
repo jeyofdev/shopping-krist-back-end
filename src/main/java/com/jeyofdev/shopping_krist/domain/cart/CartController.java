@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.cart;
 
+import com.jeyofdev.shopping_krist.core.constants.ApiRoutes;
 import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.cart.dto.CartDTO;
 import com.jeyofdev.shopping_krist.domain.cart.dto.SaveCartDTO;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/cart")
+@RequestMapping(ApiRoutes.BASE_API_V1 + ApiRoutes.CART)
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
@@ -40,7 +41,7 @@ public class CartController {
         );
     }
 
-    @PostMapping("profile/{profileId}")
+    @PostMapping(ApiRoutes.PROFILE + "/{profileId}")
     public ResponseEntity<DomainSuccessResponse<CartDTO>> saveCart(
             @RequestBody SaveCartDTO saveCartDTO,
             @PathVariable("profileId") UUID profileId

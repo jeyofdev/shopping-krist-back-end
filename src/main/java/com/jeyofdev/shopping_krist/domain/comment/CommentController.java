@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.comment;
 
+import com.jeyofdev.shopping_krist.core.constants.ApiRoutes;
 import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.comment.dto.CommentDTO;
 import com.jeyofdev.shopping_krist.domain.comment.dto.SaveCommentDTO;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/comment")
+@RequestMapping(ApiRoutes.BASE_API_V1 + ApiRoutes.COMMENT)
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;
@@ -40,7 +41,7 @@ public class CommentController {
         );
     }
 
-    @PostMapping("/product/{productId}")
+    @PostMapping(ApiRoutes.PRODUCT + "/{productId}")
     public ResponseEntity<DomainSuccessResponse<CommentDTO>> saveComment(
             @RequestBody SaveCommentDTO saveCommentDTO,
             @PathVariable("productId") UUID productId

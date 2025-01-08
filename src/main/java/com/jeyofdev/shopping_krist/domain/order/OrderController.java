@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.order;
 
+import com.jeyofdev.shopping_krist.core.constants.ApiRoutes;
 import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.order.dto.OrderDTO;
 import com.jeyofdev.shopping_krist.domain.order.dto.SaveOrderDTO;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/order")
+@RequestMapping(ApiRoutes.BASE_API_V1 + ApiRoutes.ORDER)
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderServiceBase orderService;
@@ -40,7 +41,7 @@ public class OrderController {
         );
     }
 
-    @PostMapping("profile/{profileId}/address/{addressId}")
+    @PostMapping(ApiRoutes.PROFILE + "/{profileId}" + ApiRoutes.ADDRESS + "/{addressId}")
     public ResponseEntity<DomainSuccessResponse<OrderDTO>> saveOrder(
             @RequestBody SaveOrderDTO saveOrderDTO,
             @PathVariable("profileId") UUID profileId,
