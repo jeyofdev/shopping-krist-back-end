@@ -61,10 +61,10 @@ public class DatabaseInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("Database initialization started...");
-       /* this.createDatas();*/
+        this.createDatas();
     }
 
-    public static void initializeDatabase(String jdbcUrl, String user, String password, String dbName) {
+    /*public static void initializeDatabase(String jdbcUrl, String user, String password, String dbName) {
         String createDbQuery = MessageFormat.format("CREATE DATABASE {0}", dbName);
         try (Connection connection = DriverManager.getConnection(jdbcUrl, user, password);
              Statement statement = connection.createStatement()) {
@@ -80,7 +80,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                 throw new RuntimeException(e);
             }
         }
-    }
+    }*/
 
     private void createDatas() throws IOException {
         AllDataResponse allDataList = allDataService.getAllDatas();
