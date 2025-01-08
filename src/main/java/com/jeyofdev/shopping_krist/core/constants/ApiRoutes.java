@@ -14,5 +14,7 @@ public class ApiRoutes {
     public static final String PRODUCT = "/product";
     public static final String PROFILE = "/profile";
     public static final String PROFILE_SETTINGS = "/profile/settings";
+    public static final String AUTH = "/auth";
     public static final String USER = "/user";
+
 }

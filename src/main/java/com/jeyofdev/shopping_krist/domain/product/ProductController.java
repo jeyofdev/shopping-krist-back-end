@@ -4,9 +4,11 @@ import com.jeyofdev.shopping_krist.core.constants.ApiRoutes;
 import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.product.dto.ProductDTO;
 import com.jeyofdev.shopping_krist.domain.product.dto.SaveProductDTO;
+import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +22,7 @@ public class ProductController {
     private final ProductMapper productMapper;
 
     @GetMapping
+    @PermitAll
     public ResponseEntity<DomainSuccessResponse<List<ProductDTO>>> findAllCity() {
         List<Product> productList = productService.findAll();
         List<ProductDTO> productListDTOList = productList.stream().map(productMapper::mapFromEntity).toList();
@@ -31,6 +34,7 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
+    @PermitAll
     public ResponseEntity<DomainSuccessResponse<ProductDTO>> findProductById(@PathVariable("productId") UUID productId) {
         Product product = productService.findById(productId);
         ProductDTO productDTO = productMapper.mapFromEntity(product);
@@ -42,6 +46,7 @@ public class ProductController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<ProductDTO>> saveProduct(@RequestBody SaveProductDTO saveProductDTO) {
         Product product = productMapper.mapToEntity(saveProductDTO, null);
         Product newProduct = productService.save(product);
@@ -54,6 +59,7 @@ public class ProductController {
     }
 
     @PostMapping("/{productId}" + ApiRoutes.PROFILE + "/{profileId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<ProductDTO>> addProductToWishlish(
             @PathVariable("productId") UUID productId,
             @PathVariable("profileId") UUID profileId
@@ -68,6 +74,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<ProductDTO>> updateProductById(
             @PathVariable("productId") UUID productId,
             @RequestBody SaveProductDTO saveProductDTO
@@ -83,6 +90,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{productId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<Object>> deleteProductById(@PathVariable("productId") UUID productId) {
         String message = productService.deleteById(productId);
 

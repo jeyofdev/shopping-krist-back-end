@@ -7,6 +7,7 @@ import com.jeyofdev.shopping_krist.domain.cartItem.dto.SaveCartItemDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class CartItemController {
     private final CartItemMapper cartItemMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<List<CartItemDTO>>> findAllCartItem() {
         List<CartItem> cartItemList = cartItemService.findAll();
         List<CartItemDTO> cartItemDTOList = cartItemList.stream().map(cartItemMapper::mapFromEntity).toList();
@@ -31,6 +33,7 @@ public class CartItemController {
     }
 
     @GetMapping("/{cartItemId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<CartItemDTO>> findCartItemById(@PathVariable("cartItemId") UUID cartItemId) {
         CartItem cartItem = cartItemService.findById(cartItemId);
         CartItemDTO cartItemDTO = cartItemMapper.mapFromEntity(cartItem);
@@ -42,6 +45,7 @@ public class CartItemController {
     }
 
     @PostMapping(ApiRoutes.PRODUCT + "/{productId}" + ApiRoutes.CART + "/{cartId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<CartItemDTO>> saveCartItem(
             @RequestBody SaveCartItemDTO saveCartItemDTO,
             @PathVariable("productId") UUID productId,
@@ -58,6 +62,7 @@ public class CartItemController {
     }
 
     @PutMapping("/{cartItemId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<CartItemDTO>> updateCartItemById(
             @PathVariable("cartItemId") UUID cartItemId,
             @RequestBody SaveCartItemDTO saveCartItemDTO
@@ -73,6 +78,7 @@ public class CartItemController {
     }
 
     @DeleteMapping("/{cartItemId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<Object>> deleteCartItemById(@PathVariable("cartItemId") UUID cartItemId) {
         String message = cartItemService.deleteById(cartItemId);
 

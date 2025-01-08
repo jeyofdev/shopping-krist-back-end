@@ -4,9 +4,11 @@ import com.jeyofdev.shopping_krist.core.constants.ApiRoutes;
 import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.category.dto.CategoryDTO;
 import com.jeyofdev.shopping_krist.domain.category.dto.SaveCategoryDTO;
+import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +22,7 @@ public class CategoryController {
     private final CategoryMapper categoryMapper;
 
     @GetMapping
+    @PermitAll
     public ResponseEntity<DomainSuccessResponse<List<CategoryDTO>>> findAllCategory() {
         List<Category> categoryList = categoryService.findAll();
         List<CategoryDTO> categoryDTOList = categoryList.stream().map(categoryMapper::mapFromEntity).toList();
@@ -31,6 +34,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{categoryId}")
+    @PermitAll
     public ResponseEntity<DomainSuccessResponse<CategoryDTO>> findCategoryById(@PathVariable("categoryId") UUID categoryId) {
         Category category = categoryService.findById(categoryId);
         CategoryDTO categoryDTO = categoryMapper.mapFromEntity(category);
@@ -42,6 +46,7 @@ public class CategoryController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<CategoryDTO>> saveCategory(
             @RequestBody SaveCategoryDTO saveCategoryDTO
     ) {
@@ -56,6 +61,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{categoryId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<CategoryDTO>> updateCategoryById(
             @PathVariable("categoryId") UUID categoryId,
             @RequestBody SaveCategoryDTO saveCategoryDTO
@@ -71,6 +77,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{categoryId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<Object>> deleteCategoryById(@PathVariable("categoryId") UUID categoryId) {
         String message = categoryService.deleteById(categoryId);
 

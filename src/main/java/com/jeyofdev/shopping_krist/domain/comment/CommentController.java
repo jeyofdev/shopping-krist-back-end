@@ -7,6 +7,7 @@ import com.jeyofdev.shopping_krist.domain.comment.dto.SaveCommentDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class CommentController {
     private final CommentMapper commentMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<List<CommentDTO>>> findAllComment() {
         List<Comment> commentList = commentService.findAll();
         List<CommentDTO> commentDTOList = commentList.stream().map(commentMapper::mapFromEntity).toList();
@@ -31,6 +33,7 @@ public class CommentController {
     }
 
     @GetMapping("/{commentId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<CommentDTO>> findCommentById(@PathVariable("commentId") UUID commentId) {
         Comment comment = commentService.findById(commentId);
         CommentDTO commentDTO = commentMapper.mapFromEntity(comment);
@@ -42,6 +45,7 @@ public class CommentController {
     }
 
     @PostMapping(ApiRoutes.PRODUCT + "/{productId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<CommentDTO>> saveComment(
             @RequestBody SaveCommentDTO saveCommentDTO,
             @PathVariable("productId") UUID productId
@@ -57,6 +61,7 @@ public class CommentController {
     }
 
     @PutMapping("/{commentId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<CommentDTO>> updateCommentById(
             @PathVariable("commentId") UUID commentId,
             @RequestBody SaveCommentDTO saveCommentDTO
@@ -72,6 +77,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<Object>> deleteCommentById(@PathVariable("commentId") UUID commentId) {
         String message = commentService.deleteById(commentId);
 

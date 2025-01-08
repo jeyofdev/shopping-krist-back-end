@@ -7,6 +7,7 @@ import com.jeyofdev.shopping_krist.domain.notification.dto.SaveNotificationDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class NotificationController {
     private final NotificationMapper notificationMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<List<NotificationDTO>>> findAllNotification() {
         List<Notification> notificationList = notificationService.findAll();
         List<NotificationDTO> notificationDTOList = notificationList.stream().map(notificationMapper::mapFromEntity).toList();
@@ -31,6 +33,7 @@ public class NotificationController {
     }
 
     @GetMapping("/{notificationId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<NotificationDTO>> findNotificationById(@PathVariable("notificationId") UUID notificationId) {
         Notification notification = notificationService.findById(notificationId);
         NotificationDTO notificationDTO = notificationMapper.mapFromEntity(notification);
@@ -42,6 +45,7 @@ public class NotificationController {
     }
 
     @PostMapping(ApiRoutes.PROFILE + "/{profileId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<NotificationDTO>> saveNotification(
             @RequestBody SaveNotificationDTO saveNotificationDTO,
             @PathVariable("profileId") UUID profileId
@@ -57,6 +61,7 @@ public class NotificationController {
     }
 
     @PutMapping("/{notificationId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<NotificationDTO>> updateNotificationById(
             @PathVariable("notificationId") UUID notificationId,
             @RequestBody SaveNotificationDTO saveNotificationDTO
@@ -72,6 +77,7 @@ public class NotificationController {
     }
 
     @DeleteMapping("/{notificationId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<Object>> deleteNotificationById(@PathVariable("notificationId") UUID notificationId) {
         String message = notificationService.deleteById(notificationId);
 

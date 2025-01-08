@@ -1,12 +1,15 @@
 package com.jeyofdev.shopping_krist.security.config;
 
 
+import com.jeyofdev.shopping_krist.core.constants.ApiRoutes;
+import com.jeyofdev.shopping_krist.core.enums.RoleEnum;
 import com.jeyofdev.shopping_krist.security.filter.JwtAuthenticationFilter;
 import com.jeyofdev.shopping_krist.security.handler.AccessDeniedHandler;
 import com.jeyofdev.shopping_krist.security.handler.JwtAuthenticationErrors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -40,19 +43,98 @@ public class SecurityConfig {
 
             // Liste des routes protégées / non protégées
             .authorizeHttpRequests((requests) -> requests
-                    /*.requestMatchers(HttpMethod.GET, "/api/v1/users/**").hasAnyRole(RoleEnum.USER.name())
-                    .requestMatchers(HttpMethod.POST, "/api/v1/auth/update-password").hasRole(RoleEnum.USER.name())
-                    .requestMatchers(HttpMethod.GET,"/api/v1/auth/**").permitAll()
-                    .requestMatchers(
-                            HttpMethod.POST,
-                            "/api/v1/auth/register",
-                            "/api/v1/auth/login",
-                            "/api/v1/auth/forgot-password",
-                            "/api/v1/auth/reset-password")
-                    .permitAll()
-                    .requestMatchers("/api/v1/profile/**", "/api/v1/address/**", "/api/v1/city/**").permitAll()
+                    .requestMatchers(HttpMethod.GET,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.USER,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.ADDRESS,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.COMMENT,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CART,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CART_ITEM,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.NOTIFICATION,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.ORDER,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PROFILE_SETTINGS,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PROFILE
+                    ).hasRole(RoleEnum.ADMIN.name())
 
-                    .anyRequest().authenticated()*/
+                    .requestMatchers(HttpMethod.GET,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.USER + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.ADDRESS + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.COMMENT + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CART + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CART_ITEM + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CITY,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CITY + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.NOTIFICATION + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.ORDER + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PROFILE_SETTINGS + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PROFILE + "/**"
+                    ).hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.USER.name())
+
+                    .requestMatchers(HttpMethod.GET,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CATEGORY,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CATEGORY + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PRODUCT,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PRODUCT + "/**"
+                    ).permitAll()
+
+                    .requestMatchers(HttpMethod.POST,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.COMMENT + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.ORDER + "/**"
+                    ).hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.USER.name())
+
+                    .requestMatchers(HttpMethod.POST,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CATEGORY,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CITY,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PRODUCT
+                    ).hasRole(RoleEnum.ADMIN.name())
+
+                    .requestMatchers(HttpMethod.POST,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.ADDRESS + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CART + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CART_ITEM + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.NOTIFICATION + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PRODUCT + "/{productId}" + ApiRoutes.PROFILE + "{profileId}",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PROFILE + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PROFILE_SETTINGS + "/**"
+                    ).hasRole(RoleEnum.USER.name())
+
+                    .requestMatchers(HttpMethod.PUT,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CATEGORY + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CITY + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PRODUCT + "/**"
+                    ).hasRole(RoleEnum.ADMIN.name())
+
+                    .requestMatchers(HttpMethod.PUT,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CART + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PROFILE + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PROFILE_SETTINGS + "/**"
+                    ).hasRole(RoleEnum.USER.name())
+
+                    .requestMatchers(HttpMethod.PUT,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.ADDRESS + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.COMMENT + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CART_ITEM + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.NOTIFICATION + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.ORDER + "/**"
+                    ).hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.USER.name())
+
+                    .requestMatchers(HttpMethod.DELETE,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CATEGORY + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CITY + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PRODUCT + "/**"
+                    ).hasRole(RoleEnum.ADMIN.name())
+
+                    .requestMatchers(HttpMethod.DELETE,
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.ADDRESS + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.COMMENT + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.CART_ITEM + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.NOTIFICATION + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.ORDER + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PROFILE + "/**",
+                            ApiRoutes.BASE_API_V1 + ApiRoutes.PROFILE_SETTINGS + "/**"
+                    ).hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.USER.name())
+
+                    .requestMatchers(ApiRoutes.BASE_API_V1 + ApiRoutes.AUTH + "/**").permitAll()
+
                     .anyRequest().permitAll()
             )
 

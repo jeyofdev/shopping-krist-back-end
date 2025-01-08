@@ -7,6 +7,7 @@ import com.jeyofdev.shopping_krist.domain.city.dto.SaveCityDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class CityController {
     private final CityMapper cityMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<List<CityDTO>>> findAllCity() {
         List<City> cityList = cityService.findAll();
         List<CityDTO> cityDTOList = cityList.stream().map(cityMapper::mapFromEntity).toList();
@@ -31,6 +33,7 @@ public class CityController {
     }
 
     @GetMapping("/{cityId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<CityDTO>> findCityById(@PathVariable("cityId") UUID cityId) {
         City city = cityService.findById(cityId);
         CityDTO cityDTO = cityMapper.mapFromEntity(city);
@@ -42,6 +45,7 @@ public class CityController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<CityDTO>> saveCity(@RequestBody SaveCityDTO saveCityDTO) {
         City city = cityMapper.mapToEntity(saveCityDTO);
         City newCity = cityService.save(city);
@@ -54,6 +58,7 @@ public class CityController {
     }
 
     @PutMapping("/{cityId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<CityDTO>> updateCityById(
             @PathVariable("cityId") UUID cityId,
             @RequestBody SaveCityDTO saveCityDTO
@@ -69,6 +74,7 @@ public class CityController {
     }
 
     @DeleteMapping("/{cityId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<Object>> deleteCityById(@PathVariable("cityId") UUID cityId) {
         String message = cityService.deleteById(cityId);
 

@@ -7,6 +7,7 @@ import com.jeyofdev.shopping_krist.domain.profileSettings.dto.SaveProfileSetting
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class ProfileSettingsController {
     private final ProfileSettingsMapper profileSettingsMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<List<ProfileSettingsDTO>>> findAllProfileSettings() {
         List<ProfileSettings> profileSettingsList = profileSettingsService.findAll();
         List<ProfileSettingsDTO> profileSettingsDTOList = profileSettingsList.stream().map(profileSettingsMapper::mapFromEntity).toList();
@@ -31,6 +33,7 @@ public class ProfileSettingsController {
     }
 
     @GetMapping("/{profileSettingsId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<ProfileSettingsDTO>> findProfileSettingsById(@PathVariable("profileSettingsId") UUID profileSettingsId) {
         ProfileSettings profileSettings = profileSettingsService.findById(profileSettingsId);
         ProfileSettingsDTO profileSettingsDTO = profileSettingsMapper.mapFromEntity(profileSettings);
@@ -42,6 +45,7 @@ public class ProfileSettingsController {
     }
 
     @PostMapping(ApiRoutes.PROFILE + "/{profileId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<ProfileSettingsDTO>> saveProfileSettings(
             @RequestBody SaveProfileSettingsDTO saveProfileSettingsDTO,
             @PathVariable UUID profileId
@@ -57,6 +61,7 @@ public class ProfileSettingsController {
     }
 
     @PutMapping("/{profileSettingsId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<ProfileSettingsDTO>> updateProfileSettingsById(
             @PathVariable("profileSettingsId") UUID profileSettingsId,
             @RequestBody SaveProfileSettingsDTO saveProfileSettingsDTO
@@ -72,6 +77,7 @@ public class ProfileSettingsController {
     }
 
     @DeleteMapping("/{profileSettingsId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<Object>> deleteProfileSettingsById(@PathVariable("profileSettingsId") UUID profileSettingsId) {
         String message = profileSettingsService.deleteById(profileSettingsId);
 

@@ -7,6 +7,7 @@ import com.jeyofdev.shopping_krist.domain.profile.dto.SaveProfileDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class ProfileController {
     private final ProfileMapper profileMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<List<ProfileDTO>>> findAllProfile() {
         List<Profile> profileList = profileService.findAll();
         List<ProfileDTO> profileListDTOList = profileList.stream().map(profileMapper::mapFromEntity).toList();
@@ -31,6 +33,7 @@ public class ProfileController {
     }
 
     @GetMapping("/{profileId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<ProfileDTO>> findProfileById(@PathVariable("profileId") UUID profileId) {
         Profile profile = profileService.findById(profileId);
         ProfileDTO profileDTO = profileMapper.mapFromEntity(profile);
@@ -42,6 +45,7 @@ public class ProfileController {
     }
 
     @PostMapping(ApiRoutes.USER + "/{userId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<ProfileDTO>> saveProfile(
             @RequestBody SaveProfileDTO saveProfileDTO,
             @PathVariable UUID userId
@@ -57,6 +61,7 @@ public class ProfileController {
     }
 
     @PutMapping("/{profileId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<ProfileDTO>> updateProfileById(
             @PathVariable("profileId") UUID profileId,
             @RequestBody SaveProfileDTO saveProfileDTO
@@ -72,6 +77,7 @@ public class ProfileController {
     }
 
     @DeleteMapping("/{profileId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<Object>> deleteProfileById(@PathVariable("profileId") UUID profileId) {
         String message = profileService.deleteById(profileId);
 

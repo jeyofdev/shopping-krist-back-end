@@ -7,6 +7,7 @@ import com.jeyofdev.shopping_krist.domain.cart.dto.SaveCartDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class CartController {
     private final CartMapper cartMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<List<CartDTO>>> findAllCart() {
         List<Cart> cartList = cartService.findAll();
         List<CartDTO> cartDTOList = cartList.stream().map(cartMapper::mapFromEntity).toList();
@@ -31,6 +33,7 @@ public class CartController {
     }
 
     @GetMapping("/{cartId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<CartDTO>> findCartById(@PathVariable("cartId") UUID cartId) {
         Cart cart = cartService.findById(cartId);
         CartDTO cartDTO = cartMapper.mapFromEntity(cart);
@@ -42,6 +45,7 @@ public class CartController {
     }
 
     @PostMapping(ApiRoutes.PROFILE + "/{profileId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<CartDTO>> saveCart(
             @RequestBody SaveCartDTO saveCartDTO,
             @PathVariable("profileId") UUID profileId
@@ -57,6 +61,7 @@ public class CartController {
     }
 
     @PutMapping("/{cartId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<CartDTO>> updateCartById(
             @PathVariable("cartId") UUID cartId,
             @RequestBody SaveCartDTO saveCartDTO

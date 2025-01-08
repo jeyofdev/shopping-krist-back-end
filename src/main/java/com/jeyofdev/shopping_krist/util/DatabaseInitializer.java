@@ -61,7 +61,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("Database initialization started...");
-        this.createDatas();
+       /* this.createDatas();*/
     }
 
     public static void initializeDatabase(String jdbcUrl, String user, String password, String dbName) {

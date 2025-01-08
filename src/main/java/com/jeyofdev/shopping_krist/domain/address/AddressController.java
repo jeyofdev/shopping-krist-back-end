@@ -7,6 +7,7 @@ import com.jeyofdev.shopping_krist.domain.address.dto.SaveAddressDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class AddressController {
     private final AddressMapper addressMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<List<AddressDTO>>> findAllAddress() {
         List<Address> addressList = addressService.findAll();
         List<AddressDTO> addressDTOList = addressList.stream().map(addressMapper::mapFromEntity).toList();
@@ -31,6 +33,7 @@ public class AddressController {
     }
 
     @GetMapping("/{addressId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<AddressDTO>> findAddressById(@PathVariable("addressId") UUID addressId) {
         Address address = addressService.findById(addressId);
         AddressDTO addressDTO = addressMapper.mapFromEntity(address);
@@ -42,6 +45,7 @@ public class AddressController {
     }
 
     @PostMapping(ApiRoutes.CITY + "/{cityId}/" + ApiRoutes.PROFILE + "/{profileId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<AddressDTO>> saveAddress(
             @RequestBody SaveAddressDTO saveAddressDTO,
             @PathVariable("cityId") UUID cityId,
@@ -58,6 +62,7 @@ public class AddressController {
     }
 
     @PutMapping("/{addressId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<AddressDTO>> updateAddressById(
             @PathVariable("addressId") UUID addressId,
             @RequestBody SaveAddressDTO saveAddressDTO
@@ -73,6 +78,7 @@ public class AddressController {
     }
 
     @DeleteMapping("/{addressId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<Object>> deleteAddressById(@PathVariable("addressId") UUID addressId) {
         String message = addressService.deleteById(addressId);
 

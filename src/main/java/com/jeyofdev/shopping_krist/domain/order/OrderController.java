@@ -7,6 +7,7 @@ import com.jeyofdev.shopping_krist.domain.order.dto.SaveOrderDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class OrderController {
     private final OrderMapper orderMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DomainSuccessResponse<List<OrderDTO>>> findAllOrder() {
         List<Order> orderList = orderService.findAll();
         List<OrderDTO> orderDTOList = orderList.stream().map(orderMapper::mapFromEntity).toList();
@@ -31,6 +33,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<OrderDTO>> findOrderById(@PathVariable("orderId") UUID orderId) {
         Order order = orderService.findById(orderId);
         OrderDTO orderDTO = orderMapper.mapFromEntity(order);
@@ -42,6 +45,7 @@ public class OrderController {
     }
 
     @PostMapping(ApiRoutes.PROFILE + "/{profileId}" + ApiRoutes.ADDRESS + "/{addressId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<OrderDTO>> saveOrder(
             @RequestBody SaveOrderDTO saveOrderDTO,
             @PathVariable("profileId") UUID profileId,
@@ -58,6 +62,7 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<OrderDTO>> updateOrderById(
             @PathVariable("orderId") UUID orderId,
             @RequestBody SaveOrderDTO saveOrderDTO
@@ -74,6 +79,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/{orderId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<DomainSuccessResponse<Object>> deleteOrderById(@PathVariable("orderId") UUID orderId) {
         String message = orderService.deleteById(orderId);
 

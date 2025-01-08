@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class AuthUserController {
     private final AuthUserMapper authUserMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<AuthUserDTO>> getAllUsers()  {
         List<AuthUser> authUserList = authUserService.findAll();
         List<AuthUserDTO> authUserDTOList = authUserList.stream()
@@ -30,6 +32,7 @@ public class AuthUserController {
     }
 
     @GetMapping("/email/{email}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<AuthUserDTO> getUserByEmail(@PathVariable("email") String email, HttpServletRequest request) {
         AuthUser authUser = authUserService.findUserByEmail(email);
         AuthUserDTO authUserDTO = authUserMapper.mapFromEntity(authUser);
@@ -38,6 +41,7 @@ public class AuthUserController {
     }
 
     @GetMapping("/{userId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<AuthUserDTO> getUserById(@PathVariable("userId") UUID userId) {
         AuthUser authUser = authUserService.findUserById(userId);
         AuthUserDTO authUserDTO = authUserMapper.mapFromEntity(authUser);
