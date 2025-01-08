@@ -1,7 +1,9 @@
 package com.jeyofdev.shopping_krist.domain.address;
 
+import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.address.dto.AddressDTO;
 import com.jeyofdev.shopping_krist.domain.address.dto.SaveAddressDTO;
+import com.jeyofdev.shopping_krist.domain.city.dto.CityDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,23 +20,29 @@ public class AddressController {
     private final AddressMapper addressMapper;
 
     @GetMapping
-    public ResponseEntity<List<AddressDTO>> findAllAddress() {
+    public ResponseEntity<DomainSuccessResponse<List<AddressDTO>>> findAllAddress() {
         List<Address> addressList = addressService.findAll();
         List<AddressDTO> addressDTOList = addressList.stream().map(addressMapper::mapFromEntity).toList();
 
-        return new ResponseEntity<>(addressDTOList, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, addressDTOList),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/{addressId}")
-    public ResponseEntity<AddressDTO> findAddressById(@PathVariable("addressId") UUID addressId) {
+    public ResponseEntity<DomainSuccessResponse<AddressDTO>> findAddressById(@PathVariable("addressId") UUID addressId) {
         Address address = addressService.findById(addressId);
         AddressDTO addressDTO = addressMapper.mapFromEntity(address);
 
-        return new ResponseEntity<>(addressDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, addressDTO),
+                HttpStatus.OK
+        );
     }
 
     @PostMapping("/city/{cityId}/profile/{profileId}")
-    public ResponseEntity<AddressDTO> saveAddress(
+    public ResponseEntity<DomainSuccessResponse<AddressDTO>> saveAddress(
             @RequestBody SaveAddressDTO saveAddressDTO,
             @PathVariable("cityId") UUID cityId,
             @PathVariable("profileId") UUID profileId
@@ -43,11 +51,14 @@ public class AddressController {
         Address newAddress = addressService.save(address, cityId, profileId);
         AddressDTO newAddressDTO = addressMapper.mapFromEntity(newAddress);
 
-        return new ResponseEntity<>(newAddressDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.CREATED, newAddressDTO),
+                HttpStatus.OK
+        );
     }
 
     @PutMapping("/{addressId}")
-    public ResponseEntity<AddressDTO> updateAddressById(
+    public ResponseEntity<DomainSuccessResponse<AddressDTO>> updateAddressById(
             @PathVariable("addressId") UUID addressId,
             @RequestBody SaveAddressDTO saveAddressDTO
     ) {
@@ -55,12 +66,19 @@ public class AddressController {
         Address updateAddress = addressService.updateById(addressId, address);
         AddressDTO updateAddressDTO = addressMapper.mapFromEntity(updateAddress);
 
-        return new ResponseEntity<>(updateAddressDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, updateAddressDTO),
+                HttpStatus.OK
+        );
     }
 
     @DeleteMapping("/{addressId}")
-    public ResponseEntity<Void> deleteAddressById(@PathVariable("addressId") UUID addressId) {
-        addressService.deleteById(addressId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<DomainSuccessResponse<Object>> deleteAddressById(@PathVariable("addressId") UUID addressId) {
+        String message = addressService.deleteById(addressId);
+
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, message),
+                HttpStatus.OK
+        );
     }
 }

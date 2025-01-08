@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.city;
 
+import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.city.dto.CityDTO;
 import com.jeyofdev.shopping_krist.domain.city.dto.SaveCityDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,32 +19,41 @@ public class CityController {
     private final CityMapper cityMapper;
 
     @GetMapping
-    public ResponseEntity<List<CityDTO>> findAllCity() {
+    public ResponseEntity<DomainSuccessResponse<List<CityDTO>>> findAllCity() {
         List<City> cityList = cityService.findAll();
         List<CityDTO> cityDTOList = cityList.stream().map(cityMapper::mapFromEntity).toList();
 
-        return new ResponseEntity<>(cityDTOList, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, cityDTOList),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/{cityId}")
-    public ResponseEntity<CityDTO> findCityById(@PathVariable("cityId") UUID cityId) {
+    public ResponseEntity<DomainSuccessResponse<CityDTO>> findCityById(@PathVariable("cityId") UUID cityId) {
         City city = cityService.findById(cityId);
         CityDTO cityDTO = cityMapper.mapFromEntity(city);
 
-        return new ResponseEntity<>(cityDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, cityDTO),
+                HttpStatus.OK
+        );
     }
 
     @PostMapping()
-    public ResponseEntity<CityDTO> saveCity(@RequestBody SaveCityDTO saveCityDTO) {
+    public ResponseEntity<DomainSuccessResponse<CityDTO>> saveCity(@RequestBody SaveCityDTO saveCityDTO) {
         City city = cityMapper.mapToEntity(saveCityDTO);
         City newCity = cityService.save(city);
         CityDTO newCityDTO = cityMapper.mapFromEntity(newCity);
 
-        return new ResponseEntity<>(newCityDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.CREATED, newCityDTO),
+                HttpStatus.OK
+        );
     }
 
     @PutMapping("/{cityId}")
-    public ResponseEntity<CityDTO> updateCityById(
+    public ResponseEntity<DomainSuccessResponse<CityDTO>> updateCityById(
             @PathVariable("cityId") UUID cityId,
             @RequestBody SaveCityDTO saveCityDTO
     ) {
@@ -51,12 +61,19 @@ public class CityController {
         City updateCity = cityService.updateById(cityId, city);
         CityDTO updateCityDTO = cityMapper.mapFromEntity(updateCity);
 
-        return new ResponseEntity<>(updateCityDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, updateCityDTO),
+                HttpStatus.OK
+        );
     }
 
     @DeleteMapping("/{cityId}")
-    public ResponseEntity<String> deleteCityById(@PathVariable("cityId") UUID cityId) {
-        String deletedCity = cityService.deleteById(cityId);
-        return new ResponseEntity<>(deletedCity, HttpStatus.NO_CONTENT);
+    public ResponseEntity<DomainSuccessResponse<Object>> deleteCityById(@PathVariable("cityId") UUID cityId) {
+        String message = cityService.deleteById(cityId);
+
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, message),
+                HttpStatus.OK
+        );
     }
 }

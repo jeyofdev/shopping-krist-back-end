@@ -51,10 +51,4 @@ public class CartItemService extends AbstractDomainServiceBase<CartItem, CartIte
 
         return cartItemRepository.save(existingCartItemUpdated);
     }
-
-    @Transactional
-    public void deleteById(UUID cartItemId) {
-        findById(cartItemId);
-        cartItemRepository.deleteById(cartItemId);
-    }
 }

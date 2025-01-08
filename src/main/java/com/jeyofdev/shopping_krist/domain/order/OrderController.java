@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.order;
 
+import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.order.dto.OrderDTO;
 import com.jeyofdev.shopping_krist.domain.order.dto.SaveOrderDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,23 +19,29 @@ public class OrderController {
     private final OrderMapper orderMapper;
 
     @GetMapping
-    public ResponseEntity<List<OrderDTO>> findAllOrder() {
+    public ResponseEntity<DomainSuccessResponse<List<OrderDTO>>> findAllOrder() {
         List<Order> orderList = orderService.findAll();
         List<OrderDTO> orderDTOList = orderList.stream().map(orderMapper::mapFromEntity).toList();
 
-        return new ResponseEntity<>(orderDTOList, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, orderDTOList),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderDTO> findOrderById(@PathVariable("orderId") UUID orderId) {
+    public ResponseEntity<DomainSuccessResponse<OrderDTO>> findOrderById(@PathVariable("orderId") UUID orderId) {
         Order order = orderService.findById(orderId);
         OrderDTO orderDTO = orderMapper.mapFromEntity(order);
 
-        return new ResponseEntity<>(orderDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, orderDTO),
+                HttpStatus.OK
+        );
     }
 
     @PostMapping("profile/{profileId}/address/{addressId}")
-    public ResponseEntity<OrderDTO> saveOrder(
+    public ResponseEntity<DomainSuccessResponse<OrderDTO>> saveOrder(
             @RequestBody SaveOrderDTO saveOrderDTO,
             @PathVariable("profileId") UUID profileId,
             @PathVariable("addressId") UUID addressId
@@ -43,11 +50,14 @@ public class OrderController {
         Order newOrder = orderService.save(order, profileId, addressId);
         OrderDTO newOrderDTO = orderMapper.mapFromEntity(newOrder);
 
-        return new ResponseEntity<>(newOrderDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.CREATED, newOrderDTO),
+                HttpStatus.OK
+        );
     }
 
     @PutMapping("/{orderId}")
-    public ResponseEntity<OrderDTO> updateOrderById(
+    public ResponseEntity<DomainSuccessResponse<OrderDTO>> updateOrderById(
             @PathVariable("orderId") UUID orderId,
             @RequestBody SaveOrderDTO saveOrderDTO
     ) {
@@ -56,12 +66,19 @@ public class OrderController {
         Order updateOrder = orderService.updateById(orderId, order);
         OrderDTO updateOrderDTO = orderMapper.mapFromEntity(updateOrder);
 
-        return new ResponseEntity<>(updateOrderDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, updateOrderDTO),
+                HttpStatus.OK
+        );
     }
 
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<Void> deleteOrderById(@PathVariable("orderId") UUID orderId) {
-       orderService.deleteById(orderId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<DomainSuccessResponse<Object>> deleteOrderById(@PathVariable("orderId") UUID orderId) {
+        String message = orderService.deleteById(orderId);
+
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, message),
+                HttpStatus.OK
+        );
     }
 }

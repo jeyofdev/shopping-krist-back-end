@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.cartItem;
 
+import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.cartItem.dto.CartItemDTO;
 import com.jeyofdev.shopping_krist.domain.cartItem.dto.SaveCartItemDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,23 +19,29 @@ public class CartItemController {
     private final CartItemMapper cartItemMapper;
 
     @GetMapping
-    public ResponseEntity<List<CartItemDTO>> findAllCartItem() {
+    public ResponseEntity<DomainSuccessResponse<List<CartItemDTO>>> findAllCartItem() {
         List<CartItem> cartItemList = cartItemService.findAll();
         List<CartItemDTO> cartItemDTOList = cartItemList.stream().map(cartItemMapper::mapFromEntity).toList();
 
-        return new ResponseEntity<>(cartItemDTOList, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, cartItemDTOList),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/{cartItemId}")
-    public ResponseEntity<CartItemDTO> findCartItemById(@PathVariable("cartItemId") UUID cartItemId) {
+    public ResponseEntity<DomainSuccessResponse<CartItemDTO>> findCartItemById(@PathVariable("cartItemId") UUID cartItemId) {
         CartItem cartItem = cartItemService.findById(cartItemId);
         CartItemDTO cartItemDTO = cartItemMapper.mapFromEntity(cartItem);
 
-        return new ResponseEntity<>(cartItemDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, cartItemDTO),
+                HttpStatus.OK
+        );
     }
 
     @PostMapping("/product/{productId}/cart/{cartId}")
-    public ResponseEntity<CartItemDTO> saveCartItem(
+    public ResponseEntity<DomainSuccessResponse<CartItemDTO>> saveCartItem(
             @RequestBody SaveCartItemDTO saveCartItemDTO,
             @PathVariable("productId") UUID productId,
             @PathVariable("cartId") UUID cartId
@@ -43,11 +50,14 @@ public class CartItemController {
         CartItem newCartItem = cartItemService.save(cartItem, productId, cartId);
         CartItemDTO newCartItemDTO = cartItemMapper.mapFromEntity(newCartItem);
 
-        return new ResponseEntity<>(newCartItemDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.CREATED, newCartItemDTO),
+                HttpStatus.OK
+        );
     }
 
     @PutMapping("/{cartItemId}")
-    public ResponseEntity<CartItemDTO> updateCartItemById(
+    public ResponseEntity<DomainSuccessResponse<CartItemDTO>> updateCartItemById(
             @PathVariable("cartItemId") UUID cartItemId,
             @RequestBody SaveCartItemDTO saveCartItemDTO
     ) {
@@ -55,12 +65,19 @@ public class CartItemController {
         CartItem updateCartItem = cartItemService.updateById(cartItemId, cartItem);
         CartItemDTO updateCartItemDTO = cartItemMapper.mapFromEntity(updateCartItem);
 
-        return new ResponseEntity<>(updateCartItemDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, updateCartItemDTO),
+                HttpStatus.OK
+        );
     }
 
     @DeleteMapping("/{cartItemId}")
-    public ResponseEntity<Void> deleteCartItemById(@PathVariable("cartItemId") UUID cartItemId) {
-        cartItemService.deleteById(cartItemId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<DomainSuccessResponse<Object>> deleteCartItemById(@PathVariable("cartItemId") UUID cartItemId) {
+        String message = cartItemService.deleteById(cartItemId);
+
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, message),
+                HttpStatus.OK
+        );
     }
 }

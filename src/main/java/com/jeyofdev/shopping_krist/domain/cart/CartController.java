@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.cart;
 
+import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.cart.dto.CartDTO;
 import com.jeyofdev.shopping_krist.domain.cart.dto.SaveCartDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,23 +19,29 @@ public class CartController {
     private final CartMapper cartMapper;
 
     @GetMapping
-    public ResponseEntity<List<CartDTO>> findAllCart() {
+    public ResponseEntity<DomainSuccessResponse<List<CartDTO>>> findAllCart() {
         List<Cart> cartList = cartService.findAll();
         List<CartDTO> cartDTOList = cartList.stream().map(cartMapper::mapFromEntity).toList();
 
-        return new ResponseEntity<>(cartDTOList, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, cartDTOList),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/{cartId}")
-    public ResponseEntity<CartDTO> findCartById(@PathVariable("cartId") UUID cartId) {
+    public ResponseEntity<DomainSuccessResponse<CartDTO>> findCartById(@PathVariable("cartId") UUID cartId) {
         Cart cart = cartService.findById(cartId);
         CartDTO cartDTO = cartMapper.mapFromEntity(cart);
 
-        return new ResponseEntity<>(cartDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, cartDTO),
+                HttpStatus.OK
+        );
     }
 
     @PostMapping("profile/{profileId}")
-    public ResponseEntity<CartDTO> saveCart(
+    public ResponseEntity<DomainSuccessResponse<CartDTO>> saveCart(
             @RequestBody SaveCartDTO saveCartDTO,
             @PathVariable("profileId") UUID profileId
     ) {
@@ -42,11 +49,14 @@ public class CartController {
         Cart newCart = cartService.save(cart, profileId);
         CartDTO newCartDTO = cartMapper.mapFromEntity(newCart);
 
-        return new ResponseEntity<>(newCartDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.CREATED, newCartDTO),
+                HttpStatus.OK
+        );
     }
 
     @PutMapping("/{cartId}")
-    public ResponseEntity<CartDTO> updateCartById(
+    public ResponseEntity<DomainSuccessResponse<CartDTO>> updateCartById(
             @PathVariable("cartId") UUID cartId,
             @RequestBody SaveCartDTO saveCartDTO
     ) {
@@ -54,6 +64,9 @@ public class CartController {
         Cart updateCart = cartService.updateById(cartId, cart);
         CartDTO updateCartDTO = cartMapper.mapFromEntity(updateCart);
 
-        return new ResponseEntity<>(updateCartDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, updateCartDTO),
+                HttpStatus.OK
+        );
     }
 }

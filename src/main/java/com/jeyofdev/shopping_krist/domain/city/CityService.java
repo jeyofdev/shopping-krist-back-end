@@ -37,6 +37,7 @@ public class CityService extends AbstractDomainServiceBase<City, CityRepository>
         return cityRepository.save(existingCityUpdated);
     }
 
+    @Override
     @Transactional
     public String deleteById(UUID cityId) {
         City city = findById(cityId);
@@ -48,6 +49,6 @@ public class CityService extends AbstractDomainServiceBase<City, CityRepository>
         }
         cityRepository.deleteById(cityId);
 
-        return "City has been successfully deleted.";
+        return "The city with id %s has been successfully deleted.".formatted(cityId);
     }
 }

@@ -55,6 +55,7 @@ public class ProfileService extends AbstractDomainServiceBase<Profile, ProfileRe
         return profileRepository.save(existingProfileUpdated);
     }
 
+    @Override
     @Transactional
     public String deleteById(UUID profileId) {
         findById(profileId);

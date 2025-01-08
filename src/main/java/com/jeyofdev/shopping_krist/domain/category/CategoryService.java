@@ -37,8 +37,9 @@ public class CategoryService extends AbstractDomainServiceBase<Category, Categor
         return categoryRepository.save(existingCategoryUpdated);
     }
 
+    @Override
     @Transactional
-    public void deleteById(UUID categoryId) {
+    public String deleteById(UUID categoryId) {
         Category category = findById(categoryId);
         List<Product> productList = productRepository.findByCategory(category);
 
@@ -48,5 +49,7 @@ public class CategoryService extends AbstractDomainServiceBase<Category, Categor
         }
 
         categoryRepository.deleteById(categoryId);
+
+        return "The category with id %s has been successfully deleted.".formatted(categoryId);
     }
 }

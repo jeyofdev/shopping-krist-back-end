@@ -72,10 +72,4 @@ public class ProductService extends AbstractDomainServiceBase<Product, ProductRe
 
         return productRepository.save(existingProductUpdated);
     }
-
-    @Transactional
-    public void deleteById(UUID productId) {
-        findById(productId);
-        productRepository.deleteById(productId);
-    }
 }

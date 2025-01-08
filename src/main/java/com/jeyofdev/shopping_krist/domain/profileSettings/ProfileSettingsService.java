@@ -47,8 +47,9 @@ public class ProfileSettingsService extends AbstractDomainServiceBase<ProfileSet
         return profileSettingsRepository.save(existingProfileSettingsUpdated);
     }
 
+    @Override
     @Transactional
-    public void deleteById(UUID profileSettingsId) {
+    public String deleteById(UUID profileSettingsId) {
         ProfileSettings profileSettings = findById(profileSettingsId);
         Profile profile = profileSettings.getProfile();
 
@@ -58,5 +59,7 @@ public class ProfileSettingsService extends AbstractDomainServiceBase<ProfileSet
         }
 
         profileSettingsRepository.deleteById(profileSettingsId);
+
+        return "The profil settings with id %s has been successfully deleted.".formatted(profileSettingsId);
     }
 }

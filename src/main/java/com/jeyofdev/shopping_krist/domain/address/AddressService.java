@@ -59,10 +59,4 @@ public class AddressService extends AbstractDomainServiceBase<Address, AddressRe
 
         return addressRepository.save(existingAddressUpdated);
     }
-
-    @Transactional
-    public void deleteById(UUID addressId) {
-        findById(addressId);
-        addressRepository.deleteById(addressId);
-    }
 }

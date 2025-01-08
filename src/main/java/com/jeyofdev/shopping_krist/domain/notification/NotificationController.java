@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.notification;
 
+import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.notification.dto.NotificationDTO;
 import com.jeyofdev.shopping_krist.domain.notification.dto.SaveNotificationDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,23 +19,29 @@ public class NotificationController {
     private final NotificationMapper notificationMapper;
 
     @GetMapping
-    public ResponseEntity<List<NotificationDTO>> findAllNotification() {
+    public ResponseEntity<DomainSuccessResponse<List<NotificationDTO>>> findAllNotification() {
         List<Notification> notificationList = notificationService.findAll();
         List<NotificationDTO> notificationDTOList = notificationList.stream().map(notificationMapper::mapFromEntity).toList();
 
-        return new ResponseEntity<>(notificationDTOList, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, notificationDTOList),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/{notificationId}")
-    public ResponseEntity<NotificationDTO> findNotificationById(@PathVariable("notificationId") UUID notificationId) {
+    public ResponseEntity<DomainSuccessResponse<NotificationDTO>> findNotificationById(@PathVariable("notificationId") UUID notificationId) {
         Notification notification = notificationService.findById(notificationId);
         NotificationDTO notificationDTO = notificationMapper.mapFromEntity(notification);
 
-        return new ResponseEntity<>(notificationDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, notificationDTO),
+                HttpStatus.OK
+        );
     }
 
     @PostMapping("profile/{profileId}")
-    public ResponseEntity<NotificationDTO> saveNotification(
+    public ResponseEntity<DomainSuccessResponse<NotificationDTO>> saveNotification(
             @RequestBody SaveNotificationDTO saveNotificationDTO,
             @PathVariable("profileId") UUID profileId
     ) {
@@ -42,11 +49,14 @@ public class NotificationController {
         Notification newNotification = notificationService.save(notification, profileId);
         NotificationDTO newNotificationDTO = notificationMapper.mapFromEntity(newNotification);
 
-        return new ResponseEntity<>(newNotificationDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.CREATED, newNotificationDTO),
+                HttpStatus.OK
+        );
     }
 
     @PutMapping("/{notificationId}")
-    public ResponseEntity<NotificationDTO> updateNotificationById(
+    public ResponseEntity<DomainSuccessResponse<NotificationDTO>> updateNotificationById(
             @PathVariable("notificationId") UUID notificationId,
             @RequestBody SaveNotificationDTO saveNotificationDTO
     ) {
@@ -54,12 +64,19 @@ public class NotificationController {
         Notification updateNotification = notificationService.updateById(notificationId, notification);
         NotificationDTO updateNotificationDTO = notificationMapper.mapFromEntity(updateNotification);
 
-        return new ResponseEntity<>(updateNotificationDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, updateNotificationDTO),
+                HttpStatus.OK
+        );
     }
 
     @DeleteMapping("/{notificationId}")
-    public ResponseEntity<String> deleteNotificationById(@PathVariable("notificationId") UUID notificationId) {
-        notificationService.deleteById(notificationId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<DomainSuccessResponse<Object>> deleteNotificationById(@PathVariable("notificationId") UUID notificationId) {
+        String message = notificationService.deleteById(notificationId);
+
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, message),
+                HttpStatus.OK
+        );
     }
 }

@@ -44,10 +44,4 @@ public class NotificationService extends AbstractDomainServiceBase<Notification,
 
         return notificationRepository.save(existingNotificationUpdated);
     }
-
-    @Transactional
-    public void deleteById(UUID notificationId) {
-        findById(notificationId);
-        notificationRepository.deleteById(notificationId);
-    }
 }

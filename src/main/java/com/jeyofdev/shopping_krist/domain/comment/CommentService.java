@@ -50,10 +50,4 @@ public class CommentService extends AbstractDomainServiceBase<Comment, CommentRe
 
         return commentRepository.save(existingCommentUpdated);
     }
-
-    @Transactional
-    public void deleteById(UUID commentId) {
-        findById(commentId);
-        commentRepository.deleteById(commentId);
-    }
 }

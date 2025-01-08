@@ -10,7 +10,6 @@ import com.jeyofdev.shopping_krist.domain.profile.ProfileRepository;
 import com.jeyofdev.shopping_krist.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -67,11 +66,5 @@ public class OrderServiceBase extends AbstractDomainServiceBase<Order, OrderRepo
         existingOrder.setCartItems(updatedOrder.getCartItems() != null ? updatedOrder.getCartItems() : existingOrder.getCartItems());
 
         return orderRepository.save(existingOrder);
-    }
-
-    @Transactional
-    public void deleteById(UUID orderId) {
-        findById(orderId);
-        orderRepository.deleteById(orderId);
     }
 }

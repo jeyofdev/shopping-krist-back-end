@@ -1,5 +1,6 @@
 package com.jeyofdev.shopping_krist.domain.profileSettings;
 
+import com.jeyofdev.shopping_krist.core.models.DomainSuccessResponse;
 import com.jeyofdev.shopping_krist.domain.profileSettings.dto.ProfileSettingsDTO;
 import com.jeyofdev.shopping_krist.domain.profileSettings.dto.SaveProfileSettingsDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,23 +19,29 @@ public class ProfileSettingsController {
     private final ProfileSettingsMapper profileSettingsMapper;
 
     @GetMapping
-    public ResponseEntity<List<ProfileSettingsDTO>> findAllProfileSettings() {
+    public ResponseEntity<DomainSuccessResponse<List<ProfileSettingsDTO>>> findAllProfileSettings() {
         List<ProfileSettings> profileSettingsList = profileSettingsService.findAll();
         List<ProfileSettingsDTO> profileSettingsDTOList = profileSettingsList.stream().map(profileSettingsMapper::mapFromEntity).toList();
 
-        return new ResponseEntity<>(profileSettingsDTOList, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, profileSettingsDTOList),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/{profileSettingsId}")
-    public ResponseEntity<ProfileSettingsDTO> findProfileSettingsById(@PathVariable("profileSettingsId") UUID profileSettingsId) {
+    public ResponseEntity<DomainSuccessResponse<ProfileSettingsDTO>> findProfileSettingsById(@PathVariable("profileSettingsId") UUID profileSettingsId) {
         ProfileSettings profileSettings = profileSettingsService.findById(profileSettingsId);
         ProfileSettingsDTO profileSettingsDTO = profileSettingsMapper.mapFromEntity(profileSettings);
 
-        return new ResponseEntity<>(profileSettingsDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, profileSettingsDTO),
+                HttpStatus.OK
+        );
     }
 
     @PostMapping("/profile/{profileId}")
-    public ResponseEntity<ProfileSettingsDTO> saveProfileSettings(
+    public ResponseEntity<DomainSuccessResponse<ProfileSettingsDTO>> saveProfileSettings(
             @RequestBody SaveProfileSettingsDTO saveProfileSettingsDTO,
             @PathVariable UUID profileId
     ) {
@@ -42,11 +49,14 @@ public class ProfileSettingsController {
         ProfileSettings newProfileSettings = profileSettingsService.save(profileSettings, profileId);
         ProfileSettingsDTO newProfileSettingsDTO = profileSettingsMapper.mapFromEntity(newProfileSettings);
 
-        return new ResponseEntity<>(newProfileSettingsDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.CREATED, newProfileSettingsDTO),
+                HttpStatus.OK
+        );
     }
 
     @PutMapping("/{profileSettingsId}")
-    public ResponseEntity<ProfileSettingsDTO> updateProfileSettingsById(
+    public ResponseEntity<DomainSuccessResponse<ProfileSettingsDTO>> updateProfileSettingsById(
             @PathVariable("profileSettingsId") UUID profileSettingsId,
             @RequestBody SaveProfileSettingsDTO saveProfileSettingsDTO
     ) {
@@ -54,12 +64,19 @@ public class ProfileSettingsController {
         ProfileSettings updateProfileSettings = profileSettingsService.updateById(profileSettingsId, profileSettings);
         ProfileSettingsDTO updateProfileSettingsDTO = profileSettingsMapper.mapFromEntity(updateProfileSettings);
 
-        return new ResponseEntity<>(updateProfileSettingsDTO, HttpStatus.OK);
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, updateProfileSettingsDTO),
+                HttpStatus.OK
+        );
     }
 
     @DeleteMapping("/{profileSettingsId}")
-    public ResponseEntity<Void> deleteProfileSettingsById(@PathVariable("profileSettingsId") UUID profileSettingsId) {
-        profileSettingsService.deleteById(profileSettingsId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<DomainSuccessResponse<Object>> deleteProfileSettingsById(@PathVariable("profileSettingsId") UUID profileSettingsId) {
+        String message = profileSettingsService.deleteById(profileSettingsId);
+
+        return new ResponseEntity<>(
+                DomainSuccessResponse.get(HttpStatus.OK, message),
+                HttpStatus.OK
+        );
     }
 }
